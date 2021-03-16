@@ -1,15 +1,26 @@
 {
-  "name": "belajar-nextjs",
+  "name": "undangan-online",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "export": "next export",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
+    "@styled-system/should-forward-prop": "^5.1.5",
+    "moment": "^2.29.1",
     "next": "10.0.7",
+    "prop-types": "^15.7.2",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "react-resize-detector": "^6.6.3",
+    "sass": "^1.32.8",
+    "styled-components": "^5.2.1",
+    "styled-system": "^5.1.5"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^1.12.0"
   }
 }

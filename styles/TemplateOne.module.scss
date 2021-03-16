@@ -1,0 +1,21 @@
+@import "variables";
+
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script&family=Roboto+Slab&display=swap");
+
+$font-stack: "Roboto Slab", sans-serif;
+
+.container {
+  font-family: $font-stack;
+  color: $black;
+}
+
+.hero-image {
+  
+}
+
+.serif {
+  font-family: "Roboto Slab";
+}
+.script {
+  font-family: "Dancing Script";
+}

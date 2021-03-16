@@ -1,0 +1,517 @@
+import moment from "moment";
+import PropTypes from "prop-types";
+import Head from "next/head";
+import { ThemeProvider } from "styled-components";
+import { AspectRatio, Box, Flex, Text, State, Counter } from "./";
+
+const theme = {
+  fonts: {
+    serif: "Roboto Slab",
+    script: "Dancing Script"
+  },
+  colors: {
+    "black": "#1b1f23",
+    "white": "#fff",
+    "gray": ["#fafbfc", "#f6f8fa", "#e1e4e8", "#d1d5da", "#959da5", "#6a737d", "#586069", "#444d56", "#2f363d", "#24292e"],
+    "blue": ["#f1f8ff", "#dbedff", "#c8e1ff", "#79b8ff", "#2188ff", "#0366d6", "#005cc5", "#044289", "#032f62", "#05264c"],
+    "green": ["#f0fff4", "#dcffe4", "#bef5cb", "#85e89d", "#34d058", "#28a745", "#22863a", "#176f2c", "#165c26", "#144620"],
+    "yellow": ["#fffdef", "#fffbdd", "#fff5b1", "#ffea7f", "#ffdf5d", "#ffd33d", "#f9c513", "#dbab09", "#b08800", "#735c0f"],
+    "orange": ["#fff8f2", "#ffebda", "#ffd1ac", "#ffab70", "#fb8532", "#f66a0a", "#e36209", "#d15704", "#c24e00", "#a04100"],
+    "red": ["#ffeef0", "#ffdce0", "#fdaeb7", "#f  7583", "#ea4a5a", "#d73a49", "#cb2431", "#b31d28", "#9e1c23", "#86181d"],
+    "purple": ["#f5f0ff", "#e6dcfd", "#d1bcf9", "#b392f0", "#8a63d2", "#6f42c1", "#5a32a3", "#4c2889", "#3a1d6e", "#29134e"],
+    "pink": ["#ffeef8", "#fedbf0", "#f9b3dd", "#f692ce", "#ec6cb9", "#ea4aaa", "#d03592", "#b93a86", "#99306f", "#6d224f"],
+    "accent": "#ffab70"
+  }
+}
+
+const TemplateOne = (props) => {
+  const {
+    groom,
+    bride,
+    reception,
+    contract,
+    gallery
+  } = props;
+  const receptionDateFunc = moment(reception.date);
+  const contractDateFunc = moment(contract.date);
+  return (
+    <ThemeProvider theme={theme}>
+      <Box sx={{ fontFamily: "serif" }}>
+        <Head>
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;700&family=Roboto+Slab:wght@300;400;500;600&display=swap" rel="stylesheet" />
+        </Head>
+        <Flex
+          as="section"
+          sx={{
+            height: "100vh",
+            flexDirection: ["column", "row"]
+          }}
+        >
+          <Box
+            sx={{
+              width: ["100%", "50%", "60%"],
+              height: ["25%", "auto"],
+              position: "relative",
+              "img": {
+                objectFit: "cover"
+              }
+            }}
+          >
+            <Box
+              as="img"
+              src="https://via.placeholder.com/850x800"
+              sx={{
+                height: "100%",
+                width: "100%",
+                objectFit: "cover"
+              }}
+            />
+          </Box>
+          <Flex
+            sx={{
+              width: ["100%", "50%", "40%"],
+              height: ["75%", "auto"],
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              px: 3,
+            }}
+          >
+            <Box sx={{ fontSize: 6, mb: 4, color: "gray.6" }}>
+              <Box display={["block", "inline-block"]}>SAVE</Box>
+              <Box display={["block", "inline"]} fontFamily="script"> the </Box>
+              <Box display={["block", "inline-block"]}>DATE</Box>
+            </Box>
+            <Box sx={{ fontSize: 5, mb: 4, fontWeight: 500 }}>
+              <span>{contractDateFunc.format("MMM")}</span>
+              <Box
+                as="span"
+                sx={{
+                  borderWidth: 2,
+                  borderColor: "gray.3",
+                  borderStyle: "solid",
+                  borderTop: 0,
+                  borderBottom: 0,
+                  fontWeight: 400,
+                  px: 3,
+                  mx: 3,
+                }}
+              >{receptionDateFunc.format("DD")}</Box>
+              <span>{receptionDateFunc.get("year")}</span>
+            </Box>
+            <Box mb={4}>
+              <Box sx={{ color: "accent", fontSize: 2 }}>For Wedding Of</Box>
+              <Box sx={{ fontSize: [5, 6], textTransform: "uppercase" }}>
+                <Box display={["inline", "block"]}>{bride.nickname}</Box>
+                <Box
+                  sx={{
+                    display: ["inline", "block"],
+                    textTransform: "lowercase",
+                    fontFamily: "script"
+                  }}
+                >{` & `}</Box>
+                <Box display={["inline", "block"]}>{groom.nickname}</Box>
+              </Box>
+            </Box>
+            <Box color="gray.4" fontSize={1}>
+              <div>To be followed by food, laughter</div>
+              <div>and a happily ever after.</div>
+            </Box>
+          </Flex>
+        </Flex>
+
+        <Box as="section" sx={{ mt: 6, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}>
+          <Text as="div" mb={3} fontFamily="script" fontSize={6} >We Found Love</Text>
+          <Text as="p" mb={3} >And more than all, have love; the only way in which you may be completely joined together. And let the peace of Christ be ruling in your hearts, as it was the purpose of God for you to be one body; and give praise to God at all times</Text>
+          <Text as="p" fontWeight="bold">Colossians 3:14-15</Text>
+        </Box>
+
+        <Flex
+          as="section"
+          sx={{
+            mt: 6,
+            mx: "auto",
+            px: 3,
+            maxWidth: 710,
+            flexDirection: ["column", "row"],
+            alignItems: "center",
+          }}
+        >
+          <Flex
+            sx={{
+              width: ["auto", "50%"],
+              flexDirection: ["row", "column"],
+              alignItems: "center",
+            }}
+          >
+            <Box
+              sx={{
+                mx: [0, "auto"],
+                mb: [0, 4],
+                mr: [3, "auto"],
+                overflow: "hidden",
+                height: [115, 175],
+                width: [115, 175],
+                borderRadius: "100%",
+                position: "relative",
+                flexShrink: 0
+              }}
+            >
+              <Box
+                as="img"
+                src={bride.image}
+                sx={{
+                  height: "100%",
+                  width: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            </Box>
+            <Box sx={{ textAlign: ["left", "center"], mb: 3, fontSize: 1 }}>
+              <Box as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 1, color: "accent" }}>{bride.nickname}</Box>
+              <Box as="div" sx={{ color: "gray.5", mb: [2, 4] }}>{bride.full_name}</Box>
+              <Box sx={{ mb: 2 }}>Putri dari:</Box>
+              <Box color="gray.5">
+                <div>{bride.father}</div>
+                <div>{bride.mother}</div>
+              </Box>
+            </Box>
+          </Flex>
+          <Flex
+            sx={{
+              width: ["auto", "50%"],
+              flexDirection: ["row", "column"],
+              alignItems: "center"
+            }}
+          >
+            <Box
+              sx={{
+                mx: [0, "auto"],
+                mb: [0, 4],
+                mr: [3, "auto"],
+                overflow: "hidden",
+                height: [115, 175],
+                width: [115, 175],
+                borderRadius: "100%",
+                position: "relative",
+                flexShrink: 0
+              }}
+            >
+              <Box
+                as="img"
+                src={groom.image}
+                sx={{
+                  height: "100%",
+                  width: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            </Box>
+            <Box sx={{ textAlign: ["left", "center"], mb: 3, fontSize: 1 }}>
+              <Box as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 1, color: "accent" }}>{groom.nickname}</Box>
+              <Box as="div" sx={{ color: "gray.5", mb: [2, 4] }}>{groom.full_name}</Box>
+              <Box sx={{ mb: 2 }}>Putra dari:</Box>
+              <Box color="gray.5">
+                <div>{groom.father}</div>
+                <div>{groom.mother}</div>
+              </Box>
+            </Box>
+          </Flex>
+        </Flex>
+
+        <Flex mt={6} justifyContent="center">
+          <Counter
+            current={moment()}
+            target={contractDateFunc}
+          >
+            {({ diff }) => {
+              const duration = moment.duration(diff);
+              return (
+                <Flex
+                  sx={{
+                    "> div": {
+                      px: 2,
+                      lineHeight: 1,
+                      ".title": {
+                        p: 2,
+                        fontSize: 5,
+                      },
+                      ".subtitle": {
+                        fontSize: 1,
+                      }
+                    }
+                  }}
+                >
+                  <div>
+                    <div className="title">{duration.days()}</div>
+                    <div className="subtitle">Days</div>
+                  </div>
+                  <div>
+                    <div className="title">{duration.hours()}</div>
+                    <div className="subtitle">Hours</div>
+                  </div>
+                  <div>
+                    <div className="title">{duration.minutes()}</div>
+                    <div className="subtitle">Minutes</div>
+                  </div>
+                  <div>
+                    <div className="title">{duration.seconds()}</div>
+                    <div className="subtitle">Seconds</div>
+                  </div>
+                </Flex>
+              )
+            }}
+          </Counter>
+        </Flex>
+
+        <Box
+          as="section"
+          sx={{
+            mt: [4, 5],
+            mx: "auto",
+            px: 3,
+            maxWidth: 710,
+            textAlign: "center",
+            whiteSpace: ["normal", "nowrap"],
+          }}
+        >
+          <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>Akad Nikah</Text>
+          <Flex
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+              mb: 3,
+              "> *": {
+                flexShrink: 0
+              }
+            }}
+          >
+            <Box width={["37.5%", "40%"]}>
+              <Box
+                sx={{
+                  borderBottomWidth: 2,
+                  borderBottomColor: "gray.3",
+                  borderBottomStyle: "solid",
+                  pb: 2,
+                  mb: 2
+                }}
+              >{contractDateFunc.format("hh:mm")} WIB - Selesai</Box>
+              <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Akad Nikah</Box>
+            </Box>
+            <Box
+              sx={{
+                width: ["25%", "20%"],
+                borderWidth: 2,
+                borderColor: "black",
+                borderStyle: "solid",
+                borderBottom: 0,
+                borderTop: 0,
+                px: [3, 4],
+                // mx: [2, 4]
+              }}
+            >
+              <Box sx={{ fontSize: 2 }}>{contractDateFunc.format("MMMM")}</Box>
+              <Box sx={{ fontSize: [5, 6], lineHeight: 1 }}>{contractDateFunc.format("DD")}</Box>
+              <Box sx={{ fontSize: 3 }}>{contractDateFunc.format("YYYY")}</Box>
+            </Box>
+            <Box width={["37.5%", "40%"]}>
+              <Box
+                sx={{
+                  borderBottomWidth: 2,
+                  borderBottomColor: "gray.3",
+                  borderBottomStyle: "solid",
+                  pb: 2,
+                  mb: 2
+                }}
+              >{contract.location}</Box>
+              <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Bandung</Box>
+            </Box>
+          </Flex>
+          <Text color="gray.5">{contract.address}</Text>
+        </Box>
+
+        <Box
+          as="section"
+          sx={{
+            mt: [4, 5],
+            mx: "auto",
+            px: 3,
+            maxWidth: 710,
+            textAlign: "center",
+            whiteSpace: ["normal", "nowrap"],
+          }}
+        >
+          <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>Resepsi</Text>
+          <Flex
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+              mb: 3,
+              "> *": {
+                flexShrink: 0
+              }
+            }}
+          >
+            <Box width={["37.5%", "40%"]}>
+              <Box
+                sx={{
+                  borderBottomWidth: 2,
+                  borderBottomColor: "gray.3",
+                  borderBottomStyle: "solid",
+                  pb: 2,
+                  mb: 2
+                }}
+              >05:00 WIB - Selesai</Box>
+              <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Resepsi</Box>
+            </Box>
+            <Box
+              sx={{
+                width: ["25%", "20%"],
+                borderWidth: 2,
+                borderColor: "black",
+                borderStyle: "solid",
+                borderBottom: 0,
+                borderTop: 0,
+                px: [3, 4],
+                // mx: [2, 4]
+              }}
+            >
+              <Box sx={{ fontSize: 2 }}>{receptionDateFunc.format("MMMM")}</Box>
+              <Box sx={{ fontSize: [5, 6], lineHeight: 1 }}>{receptionDateFunc.format("DD")}</Box>
+              <Box sx={{ fontSize: 3 }}>{receptionDateFunc.format("YYYY")}</Box>
+            </Box>
+            <Box width={["37.5%", "40%"]}>
+              <Box
+                sx={{
+                  borderBottomWidth: 2,
+                  borderBottomColor: "gray.3",
+                  borderBottomStyle: "solid",
+                  pb: 2,
+                  mb: 2
+                }}
+              >{reception.location}</Box>
+              <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Bandung</Box>
+            </Box>
+          </Flex>
+          <Text color="gray.5">{reception.address}</Text>
+        </Box>
+
+        <Box
+          sx={{
+            mt: 5,
+            height: "50vh",
+            position: "relative",
+            "img": {
+              objectFit: "cover"
+            }
+          }}
+        >
+          <Box
+            as="img"
+            src={`https://api.mapbox.com/styles/v1/mapbox/light-v10/static/pin-s-heart+ff0000(${contract.pinpoint.longitude},${contract.pinpoint.latitude}),pin-s-restaurant+00eeff(${reception.pinpoint.longitude},${reception.pinpoint.latitude})/auto/${1024}x${300}@2x?access_token=pk.eyJ1IjoiaWxvbW9uMTAiLCJhIjoiY2piZjh1cHVwMTRnbjJ3bzI1MWwwN2g3ZCJ9.txWBAfB2D7-vueg7G9FORA&attribution=false&logo=false&padding=100`}
+            sx={{
+              height: "100%",
+              width: "100%",
+              objectFit: "cover",
+            }}
+          />
+        </Box>
+
+        <Box as="section" sx={{ mt: 5, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}>
+          <Text sx={{ display: "block", fontFamily: "script", fontSize: 6, mb: 4 }}>
+            <div>Wedding</div>
+            <div>Gallery</div>
+          </Text>
+          <Flex flexWrap="wrap" mx={-2}>
+            {gallery.map((url, i) => (
+              <Box key={i} width={[`${100 / 2}%`, `${100 / 3}%`]} sx={{ px: 2, pb: 3 }}>
+                <Box as={AspectRatio} ratio="1:1" sx={{ borderRadius: 8, overflow: "hidden" }}>
+                  <Box
+                    as="img"
+                    src={url}
+                    sx={{
+                      height: "100%",
+                      width: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </Box>
+              </Box>
+            ))}
+          </Flex>
+        </Box>
+        <Box my={5} textAlign="center" color="gray.3">
+          <div>Made with ❤ by Ba Undang.</div>
+        </Box>
+                  
+      </Box>
+    </ThemeProvider>
+  );
+}
+
+TemplateOne.propTypes = {
+  groom: PropTypes.shape({
+    full_name: PropTypes.string,
+    nickname: PropTypes.string,
+    father: PropTypes.string,
+    mother: PropTypes.string,
+    image: PropTypes.string,
+  }),
+  bride: PropTypes.shape({
+    full_name: PropTypes.string,
+    nickname: PropTypes.string,
+    father: PropTypes.string,
+    mother: PropTypes.string,
+    image: PropTypes.string,
+  }),
+  alsoInvite: PropTypes.arrayOf(PropTypes.string),
+  reception: PropTypes.shape({
+    date: PropTypes.string,
+    location: PropTypes.string,
+    image: PropTypes.string,
+    pinpoint: PropTypes.shape({
+      lat: PropTypes.number,
+      long: PropTypes.number
+    })
+  }),
+  contract: PropTypes.shape({
+    date: PropTypes.string,
+    location: PropTypes.string,
+    image: PropTypes.string,
+    pinpoint: PropTypes.shape({
+      lat: PropTypes.number,
+      long: PropTypes.number
+    })
+  }),
+}
+
+TemplateOne.defaultProps = {
+  bride: {
+    nickname: "noni",
+    full_name: "noni",
+    father: "mr. fathernya noni",
+    mother: "mr. mothernya noni",
+    image: ""
+  },
+  groom: {
+    nickname: "nyong",
+    full_name: "nyong",
+    father: "mr. fathernya nyong",
+    mother: "mr. mothernya nyong",
+    image: ""
+  },
+  alsoInvite: [],
+  reception: {
+    date: moment().toISOString(),
+    location: "here",
+    image: ""
+  },
+  contract: {
+    date: moment().toISOString(),
+    location: "here",
+    image: ""
+  },
+}
+export default TemplateOne;
