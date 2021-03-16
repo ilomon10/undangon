@@ -9,9 +9,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 First, make environment file:
 
-```conf
+```ini
 # .env.local
-SERVER = localhost
+SERVER = http://localhost:3000/api
 ```
 
 Then, run the development server:
