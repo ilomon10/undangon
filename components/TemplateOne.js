@@ -2,7 +2,9 @@ import moment from "moment";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import { ThemeProvider } from "styled-components";
-import { AspectRatio, Box, Flex, Text, State, Counter } from "./";
+import { useForm } from "react-hook-form";
+import { AspectRatio, Box, Button, Input, Flex, State, Text, Counter } from "./";
+import { useEffect } from "react";
 
 const theme = {
   fonts: {
@@ -24,25 +26,38 @@ const theme = {
   }
 }
 
+const serverUrl = process.env.serverUrl;
+
 const TemplateOne = (props) => {
   const {
+    post: { id },
     groom,
     bride,
     reception,
     contract,
-    gallery
+    gallery,
+    comments
   } = props;
+
   const receptionDateFunc = moment(reception.date);
   const contractDateFunc = moment(contract.date);
+
+  const { register, handleSubmit, errors } = useForm();
+
+  const onComment = (data) => {
+    console.log(data);
+  }
+  console.log(comments);
+
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ fontFamily: "serif" }}>
+      <Box sx={{ fontFamily: "serif" }} overflowX="hidden">
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;700&family=Roboto+Slab:wght@300;400;500;600&display=swap" rel="stylesheet" />
         </Head>
-        <Flex
-          as="section"
+        <Flex as="section"
+          className="page first-page"
           sx={{
             height: "100vh",
             flexDirection: ["column", "row"]
@@ -79,7 +94,7 @@ const TemplateOne = (props) => {
               px: 3,
             }}
           >
-            <Box sx={{ fontSize: 6, mb: 4, color: "gray.6" }}>
+            <Box sx={{ fontSize: [5, 6], mb: 4, color: "gray.6" }}>
               <Box display={["block", "inline-block"]}>SAVE</Box>
               <Box display={["block", "inline"]} fontFamily="script"> the </Box>
               <Box display={["block", "inline-block"]}>DATE</Box>
@@ -103,7 +118,14 @@ const TemplateOne = (props) => {
             </Box>
             <Box mb={4}>
               <Box sx={{ color: "accent", fontSize: 2 }}>For Wedding Of</Box>
-              <Box sx={{ fontSize: [5, 6], textTransform: "uppercase" }}>
+              <Box
+                sx={{
+                  fontSize: [5, 6],
+                  textTransform: "uppercase",
+                  whiteSpace: "nowrap",
+                  transform: `scale(0.95)`
+                }}
+              >
                 <Box display={["inline", "block"]}>{bride.nickname}</Box>
                 <Box
                   sx={{
@@ -122,14 +144,16 @@ const TemplateOne = (props) => {
           </Flex>
         </Flex>
 
-        <Box as="section" sx={{ mt: 6, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}>
+        <Box as="section"
+          className="page second-page"
+          sx={{ mt: 6, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
+        >
           <Text as="div" mb={3} fontFamily="script" fontSize={6} >We Found Love</Text>
           <Text as="p" mb={3} >And more than all, have love; the only way in which you may be completely joined together. And let the peace of Christ be ruling in your hearts, as it was the purpose of God for you to be one body; and give praise to God at all times</Text>
           <Text as="p" fontWeight="bold">Colossians 3:14-15</Text>
         </Box>
 
-        <Flex
-          as="section"
+        <Flex as="section"
           sx={{
             mt: 6,
             mx: "auto",
@@ -141,6 +165,7 @@ const TemplateOne = (props) => {
         >
           <Flex
             sx={{
+              mb: [4, 0],
               width: ["auto", "50%"],
               flexDirection: ["row", "column"],
               alignItems: "center",
@@ -181,6 +206,7 @@ const TemplateOne = (props) => {
           </Flex>
           <Flex
             sx={{
+              mb: 0,
               width: ["auto", "50%"],
               flexDirection: ["row", "column"],
               alignItems: "center"
@@ -221,50 +247,53 @@ const TemplateOne = (props) => {
           </Flex>
         </Flex>
 
-        <Flex mt={6} justifyContent="center">
-          <Counter
-            current={moment()}
-            target={contractDateFunc}
-          >
-            {({ diff }) => {
-              const duration = moment.duration(diff);
-              return (
-                <Flex
-                  sx={{
-                    "> div": {
-                      px: 2,
-                      lineHeight: 1,
-                      ".title": {
-                        p: 2,
-                        fontSize: 5,
-                      },
-                      ".subtitle": {
-                        fontSize: 1,
+        <Box as="section" mt={6} px={2}>
+          <Box fontSize={2} color="gray.2" textAlign="center">Countdown</Box>
+          <Flex justifyContent="center">
+            <Counter
+              target={contractDateFunc}
+            >
+              {({ diff }) => {
+                const duration = moment.duration(diff);
+                return (
+                  <Flex
+                    sx={{
+                      "> div": {
+                        textAlign: "center",
+                        px: 2,
+                        lineHeight: 1,
+                        ".title": {
+                          p: 2,
+                          fontSize: [5, 6],
+                        },
+                        ".subtitle": {
+                          fontSize: [1, 2],
+                        }
                       }
-                    }
-                  }}
-                >
-                  <div>
-                    <div className="title">{duration.days()}</div>
-                    <div className="subtitle">Days</div>
-                  </div>
-                  <div>
-                    <div className="title">{duration.hours()}</div>
-                    <div className="subtitle">Hours</div>
-                  </div>
-                  <div>
-                    <div className="title">{duration.minutes()}</div>
-                    <div className="subtitle">Minutes</div>
-                  </div>
-                  <div>
-                    <div className="title">{duration.seconds()}</div>
-                    <div className="subtitle">Seconds</div>
-                  </div>
-                </Flex>
-              )
-            }}
-          </Counter>
-        </Flex>
+                    }}
+                  >
+                    <div>
+                      <div className="title">{duration.days()}</div>
+                      <div className="subtitle">Days</div>
+                    </div>
+                    <div>
+                      <div className="title">{duration.hours()}</div>
+                      <div className="subtitle">Hours</div>
+                    </div>
+                    <div>
+                      <div className="title">{duration.minutes()}</div>
+                      <div className="subtitle">Minutes</div>
+                    </div>
+                    <div>
+                      <div className="title">{duration.seconds()}</div>
+                      <div className="subtitle">Seconds</div>
+                    </div>
+                  </Flex>
+                )
+              }}
+            </Counter>
+          </Flex>
+        </Box>
 
         <Box
           as="section"
@@ -308,7 +337,7 @@ const TemplateOne = (props) => {
                 borderStyle: "solid",
                 borderBottom: 0,
                 borderTop: 0,
-                px: [3, 4],
+                px: [1, 2],
                 // mx: [2, 4]
               }}
             >
@@ -374,7 +403,7 @@ const TemplateOne = (props) => {
                 borderStyle: "solid",
                 borderBottom: 0,
                 borderTop: 0,
-                px: [3, 4],
+                px: [1, 2],
                 // mx: [2, 4]
               }}
             >
@@ -442,12 +471,101 @@ const TemplateOne = (props) => {
             ))}
           </Flex>
         </Box>
-        <Box my={5} textAlign="center" color="gray.3">
+
+        {/* Guest Book */}
+        <Box as="section"
+          sx={{
+            mt: 5,
+            mx: "auto",
+            px: 4,
+            maxWidth: 710,
+          }}
+        >
+          <Flex sx={{ maxHeight: "85vh", flexDirection: "column" }}>
+            <Box
+              sx={{
+                textAlign: "center",
+                display: "block",
+                fontFamily: "script",
+                fontSize: 6,
+                flexShrink: 0,
+                mb: 4
+              }}
+            >
+              <span>Guest Book</span>
+            </Box>
+            <Box flexGrow={1} flexShrink={1} overflowY="auto">
+              {comments.map((comment, i) => (
+                <Box key={i} sx={{ position: "relative", mb: i < 9 ? 4 : 0, }}>
+                  <Box
+                    sx={{
+                      borderWidth: 1,
+                      borderStyle: "solid",
+                      borderColor: "gray.2"
+                    }}
+                  >
+                    <Box sx={{
+                      bg: "gray.1",
+                      p: 2,
+                      fontSize: 2,
+                      // color: "gray.5",
+                      borderBottomWidth: 1,
+                      borderBottomStyle: "solid",
+                      borderBottomColor: "gray.2"
+                    }}>
+                      <Box as="span" display={["block", "inline"]}>{comment["author_name"]}</Box>
+                      <Box as="span" display={["block", "inline"]} color="gray.5"> - {moment(comment["date"]).calendar()}</Box>
+                    </Box>
+                    <Box fontSize={4} fontFamily="script" p={2}>
+                      <div dangerouslySetInnerHTML={{ __html: comment.content.rendered }} />
+                    </Box>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Flex>
+          <Box sx={{ flexShrink: 1, maxWidth: [350], width: "100%", mx: "auto", pt: 4 }}>
+            <form onSubmit={handleSubmit(onComment)}>
+              <Flex mb={2} mx={-2}>
+                <Box px={2} width="50%">
+                  <Input
+                    name="name"
+                    ref={register({ required: true })}
+                    fill
+                    placeholder="Name (required)"
+                  />
+                </Box>
+                <Box px={2} width="50%">
+                  <Input
+                    name="email"
+                    ref={register({ required: true })}
+                    fill
+                    placeholder="Email (required)"
+                  />
+                </Box>
+              </Flex>
+              <Box mb={2}>
+                <Input
+                  name="content"
+                  ref={register({ required: true })}
+                  textarea
+                  fill
+                  placeholder="Some word"
+                  sx={{ resize: "vertical" }}
+                />
+              </Box>
+              <Box>
+                <Button text="Send" type="submit" />
+              </Box>
+            </form>
+          </Box>
+        </Box>
+
+        <Box as="footer" my={5} textAlign="center" color="gray.3">
           <div>Made with ❤ by Ba Undang.</div>
         </Box>
-                  
       </Box>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }
 

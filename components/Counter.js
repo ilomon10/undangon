@@ -2,7 +2,7 @@ import moment from "moment";
 import { useEffect, useState } from "react"
 
 export const Counter = ({
-  current,
+  current = moment(),
   target,
   interval = 1000,
   children = () => { /* no-op */ },
@@ -13,9 +13,12 @@ export const Counter = ({
     const tar = moment(target);
     const diff = tar.diff(cur);
     setDiff(diff);
-    setInterval(() => {
+    const unbind = setInterval(() => {
       setDiff(diff => diff - interval);
     }, interval);
+    return () => {
+      clearInterval(unbind);
+    }
   }, []);
   return children({ diff });
 }
