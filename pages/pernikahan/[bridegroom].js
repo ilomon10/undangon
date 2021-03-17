@@ -3,6 +3,7 @@ import TemplateOne from "../../components/TemplateOne";
 import Client from "../../components/client";
 
 const DariID = ({ slug, post }) => {
+  console.log(post);
   return (
     <>
       <Head>
@@ -18,6 +19,7 @@ const DariID = ({ slug, post }) => {
         contract={post.contract}
         reception={post.reception}
         gallery={post.gallery}
+        music={post.music}
       />
     </>
   )
@@ -29,7 +31,6 @@ export const getStaticPaths = async () => {
   let { data } = await Client.posts({
     params: { "_fields": "slug" }
   });
-  console.log(data);
   let paths = data.map(post => ({ params: { bridegroom: post.slug } }))
   return {
     paths,

@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
 import Head from "next/head";
-
 import { ThemeProvider } from "styled-components";
 import { useForm } from "react-hook-form";
+import AudioPlayer from "react-audio-player";
+
 import {
   AspectRatio, Box, Button, Input, Flex, State, Text, Counter,
 } from "./";
@@ -37,16 +38,15 @@ const TemplateOne = (props) => {
     bride,
     reception,
     contract,
-    gallery
+    gallery,
+    music
   } = props;
 
   const receptionDateFunc = moment(reception.date);
   const contractDateFunc = moment(contract.date);
-
   const [comments, setComments] = useState([]);
 
   const { register, handleSubmit, errors, formState: { isSubmitting } } = useForm();
-  console.log(comments);
 
   const onComment = async (data) => {
 
@@ -73,9 +73,6 @@ const TemplateOne = (props) => {
     } catch (err) {
       console.log(err);
     }
-
-    // const json = await res.json();
-    // console.log(json);
   }
 
   useEffect(() => {
@@ -608,6 +605,16 @@ const TemplateOne = (props) => {
             </form>
           </Box>
         </Box>
+
+        {music &&
+          <Box textAlign="center" pt={4}>
+            <AudioPlayer
+              src={music}
+              autoPlay
+              controls
+            />
+          </Box>
+        }
 
         <Box as="footer" my={5} textAlign="center" color="gray.3">
           <div>Made with ❤ by Ba Undang.</div>
