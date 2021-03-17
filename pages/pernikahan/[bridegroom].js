@@ -3,7 +3,6 @@ import TemplateOne from "../../components/TemplateOne";
 import Client from "../../components/client";
 
 const DariID = ({ slug, post }) => {
-  console.log(post);
   return (
     <>
       <Head>
