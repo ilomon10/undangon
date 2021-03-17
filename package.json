@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@styled-system/should-forward-prop": "^5.1.5",
+    "axios": "^0.21.1",
     "moment": "^2.29.1",
     "next": "10.0.7",
     "prop-types": "^15.7.2",

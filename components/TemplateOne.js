@@ -1,10 +1,12 @@
+import { useState, useEffect } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
 import Head from "next/head";
+
 import { ThemeProvider } from "styled-components";
 import { useForm } from "react-hook-form";
 import { AspectRatio, Box, Button, Input, Flex, State, Text, Counter } from "./";
-import { useEffect } from "react";
+import axios from "axios";
 
 const theme = {
   fonts: {
@@ -35,19 +37,54 @@ const TemplateOne = (props) => {
     bride,
     reception,
     contract,
-    gallery,
-    comments
+    gallery
   } = props;
 
   const receptionDateFunc = moment(reception.date);
   const contractDateFunc = moment(contract.date);
 
-  const { register, handleSubmit, errors } = useForm();
+  const [comments, setComments] = useState([]);
 
-  const onComment = (data) => {
-    console.log(data);
-  }
+  const { register, handleSubmit, errors, formState: { isSubmitting } } = useForm();
   console.log(comments);
+
+  const onComment = async (data) => {
+
+    const body = {
+      "post": id,
+      "author_name": data.name,
+      "author_email": data.email,
+      "content": data.content
+    }
+    try {
+      const { data } = await axios.post(`${serverUrl}/wp-json/wp/v2/comments`, body);
+      setComments(comments => [
+        ...comments,
+        {
+          "id": data["id"],
+          "author_name": data["author_name"],
+          "content": data["content"]
+        }
+      ]);
+    } catch (err) {
+      console.log(err);
+    }
+
+    // const json = await res.json();
+    // console.log(json);
+  }
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        let resComments = await axios.get(`${serverUrl}/wp-json/wp/v2/comments?_fields=id,author_name,date,content&post=${id}`);
+        setComments(resComments.data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetch();
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -496,7 +533,7 @@ const TemplateOne = (props) => {
             </Box>
             <Box flexGrow={1} flexShrink={1} overflowY="auto">
               {comments.map((comment, i) => (
-                <Box key={i} sx={{ position: "relative", mb: i < 9 ? 4 : 0, }}>
+                <Box key={i} sx={{ position: "relative", mb: i < (comments.length - 1) ? 4 : 0, }}>
                   <Box
                     sx={{
                       borderWidth: 1,
@@ -555,7 +592,7 @@ const TemplateOne = (props) => {
                 />
               </Box>
               <Box>
-                <Button text="Send" type="submit" />
+                <Button text="Send" type="submit" disabled={isSubmitting} />
               </Box>
             </form>
           </Box>
