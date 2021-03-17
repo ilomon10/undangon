@@ -5,8 +5,10 @@ import Head from "next/head";
 
 import { ThemeProvider } from "styled-components";
 import { useForm } from "react-hook-form";
-import { AspectRatio, Box, Button, Input, Flex, State, Text, Counter } from "./";
-import axios from "axios";
+import {
+  AspectRatio, Box, Button, Input, Flex, State, Text, Counter,
+} from "./";
+import Client from "./client";
 
 const theme = {
   fonts: {
@@ -27,8 +29,6 @@ const theme = {
     "accent": "#ffab70"
   }
 }
-
-const serverUrl = process.env.serverUrl;
 
 const TemplateOne = (props) => {
   const {
@@ -57,13 +57,17 @@ const TemplateOne = (props) => {
       "content": data.content
     }
     try {
-      const { data } = await axios.post(`${serverUrl}/wp-json/wp/v2/comments`, body);
+      const { data } = await Client.comments({
+        method: "POST",
+        data: body
+      });
       setComments(comments => [
         ...comments,
         {
           "id": data["id"],
           "author_name": data["author_name"],
-          "content": data["content"]
+          "content": data["content"],
+          "date": data["date"]
         }
       ]);
     } catch (err) {
@@ -77,7 +81,14 @@ const TemplateOne = (props) => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        let resComments = await axios.get(`${serverUrl}/wp-json/wp/v2/comments?_fields=id,author_name,date,content&post=${id}`);
+        let resComments = await Client.comments({
+          params: {
+            "_fields": "id,author_name,date,content",
+            "post": id
+          }
+        });
+
+        console.log(resComments);
         setComments(resComments.data);
       } catch (err) {
         console.error(err);

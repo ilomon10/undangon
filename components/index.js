@@ -1,3 +1,5 @@
+export { default as Client } from "./client";
+
 export { Text } from "./Text";
 export { Box, Flex } from "./Grid";
 export { AspectRatio } from "./AspectRatio";

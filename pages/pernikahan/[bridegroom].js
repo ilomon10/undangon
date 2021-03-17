@@ -1,7 +1,6 @@
 import Head from "next/head";
 import TemplateOne from "../../components/TemplateOne";
-
-const serverUrl = process.env.serverUrl;
+import Client from "../../components/client";
 
 const DariID = ({ slug, post }) => {
   return (
@@ -27,9 +26,11 @@ const DariID = ({ slug, post }) => {
 export default DariID;
 
 export const getStaticPaths = async () => {
-  let res = await fetch(`${serverUrl}/wp-json/wp/v2/posts?_fields=slug`);
-  let json = await res.json();
-  let paths = json.map(post => ({ params: { bridegroom: post.slug } }))
+  let { data } = await Client.posts({
+    params: { "_fields": "slug" }
+  });
+  console.log(data);
+  let paths = data.map(post => ({ params: { bridegroom: post.slug } }))
   return {
     paths,
     fallback: false
@@ -38,8 +39,12 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
   const { bridegroom } = context.params;
-  let resPost = await fetch(`${serverUrl}/wp-json/wp/v2/posts?_fields=id,acf&slug=${bridegroom}`);
-  let post = await resPost.json();
+  let { data: post } = await Client.posts({
+    params: {
+      "_fields": "id,acf",
+      "slug": bridegroom
+    }
+  });
   return {
     props: {
       slug: bridegroom,
