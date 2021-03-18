@@ -471,7 +471,7 @@ const TemplateTwo = ({
                 <Button text="Kirim" type="submit" disabled={isSubmitting} />
               </Box>
               {errors && errors.form &&
-                <Box color="red." mt={2} fontSize={1}>
+                <Box color="red.3" mt={2} fontSize={1}>
                   <div>Error:</div>
                   <div>{errors.form.message}</div>
                 </Box>
