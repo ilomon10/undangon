@@ -1,5 +1,5 @@
 import Head from "next/head";
-import TemplateOne from "../../components/TemplateOne";
+import Template from "../../components/Template";
 import Client from "../../components/client";
 
 const DariID = ({ slug, post }) => {
@@ -8,7 +8,8 @@ const DariID = ({ slug, post }) => {
       <Head>
         <title>{slug}</title>
       </Head>
-      <TemplateOne
+      <Template
+        theme={post.theme}
         post={{
           id: post.id,
           slug: post.slug

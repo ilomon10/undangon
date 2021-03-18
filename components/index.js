@@ -1,9 +1,10 @@
 export { default as Client } from "./client";
 
-export { Text } from "./Text";
-export { Box, Flex } from "./Grid";
 export { AspectRatio } from "./AspectRatio";
-export { State } from "./State";
 export { Button } from "./Button";
-export { Input } from "./Input";
+export { Box, Flex } from "./Grid";
 export { Counter } from "./Counter";
+export { Divider } from "./Divider";
+export { Input } from "./Input";
+export { State } from "./State";
+export { Text } from "./Text";
