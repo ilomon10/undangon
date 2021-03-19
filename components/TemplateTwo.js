@@ -5,6 +5,7 @@ import moment from "moment"
 import { ThemeProvider } from "styled-components"
 import { IoCalendarOutline, IoTimeOutline } from "react-icons/io5";
 import { Fade, Flip } from "react-reveal";
+import AudioPlayer from "react-audio-player";
 import { AspectRatio, Button, Box, Client, Counter, Divider, Flex, Input, } from "./";
 import { GoogleCalendarLink, MapboxImageLink } from "./helper"
 import { vanilla as vanillaClient } from "./client"
@@ -602,6 +603,17 @@ const TemplateTwo = ({
           </Flex>
           <Box>Bagi para tamu undangan diharapkan mengikuti protokol pencegahan COVID-19</Box>
         </Box>
+
+        {/* Music */}
+        {music &&
+          <Box textAlign="center" pt={4}>
+            <AudioPlayer
+              src={music}
+              autoPlay
+              controls
+            />
+          </Box>
+        }
 
         {/* Footer */}
         <Box as="footer" my={5} textAlign="center" color="gray.4">
