@@ -2,24 +2,36 @@ import Head from "next/head";
 import Template from "../../components/Template";
 import Client from "../../components/client";
 
-const DariID = ({ slug, post }) => {
+const DariID = ({
+  slug,
+  post: {
+    id,
+    bride,
+    groom,
+    theme,
+    contract,
+    reception,
+    gallery,
+    music,
+  }
+}) => {
   return (
     <>
       <Head>
-        <title>{slug}</title>
+        <title>Undangan Pernikahan: {bride.nickname} dan {groom.nickname}</title>
       </Head>
       <Template
-        theme={post.theme}
+        theme={theme}
         post={{
-          id: post.id,
-          slug: post.slug
+          id: id,
+          slug: slug
         }}
-        bride={post.bride}
-        groom={post.groom}
-        contract={post.contract}
-        reception={post.reception}
-        gallery={post.gallery}
-        music={post.music}
+        bride={bride}
+        groom={groom}
+        contract={contract}
+        reception={reception}
+        gallery={gallery}
+        music={music}
       />
     </>
   )
