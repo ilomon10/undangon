@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import moment from "moment"
 import { ThemeProvider } from "styled-components"
 import { IoCalendarOutline, IoTimeOutline } from "react-icons/io5";
+import { Fade, Flip } from "react-reveal";
 import { AspectRatio, Button, Box, Client, Counter, Divider, Flex, Input, } from "./";
 import { GoogleCalendarLink, MapboxImageLink } from "./helper"
 import { vanilla as vanillaClient } from "./client"
@@ -141,9 +142,17 @@ const TemplateTwo = ({
               position: "relative"
             }}
           >
-            <Box fontSize={2} mb={3}>Kami mengundang Anda untuk datang di pernikahan kami</Box>
-            <Box fontFamily="script" fontSize={8} mb={3}>{bride.nickname} & {groom.nickname}</Box>
-            <Box fontSize={5} mb={4}>{contractDateFunc.format("dddd, DD MMMM YYYY")}</Box>
+            <Box fontSize={2} mb={3} fontWeight="500">Kami mengundang Anda untuk datang di pernikahan kami</Box>
+            <Box
+              sx={{
+                mb: 3,
+                fontFamily: "script",
+                color: "white",
+                textShadow: "1px 1px 0 black",
+                fontSize: 8,
+              }}
+            >{bride.nickname} & {groom.nickname}</Box>
+            <Box fontSize={5} mb={4} fontWeight="lighter">{contractDateFunc.format("dddd, DD MMMM YYYY")}</Box>
             <Box>
               <Button
                 as="a"
@@ -167,30 +176,37 @@ const TemplateTwo = ({
         <Box as="section"
           sx={{ mt: 6, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
         >
-          <Box textAlign="center">
-            <Box fontFamily="script" fontSize={4} color="accent">Tentang Kami</Box>
-            <Box fontSize={5}>Pasangan Mempelai</Box>
-          </Box>
+          <Fade bottom>
+            <Box textAlign="center">
+              <Box fontFamily="script" fontSize={4} color="accent">Tentang Kami</Box>
+              <Box fontSize={5}>Pasangan Mempelai</Box>
+            </Box>
+          </Fade>
           <Flex mt={5} mx={-2}>
             {[bride, groom].map((v, i) => (
-              <Box key={i} px={2} width={"50%"} textAlign="center">
-                <Box sx={{
-                  mx: "auto",
-                  height: 125,
-                  width: 125,
-                  borderRadius: 100,
-                  overflow: "hidden"
-                }}>
-                  <img height="100%" width="100%" src={v.image} />
-                </Box>
-                <Box fontSize={4} fontFamily="script" mt={4} color="accent">{v.full_name}</Box>
-                <Box mt={3} fontWeight="bold">{i > 1 ? "Putra" : "Putri"} dari</Box>
-                <Box mt={2}>
-                  <Box>{v.father}</Box>
-                  <Box>{" dan "}</Box>
-                  <Box>{v.mother}</Box>
-                </Box>
-              </Box>))}
+              <Box key={i} width="50%">
+                <Fade {...(i < 1 ? { left: true } : { right: true })}>
+                  <Box sx={{ px: 2, textAlign: "center" }}>
+                    <Box sx={{
+                      mx: "auto",
+                      height: 125,
+                      width: 125,
+                      borderRadius: 100,
+                      overflow: "hidden"
+                    }}>
+                      <img height="100%" width="100%" src={v.image} />
+                    </Box>
+                    <Box fontSize={4} fontFamily="script" mt={4} color="accent">{v.full_name}</Box>
+                    <Box mt={3} fontWeight="bold">{i > 1 ? "Putra" : "Putri"} dari</Box>
+                    <Box mt={2}>
+                      <Box>{v.father}</Box>
+                      <Box>{" dan "}</Box>
+                      <Box>{v.mother}</Box>
+                    </Box>
+                  </Box>
+                </Fade>
+              </Box>
+            ))}
           </Flex>
         </Box>
 
@@ -198,19 +214,23 @@ const TemplateTwo = ({
         <Box as="section"
           sx={{ mt: 6, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
         >
-          <Box fontFamily="script" fontSize={4} color="accent">Wedding</Box>
-          <Box fontSize={5}>Gallery</Box>
+          <Fade bottom>
+            <Box fontFamily="script" fontSize={4} color="accent">Wedding</Box>
+            <Box fontSize={5}>Gallery</Box>
+          </Fade>
           <Flex mt={5} mx={-2} flexWrap="wrap" justifyContent="center">
             {gallery.map((url, i) => (
               <Box key={i} width={`${100 / 3}%`} px={2} pb={3}>
-                <AspectRatio ratio="1:1">
-                  <Box as="img"
-                    height="100%"
-                    width="100%"
-                    sx={{ objectFit: "cover" }}
-                    src={url}
-                  />
-                </AspectRatio>
+                <Flip bottom>
+                  <AspectRatio ratio="1:1">
+                    <Box as="img"
+                      height="100%"
+                      width="100%"
+                      sx={{ objectFit: "cover" }}
+                      src={url}
+                    />
+                  </AspectRatio>
+                </Flip>
               </Box>
             ))}
           </Flex>
@@ -219,20 +239,20 @@ const TemplateTwo = ({
         {/* Ayat */}
         <Box as="section">
           <Box sx={{ mt: 6, maxWidth: 710, mx: "auto" }}>
-            <Flex
-              sx={{ mx: -3, px: 3, textAlign: "center" }}
-            >
+            <Flex sx={{ mx: -3, px: 3, textAlign: "center" }}>
               {[1, 2].map((_, i) => (
                 <Box key={i} px={3}>
-                  <Box sx={{
-                    p: 3,
-                    borderWidth: 2,
-                    borderStyle: "solid",
-                    borderColor: "black",
-                  }}>
-                    <Box fontSize={3} fontWeight="bold" fontFamily="script" >Dan firman-Nya: Sebab itu laki-laki akan meninggalkan ayah dan ibunya dan bersatu dengan isterinya, sehingga keduanya itu menjadi satu daging. Demikianlah mereka bukan lagi dua, melainkan satu. Karena itu, apa yang telah dipersatukan Allah, tidak boleh diceraikan manusia.</Box>
-                    <Box mt={2} fontSize={2} fontWeight="bold">Matius 19:5-6</Box>
-                  </Box>
+                  <Fade {...(i < 1 ? { left: true } : { right: true })}>
+                    <Box sx={{
+                      p: 3,
+                      borderWidth: 2,
+                      borderStyle: "solid",
+                      borderColor: "black",
+                    }}>
+                      <Box fontSize={3} fontWeight="bold" fontFamily="script" >Dan firman-Nya: Sebab itu laki-laki akan meninggalkan ayah dan ibunya dan bersatu dengan isterinya, sehingga keduanya itu menjadi satu daging. Demikianlah mereka bukan lagi dua, melainkan satu. Karena itu, apa yang telah dipersatukan Allah, tidak boleh diceraikan manusia.</Box>
+                      <Box mt={2} fontSize={2} fontWeight="bold">Matius 19:5-6</Box>
+                    </Box>
+                  </Fade>
                 </Box>
               ))}
             </Flex>
@@ -241,10 +261,12 @@ const TemplateTwo = ({
 
         {/* Countdown */}
         <Box as="section" mt={6} px={2}>
-          <Box textAlign="center">
-            <Box fontFamily="script" fontSize={4} color="accent">Acara Spesial</Box>
-            <Box fontSize={5}>Pernikahan Kami</Box>
-          </Box>
+          <Fade bottom>
+            <Box textAlign="center">
+              <Box fontFamily="script" fontSize={4} color="accent">Acara Spesial</Box>
+              <Box fontSize={5}>Pernikahan Kami</Box>
+            </Box>
+          </Fade>
           <Flex justifyContent="center" mt={4}>
             <Counter
               target={contractDateFunc}
@@ -312,85 +334,89 @@ const TemplateTwo = ({
           sx={{ mt: 2, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
         >
           <Box px={3} width="50%">
-            <Box fontFamily="script" fontSize={5} color="accent">Pemberkatan</Box>
-            <Flex mt={4} mx={-2}>
-              <Box width="50%" px={2}>
-                <Box as={IoCalendarOutline} color="gray.5" fontSize={6} />
-                <Box>{contractDateFunc.format("dddd")}</Box>
-                <Box>{contractDateFunc.format("DD MMMM YYYY")}</Box>
+            <Fade left>
+              <Box fontFamily="script" fontSize={5} color="accent">Pemberkatan</Box>
+              <Flex mt={4} mx={-2}>
+                <Box width="50%" px={2}>
+                  <Box as={IoCalendarOutline} color="gray.5" fontSize={6} />
+                  <Box>{contractDateFunc.format("dddd")}</Box>
+                  <Box>{contractDateFunc.format("DD MMMM YYYY")}</Box>
+                </Box>
+                <Divider />
+                <Box width="50%" px={2}>
+                  <Box as={IoTimeOutline} color="gray.5" fontSize={6} />
+                  <Box>{contractDateFunc.format("hh:mm A")} - Selesai</Box>
+                </Box>
+              </Flex>
+              <Box mt={3}>
+                <Box fontWeight="bold" color="gray.6">Lokasi</Box>
+                <Box fontSize={3}>{contract.location}</Box>
+                <Box
+                  as="a"
+                  target="_blank"
+                  href={`https://www.google.com/maps/search/?api=1&query=${contract.pinpoint.latitude},${contract.pinpoint.longitude}`}
+                  sx={{ mt: 3, display: "block" }}
+                >
+                  <AspectRatio ratio="1:1">
+                    <Box as="img"
+                      sx={{
+                        height: "100%",
+                        width: "100%",
+                        objectFit: "cover"
+                      }}
+                      src={MapboxImageLink({
+                        height: 307,
+                        width: 307,
+                        contract: contract.pinpoint
+                      })}
+                    />
+                  </AspectRatio>
+                </Box>
               </Box>
-              <Divider />
-              <Box width="50%" px={2}>
-                <Box as={IoTimeOutline} color="gray.5" fontSize={6} />
-                <Box>{contractDateFunc.format("hh:mm A")} - Selesai</Box>
-              </Box>
-            </Flex>
-            <Box mt={3}>
-              <Box fontWeight="bold" color="gray.6">Lokasi</Box>
-              <Box fontSize={3}>{contract.location}</Box>
-              <Box
-                as="a"
-                target="_blank"
-                href={`https://www.google.com/maps/search/?api=1&query=${contract.pinpoint.latitude},${contract.pinpoint.longitude}`}
-                sx={{ mt: 3, display: "block" }}
-              >
-                <AspectRatio ratio="1:1">
-                  <Box as="img"
-                    sx={{
-                      height: "100%",
-                      width: "100%",
-                      objectFit: "cover"
-                    }}
-                    src={MapboxImageLink({
-                      height: 307,
-                      width: 307,
-                      contract: contract.pinpoint
-                    })}
-                  />
-                </AspectRatio>
-              </Box>
-            </Box>
+            </Fade>
           </Box>
           <Divider />
           <Box px={3} width="50%">
-            <Box fontFamily="script" fontSize={5} color="accent">Resepsi Pernikahan</Box>
-            <Flex mt={4}>
-              <Box width="50%">
-                <Box as={IoCalendarOutline} color="gray.5" fontSize={6} />
-                <Box>{receptionDateFunc.format("ddd")}</Box>
-                <Box>{receptionDateFunc.format("DD MMMM YYYY")}</Box>
+            <Fade right>
+              <Box fontFamily="script" fontSize={5} color="accent">Resepsi Pernikahan</Box>
+              <Flex mt={4}>
+                <Box width="50%">
+                  <Box as={IoCalendarOutline} color="gray.5" fontSize={6} />
+                  <Box>{receptionDateFunc.format("ddd")}</Box>
+                  <Box>{receptionDateFunc.format("DD MMMM YYYY")}</Box>
+                </Box>
+                <Divider />
+                <Box width="50%">
+                  <Box as={IoTimeOutline} color="gray.5" fontSize={6} />
+                  <Box>{receptionDateFunc.format("hh:mm A")} - Selesai</Box>
+                </Box>
+              </Flex>
+              <Box mt={3}>
+                <Box fontWeight="bold" color="gray.6">Lokasi</Box>
+                <Box fontSize={3}>{reception.location}</Box>
+                <Box
+                  as="a"
+                  target="_blank"
+                  href={`https://www.google.com/maps/search/?api=1&query=${reception.pinpoint.latitude},${reception.pinpoint.longitude}`}
+                  sx={{ mt: 3, display: "block" }}
+                >
+                  <AspectRatio ratio="1:1">
+                    <Box as="img"
+                      sx={{
+                        height: "100%",
+                        width: "100%",
+                        objectFit: "cover"
+                      }}
+                      src={MapboxImageLink({
+                        height: 307,
+                        width: 307,
+                        reception: reception.pinpoint
+                      })}
+                    />
+                  </AspectRatio>
+                </Box>
               </Box>
-              <Divider />
-              <Box width="50%">
-                <Box as={IoTimeOutline} color="gray.5" fontSize={6} />
-                <Box>{receptionDateFunc.format("hh:mm A")} - Selesai</Box>
-              </Box>
-            </Flex>
-            <Box mt={3}>
-              <Box fontWeight="bold" color="gray.6">Lokasi</Box>
-              <Box fontSize={3}>{reception.location}</Box>
-              <Box
-                as="a"
-                target="_blank"
-                href={`https://www.google.com/maps/search/?api=1&query=${reception.pinpoint.latitude},${reception.pinpoint.longitude}`}
-                sx={{ mt: 3, display: "block" }}
-              >
-                <AspectRatio ratio="1:1">
-                  <Box as="img"
-                    sx={{
-                      height: "100%",
-                      width: "100%",
-                      objectFit: "cover"
-                    }}
-                    src={MapboxImageLink({
-                      height: 307,
-                      width: 307,
-                      reception: reception.pinpoint
-                    })}
-                  />
-                </AspectRatio>
-              </Box>
-            </Box>
+            </Fade>
           </Box>
         </Flex>
 
@@ -398,47 +424,51 @@ const TemplateTwo = ({
         <Box as="section"
           sx={{ mt: 5, py: 5, bg: "black" }}
         >
-          <Box textAlign="center" color="white">
-            <Box fontFamily="script" fontSize={4} color="accent">Kirimkan Pesan</Box>
-            <Box fontSize={5}>Untuk Kami Berdua</Box>
-          </Box>
+          <Fade bottom>
+            <Box textAlign="center" color="white">
+              <Box fontFamily="script" fontSize={4} color="accent">Kirimkan Pesan</Box>
+              <Box fontSize={5}>Untuk Kami Berdua</Box>
+            </Box>
+          </Fade>
 
           <Box sx={{ mt: 4, mx: "auto", px: 3, maxWidth: 710 }}>
             {comments.map((comment, i) => (
               <Box key={i} sx={{ position: "relative", mb: i < (comments.length - 1) ? 4 : 0, }}>
-                <Box
-                  sx={{
-                    borderWidth: 1,
-                    bg: "white",
-                    borderStyle: "solid",
-                    borderColor: "gray.2"
-                  }}
-                >
-                  <Box sx={{
-                    bg: "gray.1",
-                    p: 2,
-                    fontSize: 2,
-                    // color: "gray.5",
-                    borderBottomWidth: 1,
-                    borderBottomStyle: "solid",
-                    borderBottomColor: "gray.2"
-                  }}>
-                    <Box as="span" display={["block", "inline"]}>{comment["author_name"]}</Box>
-                    <Box as="span" display={["block", "inline"]} color="gray.5"> - {moment(comment["date"]).calendar()}</Box>
-                  </Box>
+                <Fade bottom>
                   <Box
                     sx={{
-                      fontSize: 4,
-                      fontFamily: "script",
-                      p: 2,
-                      "& p": {
-                        m: 0
-                      }
+                      borderWidth: 1,
+                      bg: "white",
+                      borderStyle: "solid",
+                      borderColor: "gray.2"
                     }}
                   >
-                    <div dangerouslySetInnerHTML={{ __html: comment.content.rendered }} />
+                    <Box sx={{
+                      bg: "gray.1",
+                      p: 2,
+                      fontSize: 2,
+                      // color: "gray.5",
+                      borderBottomWidth: 1,
+                      borderBottomStyle: "solid",
+                      borderBottomColor: "gray.2"
+                    }}>
+                      <Box as="span" display={["block", "inline"]}>{comment["author_name"]}</Box>
+                      <Box as="span" display={["block", "inline"]} color="gray.5"> - {moment(comment["date"]).calendar()}</Box>
+                    </Box>
+                    <Box
+                      sx={{
+                        fontSize: 4,
+                        fontFamily: "script",
+                        p: 2,
+                        "& p": {
+                          m: 0
+                        }
+                      }}
+                    >
+                      <div dangerouslySetInnerHTML={{ __html: comment.content.rendered }} />
+                    </Box>
                   </Box>
-                </Box>
+                </Fade>
               </Box>
             ))}
           </Box>
@@ -473,9 +503,9 @@ const TemplateTwo = ({
                   sx={{ resize: "vertical" }}
                 />
               </Box>
-              <Box>
+              <div>
                 <Button text="Kirim" type="submit" disabled={isSubmitting} />
-              </Box>
+              </div>
               {errors && errors.form &&
                 <Box color="red.3" mt={2} fontSize={1}>
                   <div>Error:</div>
@@ -489,32 +519,69 @@ const TemplateTwo = ({
 
         {/* Caution */}
         <Box as="section"
-          sx={{ mt: 4, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
+          sx={{ mt: 5, mx: "auto", px: 3, maxWidth: 710, textAlign: "center", lineHeight: 1.5 }}
         >
           <Box>Jangan ragu untuk datang, kami sudah berkordinasi dengan semua pihak terkait pencegahan penularan COVID-19. Acara kami akan mengikuti segala prosedur protokol kesehatan untuk mencegah penularan COVID-19. So, don't be panic, we look forward to seeing you there!</Box>
-          <Flex>
-            <Box>
-              <Box>Tamu undangan wajib menggunakan masker.</Box>
-              <Box>Icon Masker</Box>
-            </Box>
-            <Box>
-              <Box>Suhu tubuh normal dibawah 37.5deg</Box>
-              <Box>Icon Tempmeter</Box>
-            </Box>
-            <Box>
-              <Box>Jaga jarak antar orang minimal sekitar 1 meter.</Box>
-              <Box>Icon Social Distancing</Box>
-            </Box>
-            <Box>
-              <Box>Cuci tangan menggunakan air dan sabun atau menggunkan hand sanitizer</Box>
-              <Box>Icon Cuci tangan</Box>
-            </Box>
+          <Flex
+            sx={{
+              flexWrap: "wrap",
+              width: 520,
+              mt: 3,
+              mx: "auto",
+              "> div": {
+                width: "50%",
+                px: 2,
+                pb: 3,
+                "> div": {
+                  borderRadius: 4,
+                  borderWidth: 2,
+                  borderStyle: "solid",
+                  borderColor: "yellow.5",
+                }
+              }
+            }}
+          >
+            {[
+              "Tamu undangan wajib menggunakan masker.",
+              "Suhu tubuh normal dibawah 37.5deg",
+              "Jaga jarak antar orang minimal sekitar 1 meter.",
+              "Cuci tangan menggunakan air dan sabun atau menggunkan hand sanitizer",
+            ].map((v, i) => (
+              <div key={i}>
+                <div>
+                  <AspectRatio ratio="21:9">
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        left: 2,
+                        bottom: 2,
+                        lineHeight: 1,
+                        color: "yellow.3",
+                        fontSize: 4,
+                      }}
+                    >{i}</Box>
+                    <Flex
+                      sx={{
+                        position: "absolute",
+                        height: "100%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box px={2}>
+                        {v}
+                      </Box>
+                    </Flex>
+                  </AspectRatio>
+                </div>
+              </div>
+            ))}
           </Flex>
           <Box>Bagi para tamu undangan diharapkan mengikuti protokol pencegahan COVID-19</Box>
         </Box>
 
         {/* Footer */}
-        <Box as="footer" my={5} textAlign="center" color="gray.3">
+        <Box as="footer" my={5} textAlign="center" color="gray.4">
           <div>Made with ❤ by Ba Undang</div>
         </Box>
 

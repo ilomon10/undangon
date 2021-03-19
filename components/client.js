@@ -13,7 +13,6 @@ export const vanilla = (function () {
     const compiledURL = new URL(`${baseURL}${url}`);
     if (params) {
       Object.keys(params).forEach(key => {
-        console.log(key);
         compiledURL.searchParams.append(key, params[key]);
       });
     }
