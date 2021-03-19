@@ -203,7 +203,12 @@ const TemplateTwo = ({
             {gallery.map((url, i) => (
               <Box key={i} width={`${100 / 3}%`} px={2} pb={3}>
                 <AspectRatio ratio="1:1">
-                  <img height="100%" width="100%" src={url} />
+                  <Box as="img"
+                    height="100%"
+                    width="100%"
+                    sx={{ objectFit: "cover" }}
+                    src={url}
+                  />
                 </AspectRatio>
               </Box>
             ))}
