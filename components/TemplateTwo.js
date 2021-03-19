@@ -6,6 +6,7 @@ import { ThemeProvider } from "styled-components"
 import { IoCalendarOutline, IoTimeOutline } from "react-icons/io5";
 import { AspectRatio, Button, Box, Client, Counter, Divider, Flex, Input, } from "./";
 import { GoogleCalendarLink, MapboxImageLink } from "./helper"
+import { vanilla as vanillaClient } from "./client"
 import theme from "./theme"
 
 const extTheme = {
@@ -45,9 +46,12 @@ const TemplateTwo = ({
       "content": data.content
     }
     try {
-      const { data } = await Client.comments({
+      const data = await vanillaClient.comments({
         method: "POST",
-        data: body
+        data: body,
+        params: {
+          "_fields": "id,post,author_name,content,date"
+        }
       });
       setComments(comments => [
         ...comments,
@@ -60,14 +64,11 @@ const TemplateTwo = ({
       ]);
     } catch (err) {
       setError("form", {
-        type: err.response.data.code,
-        message: err.response.data.message
+        type: err.response.data.status,
+        message: err.response.message
       });
-      console.error(err);
     }
   }
-
-  console.log(errors);
 
   useEffect(() => {
     const fetch = async () => {
