@@ -237,8 +237,22 @@ const TemplateTwo = ({
         </Box>
 
         {/* Ayat */}
-        <Box as="section">
-          <Box sx={{ mt: 6, maxWidth: 710, mx: "auto" }}>
+        <Box as="section" sx={{ position: "relative", py: 5, mt: 5 }}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
+              backgroundImage: `url(https://via.placeholder.com/850x800)`,
+              backgroundAttachment: "fixed",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+            }}
+          />
+          <Box sx={{ maxWidth: 710, mx: "auto" }}>
             <Flex sx={{ mx: -3, px: 3, textAlign: "center" }}>
               {[1, 2].map((_, i) => (
                 <Box key={i} px={3}>
@@ -248,9 +262,18 @@ const TemplateTwo = ({
                       borderWidth: 2,
                       borderStyle: "solid",
                       borderColor: "black",
+                      position: "relative",
                     }}>
-                      <Box fontSize={3} fontWeight="bold" fontFamily="script" >Dan firman-Nya: Sebab itu laki-laki akan meninggalkan ayah dan ibunya dan bersatu dengan isterinya, sehingga keduanya itu menjadi satu daging. Demikianlah mereka bukan lagi dua, melainkan satu. Karena itu, apa yang telah dipersatukan Allah, tidak boleh diceraikan manusia.</Box>
-                      <Box mt={2} fontSize={2} fontWeight="bold">Matius 19:5-6</Box>
+                      <Box sx={{
+                        position: "absolute",
+                        top: 0, right: 0, bottom: 0, left: 0,
+                        opacity: 0.5,
+                        backgroundColor: "white",
+                      }} />
+                      <Box sx={{ position: "relative" }}>
+                        <Box fontSize={3} fontWeight="bold" fontFamily="script" >Dan firman-Nya: Sebab itu laki-laki akan meninggalkan ayah dan ibunya dan bersatu dengan isterinya, sehingga keduanya itu menjadi satu daging. Demikianlah mereka bukan lagi dua, melainkan satu. Karena itu, apa yang telah dipersatukan Allah, tidak boleh diceraikan manusia.</Box>
+                        <Box mt={2} fontSize={2} fontWeight="bold">Matius 19:5-6</Box>
+                      </Box>
                     </Box>
                   </Fade>
                 </Box>
@@ -260,7 +283,7 @@ const TemplateTwo = ({
         </Box>
 
         {/* Countdown */}
-        <Box as="section" mt={6} px={2}>
+        <Box as="section" mt={5} px={2}>
           <Fade bottom>
             <Box textAlign="center">
               <Box fontFamily="script" fontSize={4} color="accent">Acara Spesial</Box>
