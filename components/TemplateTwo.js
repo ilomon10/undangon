@@ -1,4 +1,5 @@
 import Head from "next/head"
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import moment from "moment"
@@ -8,7 +9,7 @@ import { Fade, Flip } from "react-reveal";
 import AudioPlayer from "react-audio-player";
 import { AspectRatio, Button, Box, Client, Counter, Divider, Flex, Input, } from "./";
 import { GoogleCalendarLink, MapboxImageLink } from "./helper"
-import { vanilla as vanillaClient } from "./client"
+import { vanilla as vanillaClient, serverUrl } from "./client"
 import theme from "./theme"
 
 const extTheme = {
@@ -23,7 +24,6 @@ const extTheme = {
   },
 }
 
-
 const TemplateTwo = ({
   post: { id },
   groom,
@@ -31,7 +31,9 @@ const TemplateTwo = ({
   reception,
   contract,
   gallery,
-  music
+  music,
+  featured_image,
+  optional
 }) => {
   const receptionDateFunc = moment(reception.date);
   const contractDateFunc = moment(contract.date);
@@ -48,8 +50,9 @@ const TemplateTwo = ({
       "content": data.content
     }
     try {
-      const data = await vanillaClient.comments({
+      const { data } = await axios.request({
         method: "POST",
+        url: `${window.location.origin}/api/guestBook`,
         data: body,
         params: {
           "_fields": "id,post,author_name,content,date"
@@ -75,16 +78,14 @@ const TemplateTwo = ({
   useEffect(() => {
     const fetch = async () => {
       try {
-        let resComments = await Client.comments({
+        let resComments = await axios.get(`${window.location.origin}/api/guestBook`, {
           params: {
             "_fields": "id,author_name,date,content",
             "post": id
           }
         });
         setComments(resComments.data);
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) { }
     }
     fetch();
   }, []);
@@ -125,12 +126,12 @@ const TemplateTwo = ({
           >
             <Box
               as="img"
-              src="https://via.placeholder.com/850x800"
+              src={featured_image}
               sx={{
                 objectFit: "cover",
                 height: "100%",
                 width: "100%",
-                opacity: 0.15,
+                opacity: 0.5,
               }}
             />
           </Box>
@@ -140,7 +141,9 @@ const TemplateTwo = ({
               flexDirection: "column",
               justifyContent: "center",
               textAlign: "center",
-              position: "relative"
+              position: "relative",
+              color: "white",
+              textShadow: "1px 1px 0 black",
             }}
           >
             <Box fontSize={2} mb={3} fontWeight="500">Kami mengundang Anda untuk datang di pernikahan kami</Box>
@@ -148,8 +151,6 @@ const TemplateTwo = ({
               sx={{
                 mb: 3,
                 fontFamily: "script",
-                color: "white",
-                textShadow: "1px 1px 0 black",
                 fontSize: 8,
               }}
             >{bride.nickname} & {groom.nickname}</Box>
@@ -246,7 +247,8 @@ const TemplateTwo = ({
               right: 0,
               bottom: 0,
               left: 0,
-              backgroundImage: `url(https://via.placeholder.com/850x800)`,
+              opacity: 0.5,
+              backgroundImage: `url(${optional["second_image"]})`,
               backgroundAttachment: "fixed",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
@@ -445,7 +447,7 @@ const TemplateTwo = ({
         </Flex>
 
         {/* Guest Book */}
-        <Box as="section"
+        <Box as="section" id="guest-book"
           sx={{ mt: 5, py: 5, bg: "black" }}
         >
           <Fade bottom>
@@ -454,6 +456,10 @@ const TemplateTwo = ({
               <Box fontSize={5}>Untuk Kami Berdua</Box>
             </Box>
           </Fade>
+
+          <Box textAlign="center" mt={4}>
+            <Button as="a" target="_blank" href={`${serverUrl.origin}/comment?post=${id}`} text="Tulis di sini" />
+          </Box>
 
           <Box sx={{ mt: 4, mx: "auto", px: 3, maxWidth: 710 }}>
             {comments.map((comment, i) => (

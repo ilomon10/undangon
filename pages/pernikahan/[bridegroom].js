@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Template from "../../components/Template";
-import Client from "../../components/client";
+import Template from "components/Template";
+import Client from "components/client";
 
 const DariID = ({
   slug,
@@ -13,6 +13,8 @@ const DariID = ({
     reception,
     gallery,
     music,
+    featured_image,
+    optional
   }
 }) => {
   return (
@@ -32,6 +34,8 @@ const DariID = ({
         reception={reception}
         gallery={gallery}
         music={music}
+        featured_image={featured_image}
+        optional={optional}
       />
     </>
   )
@@ -54,7 +58,7 @@ export const getStaticProps = async (context) => {
   const { bridegroom } = context.params;
   let { data: post } = await Client.posts({
     params: {
-      "_fields": "id,acf",
+      // "_fields": "id,acf,thumbnail",
       "slug": bridegroom
     }
   });

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
+import axios from "axios";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import { ThemeProvider } from "styled-components";
@@ -50,9 +51,13 @@ const TemplateOne = (props) => {
       "content": data.content
     }
     try {
-      const { data } = await Client.comments({
+      const { data } = await axios.request({
         method: "POST",
-        data: body
+        url: `${window.location.origin}/api/guestBook`,
+        data: body,
+        params: {
+          "_fields": "id,post,author_name,content,date"
+        }
       });
       setComments(comments => [
         ...comments,
@@ -71,7 +76,7 @@ const TemplateOne = (props) => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        let resComments = await Client.comments({
+        let resComments = await axios.get(`${window.location.origin}/api/guestBook`, {
           params: {
             "_fields": "id,author_name,date,content",
             "post": id

@@ -14,6 +14,7 @@ export const Button = ({
         borderStyle: "solid",
         borderColor: "gray.5",
         color: "black",
+        textShadow: "initial",
         borderRadius: 4,
         py: 1,
         px: 2,

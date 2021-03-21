@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const serverUrl = process.env.serverUrl;
+export const serverUrl = new URL(process.env.serverUrl);
 
 export const vanilla = (function () {
-  const baseURL = `${serverUrl}/wp-json/wp/v2`;
+  const baseURL = `${serverUrl.toString()}/wp-json/wp/v2`;
   function f({
     url,
     method,
@@ -11,6 +11,7 @@ export const vanilla = (function () {
     data
   }) {
     const compiledURL = new URL(`${baseURL}${url}`);
+    console.log(window.location);
     if (params) {
       Object.keys(params).forEach(key => {
         compiledURL.searchParams.append(key, params[key]);
@@ -44,7 +45,7 @@ export const vanilla = (function () {
 })()
 
 export const client = axios.create({
-  baseURL: `${serverUrl}/wp-json/wp/v2`
+  baseURL: `${serverUrl.toString()}/wp-json/wp/v2`
 });
 
 export default {
