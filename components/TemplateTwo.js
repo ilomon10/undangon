@@ -159,8 +159,8 @@ const TemplateTwo = ({
               }}
             >
               <div>{bride.nickname}</div>
-              <div> & </div>
-              <div>{groom.nickname}</div>
+              <Box fontSize={6}> & </Box>
+              <Box lineHeight={[1, "inherit"]}>{groom.nickname}</Box>
             </Box>
             <Box fontSize={[3, 5]} mb={4} fontWeight={["normal", "lighter"]}>{contractDateFunc.format("dddd, DD MMMM YYYY")}</Box>
             <Box>
@@ -184,36 +184,49 @@ const TemplateTwo = ({
 
         {/* Mempelai */}
         <Box as="section"
-          sx={{ mt: 6, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
+          sx={{ mt: [5, 6], mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
         >
           <Fade bottom>
             <Box textAlign="center">
               <Box fontFamily="script" fontSize={4} color="accent">Tentang Kami</Box>
-              <Box fontSize={5} color="gray.6">Pasangan Mempelai</Box>
+              <Box fontSize={[4, 5]} color="gray.6">Pasangan Mempelai</Box>
             </Box>
           </Fade>
-          <Flex mt={5} mx={-2}>
+          <Flex mt={5} mx={-2} flexDirection={["column", "row"]}>
             {[bride, groom].map((v, i) => (
-              <Box key={i} width="50%">
+              <Box key={i} width={["100%", "50%"]} mt={[i > 0 ? 4 : 0, 0]}>
                 <Fade {...(i < 1 ? { left: true } : { right: true })}>
-                  <Box sx={{ px: 2, textAlign: "center" }}>
+                  <Flex
+                    sx={{
+                      px: 2,
+                      flexDirection: [i > 0 ? "row" : "row-reverse", "column"]
+                    }}
+                  >
                     <Box sx={{
                       mx: "auto",
-                      height: 125,
-                      width: 125,
+                      flexShrink: 0,
+                      height: [100, 125],
+                      width: [100, 125],
                       borderRadius: 100,
                       overflow: "hidden"
                     }}>
                       <img height="100%" width="100%" src={v.image} />
                     </Box>
-                    <Box fontSize={4} fontFamily="script" mt={4} color="accent">{v.full_name}</Box>
-                    <Box mt={3} fontWeight="bold">{i > 1 ? "Putra" : "Putri"} dari</Box>
-                    <Box mt={2}>
-                      <Box>{v.father}</Box>
-                      <Box>{" dan "}</Box>
-                      <Box>{v.mother}</Box>
+                    <Box sx={{ pl: i > 0 && 3, pr: i === 0 && 3, mt: [0, 5], fontSize: [1, 2], textAlign: [i > 0 ? "left" : "right", "center"] }}>
+                      <Box fontSize={[3, 4]} fontFamily="script" color="accent">{v.full_name}</Box>
+                      <Box mt={[1, 3]} fontWeight="bold">{i > 1 ? "Putra" : "Putri"} dari</Box>
+                      <Box sx={{
+                        mt: [0, 2],
+                        "div": {
+                          display: ["inline", "block"]
+                        }
+                      }}>
+                        <Box>{v.father}</Box>
+                        <Box>{" dan "}</Box>
+                        <Box>{v.mother}</Box>
+                      </Box>
                     </Box>
-                  </Box>
+                  </Flex>
                 </Fade>
               </Box>
             ))}
@@ -226,7 +239,7 @@ const TemplateTwo = ({
         >
           <Fade bottom fraction={0.5}>
             <Box fontFamily="script" fontSize={4} color="accent">Wedding</Box>
-            <Box fontSize={5} color="gray.6">Gallery</Box>
+            <Box fontSize={[4, 5]} color="gray.6">Gallery</Box>
           </Fade>
           <Flex mt={5} mx={-2} flexWrap="wrap" justifyContent="center">
             {gallery.map((url, i) => (
@@ -298,7 +311,7 @@ const TemplateTwo = ({
           <Fade bottom>
             <Box textAlign="center">
               <Box fontFamily="script" fontSize={4} color="accent">Acara Spesial</Box>
-              <Box fontSize={5} color="gray.6">Pernikahan Kami</Box>
+              <Box fontSize={[4, 5]} color="gray.6">Pernikahan Kami</Box>
             </Box>
           </Fade>
           <Flex justifyContent="center" mt={4}>
@@ -439,7 +452,7 @@ const TemplateTwo = ({
           <Fade bottom>
             <Box textAlign="center">
               <Box fontFamily="script" fontSize={4} color="white">Kirimkan Pesan</Box>
-              <Box fontSize={5} color="gray.3">Untuk Kami Berdua</Box>
+              <Box fontSize={[4, 5]} color="gray.3">Untuk Kami Berdua</Box>
             </Box>
           </Fade>
 
