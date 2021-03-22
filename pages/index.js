@@ -39,7 +39,7 @@ export default function Home() {
           <Button
             as="a"
             target="_blank"
-            href="https://wa.link/roosi6"
+            href="https://api.whatsapp.com/send?phone=6282187788484&text=Hallo%2C%0ASaya%20ingin%20membuat%20undangan%20online"
             text="Pesan Sekarang"
             sx={{
               bg: "black",
