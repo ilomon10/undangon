@@ -21,6 +21,7 @@ const DariID = ({
     <>
       <Head>
         <title>Undangan Pernikahan: {bride.nickname} dan {groom.nickname}</title>
+        <meta property="og:image" content={featured_image} data-addsearch="no_crop" />
       </Head>
       <Template
         theme={theme}

@@ -13,6 +13,8 @@ const Preview = ({
     reception,
     gallery,
     music,
+    featured_image,
+    optional,
   }
 }) => {
   return (
@@ -32,6 +34,8 @@ const Preview = ({
         reception={reception}
         gallery={gallery}
         music={music}
+        featured_image={featured_image}
+        optional={optional}
       />
     </>
   );

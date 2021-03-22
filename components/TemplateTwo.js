@@ -1,6 +1,6 @@
 import Head from "next/head"
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { useForm } from "react-hook-form";
 import moment from "moment"
 import { ThemeProvider } from "styled-components"
@@ -92,7 +92,7 @@ const TemplateTwo = ({
 
   return (
     <ThemeProvider theme={extTheme}>
-      <Box sx={{ fontFamily: "serif" }}>
+      <Box sx={{ fontFamily: "serif", overflowX: "hidden" }}>
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;700&family=Roboto+Slab:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -137,6 +137,7 @@ const TemplateTwo = ({
           </Box>
           <Flex
             sx={{
+              px: 3,
               width: "100%",
               flexDirection: "column",
               justifyContent: "center",
@@ -152,9 +153,16 @@ const TemplateTwo = ({
                 mb: 3,
                 fontFamily: "script",
                 fontSize: 8,
+                "div": {
+                  display: ["block", "inline"]
+                }
               }}
-            >{bride.nickname} & {groom.nickname}</Box>
-            <Box fontSize={5} mb={4} fontWeight="lighter">{contractDateFunc.format("dddd, DD MMMM YYYY")}</Box>
+            >
+              <div>{bride.nickname}</div>
+              <div> & </div>
+              <div>{groom.nickname}</div>
+            </Box>
+            <Box fontSize={[3, 5]} mb={4} fontWeight={["normal", "lighter"]}>{contractDateFunc.format("dddd, DD MMMM YYYY")}</Box>
             <Box>
               <Button
                 as="a"
@@ -181,7 +189,7 @@ const TemplateTwo = ({
           <Fade bottom>
             <Box textAlign="center">
               <Box fontFamily="script" fontSize={4} color="accent">Tentang Kami</Box>
-              <Box fontSize={5}>Pasangan Mempelai</Box>
+              <Box fontSize={5} color="gray.6">Pasangan Mempelai</Box>
             </Box>
           </Fade>
           <Flex mt={5} mx={-2}>
@@ -216,14 +224,14 @@ const TemplateTwo = ({
         <Box as="section"
           sx={{ mt: 6, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
         >
-          <Fade bottom>
+          <Fade bottom fraction={0.5}>
             <Box fontFamily="script" fontSize={4} color="accent">Wedding</Box>
-            <Box fontSize={5}>Gallery</Box>
+            <Box fontSize={5} color="gray.6">Gallery</Box>
           </Fade>
           <Flex mt={5} mx={-2} flexWrap="wrap" justifyContent="center">
             {gallery.map((url, i) => (
-              <Box key={i} width={`${100 / 3}%`} px={2} pb={3}>
-                <Flip bottom>
+              <Box key={i} width={[`${100 / 2}%`, `${100 / 3}%`]} px={2} pb={3}>
+                <Flip bottom fraction={0.5}>
                   <AspectRatio ratio="1:1">
                     <Box as="img"
                       height="100%"
@@ -256,9 +264,9 @@ const TemplateTwo = ({
             }}
           />
           <Box sx={{ maxWidth: 710, mx: "auto" }}>
-            <Flex sx={{ mx: -3, px: 3, textAlign: "center" }}>
+            <Flex sx={{ mx: -3, px: 3, flexDirection: ["column", "row"], textAlign: "center" }}>
               {[1, 2].map((_, i) => (
-                <Box key={i} px={3}>
+                <Box key={i} px={3} mb={[3, 0]}>
                   <Fade {...(i < 1 ? { left: true } : { right: true })}>
                     <Box sx={{
                       p: 3,
@@ -290,7 +298,7 @@ const TemplateTwo = ({
           <Fade bottom>
             <Box textAlign="center">
               <Box fontFamily="script" fontSize={4} color="accent">Acara Spesial</Box>
-              <Box fontSize={5}>Pernikahan Kami</Box>
+              <Box fontSize={5} color="gray.6">Pernikahan Kami</Box>
             </Box>
           </Fade>
           <Flex justifyContent="center" mt={4}>
@@ -357,93 +365,71 @@ const TemplateTwo = ({
 
         {/* Location */}
         <Flex as="section"
-          sx={{ mt: 2, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
+          sx={{ mt: 2, mx: "auto", flexDirection: ["column", "row"], px: 3, maxWidth: 710, textAlign: "center" }}
         >
-          <Box px={3} width="50%">
-            <Fade left>
-              <Box fontFamily="script" fontSize={5} color="accent">Pemberkatan</Box>
-              <Flex mt={4} mx={-2}>
-                <Box width="50%" px={2}>
-                  <Box as={IoCalendarOutline} color="gray.5" fontSize={6} />
-                  <Box>{contractDateFunc.format("dddd")}</Box>
-                  <Box>{contractDateFunc.format("DD MMMM YYYY")}</Box>
-                </Box>
-                <Divider />
-                <Box width="50%" px={2}>
-                  <Box as={IoTimeOutline} color="gray.5" fontSize={6} />
-                  <Box>{contractDateFunc.format("hh:mm A")} - Selesai</Box>
-                </Box>
-              </Flex>
-              <Box mt={3}>
-                <Box fontWeight="bold" color="gray.6">Lokasi</Box>
-                <Box fontSize={3}>{contract.location}</Box>
-                <Box
-                  as="a"
-                  target="_blank"
-                  href={`https://www.google.com/maps/search/?api=1&query=${contract.pinpoint.latitude},${contract.pinpoint.longitude}`}
-                  sx={{ mt: 3, display: "block" }}
-                >
-                  <AspectRatio ratio="1:1">
-                    <Box as="img"
-                      sx={{
-                        height: "100%",
-                        width: "100%",
-                        objectFit: "cover"
-                      }}
-                      src={MapboxImageLink({
-                        height: 307,
-                        width: 307,
-                        contract: contract.pinpoint
-                      })}
-                    />
-                  </AspectRatio>
-                </Box>
+          {[{
+            title: "Pemberkatan",
+            date: contractDateFunc,
+            pin: {
+              icon: "pin-s-heart",
+              color: "ff0000",
+              ...contract.pinpoint,
+            }
+          }, {
+            title: "Resepsi Pernikahan",
+            date: receptionDateFunc,
+            pin: {
+              icon: "pin-s-restaurant",
+              color: "00eeff",
+              ...reception.pinpoint,
+            }
+          }].map((v, i) => (
+            <Fragment key={i}>
+              <Box px={3} pt={[4, 0]} width={["100%", "50%"]}>
+                <Fade {...(i < 1 ? { left: true } : { right: true })}>
+                  <Box fontFamily="script" fontSize={5} color="accent">{v.title}</Box>
+                  <Flex mt={4} mx={-2}>
+                    <Box width="50%" px={2}>
+                      <Box as={IoCalendarOutline} color="gray.5" fontSize={6} />
+                      <Box>{moment(v.date).format("dddd")}</Box>
+                      <Box>{moment(v.date).format("DD MMMM YYYY")}</Box>
+                    </Box>
+                    <Divider />
+                    <Box width="50%" px={2}>
+                      <Box as={IoTimeOutline} color="gray.5" fontSize={6} />
+                      <Box>{moment(v.date).format("hh:mm A")} - Selesai</Box>
+                    </Box>
+                  </Flex>
+                  <Box mt={3}>
+                    <Box fontWeight="bold" color="gray.6">Lokasi</Box>
+                    <Box fontSize={3}>{contract.location}</Box>
+                    <Box
+                      as="a"
+                      target="_blank"
+                      href={`https://www.google.com/maps/search/?api=1&query=${v.pin.latitude},${v.pin.longitude}`}
+                      sx={{ mt: 3, display: "block" }}
+                    >
+                      <AspectRatio ratio="1:1">
+                        <Box as="img"
+                          sx={{
+                            height: "100%",
+                            width: "100%",
+                            objectFit: "cover"
+                          }}
+                          src={MapboxImageLink({
+                            height: 307,
+                            width: 307,
+                            pins: [v.pin]
+                          })}
+                        />
+                      </AspectRatio>
+                    </Box>
+                  </Box>
+                </Fade>
               </Box>
-            </Fade>
-          </Box>
-          <Divider />
-          <Box px={3} width="50%">
-            <Fade right>
-              <Box fontFamily="script" fontSize={5} color="accent">Resepsi Pernikahan</Box>
-              <Flex mt={4}>
-                <Box width="50%">
-                  <Box as={IoCalendarOutline} color="gray.5" fontSize={6} />
-                  <Box>{receptionDateFunc.format("ddd")}</Box>
-                  <Box>{receptionDateFunc.format("DD MMMM YYYY")}</Box>
-                </Box>
-                <Divider />
-                <Box width="50%">
-                  <Box as={IoTimeOutline} color="gray.5" fontSize={6} />
-                  <Box>{receptionDateFunc.format("hh:mm A")} - Selesai</Box>
-                </Box>
-              </Flex>
-              <Box mt={3}>
-                <Box fontWeight="bold" color="gray.6">Lokasi</Box>
-                <Box fontSize={3}>{reception.location}</Box>
-                <Box
-                  as="a"
-                  target="_blank"
-                  href={`https://www.google.com/maps/search/?api=1&query=${reception.pinpoint.latitude},${reception.pinpoint.longitude}`}
-                  sx={{ mt: 3, display: "block" }}
-                >
-                  <AspectRatio ratio="1:1">
-                    <Box as="img"
-                      sx={{
-                        height: "100%",
-                        width: "100%",
-                        objectFit: "cover"
-                      }}
-                      src={MapboxImageLink({
-                        height: 307,
-                        width: 307,
-                        reception: reception.pinpoint
-                      })}
-                    />
-                  </AspectRatio>
-                </Box>
-              </Box>
-            </Fade>
-          </Box>
+              {i < 1 && <Divider sx={{ mt: [4, 0], mx: [-3, 0] }} />}
+            </Fragment>
+          ))}
         </Flex>
 
         {/* Guest Book */}
@@ -451,15 +437,11 @@ const TemplateTwo = ({
           sx={{ mt: 5, py: 5, bg: "black" }}
         >
           <Fade bottom>
-            <Box textAlign="center" color="white">
-              <Box fontFamily="script" fontSize={4} color="accent">Kirimkan Pesan</Box>
-              <Box fontSize={5}>Untuk Kami Berdua</Box>
+            <Box textAlign="center">
+              <Box fontFamily="script" fontSize={4} color="white">Kirimkan Pesan</Box>
+              <Box fontSize={5} color="gray.3">Untuk Kami Berdua</Box>
             </Box>
           </Fade>
-
-          <Box textAlign="center" mt={4}>
-            <Button as="a" target="_blank" href={`${serverUrl.origin}/comment?post=${id}`} text="Tulis di sini" />
-          </Box>
 
           <Box sx={{ mt: 4, mx: "auto", px: 3, maxWidth: 710 }}>
             {comments.map((comment, i) => (
@@ -503,7 +485,7 @@ const TemplateTwo = ({
             ))}
           </Box>
 
-          <Box sx={{ flexShrink: 1, maxWidth: [350], width: "100%", mx: "auto", pt: 4 }}>
+          <Box sx={{ flexShrink: 1, maxWidth: ["100%", 350], width: "100%", mx: "auto", pt: 4, px: 3 }}>
             <form onSubmit={handleSubmit(onComment)}>
               <Flex mb={2} mx={-2}>
                 <Box px={2} width="50%">
@@ -551,16 +533,17 @@ const TemplateTwo = ({
         <Box as="section"
           sx={{ mt: 5, mx: "auto", px: 3, maxWidth: 710, textAlign: "center", lineHeight: 1.5 }}
         >
-          <Box>Jangan ragu untuk datang, kami sudah berkordinasi dengan semua pihak terkait pencegahan penularan COVID-19. Acara kami akan mengikuti segala prosedur protokol kesehatan untuk mencegah penularan COVID-19. So, don't be panic, we look forward to seeing you there!</Box>
+          <Box textAlign={["justify", "center"]}>Jangan ragu untuk datang, kami sudah berkordinasi dengan semua pihak terkait pencegahan penularan COVID-19. Acara kami akan mengikuti segala prosedur protokol kesehatan untuk mencegah penularan COVID-19. So, don't be panic, we look forward to seeing you there!</Box>
           <Flex
             sx={{
               flexWrap: "wrap",
-              width: 520,
+              flexDirection: ["column", "row"],
+              maxWidth: 520,
               mt: 3,
               mx: "auto",
               "> div": {
-                width: "50%",
-                px: 2,
+                width: ["100%", "50%"],
+                px: [3, 2],
                 pb: 3,
                 "> div": {
                   borderRadius: 4,
@@ -594,6 +577,7 @@ const TemplateTwo = ({
                       sx={{
                         position: "absolute",
                         height: "100%",
+                        width: "100%",
                         justifyContent: "center",
                         alignItems: "center",
                       }}
