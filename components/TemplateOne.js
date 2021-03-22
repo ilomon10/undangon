@@ -33,7 +33,8 @@ const TemplateOne = (props) => {
     reception,
     contract,
     gallery,
-    music
+    music,
+    featured_image,
   } = props;
 
   const receptionDateFunc = moment(reception.date);
@@ -118,7 +119,7 @@ const TemplateOne = (props) => {
           >
             <Box
               as="img"
-              src="https://via.placeholder.com/850x800"
+              src={featured_image}
               sx={{
                 height: "100%",
                 width: "100%",
@@ -524,7 +525,7 @@ const TemplateOne = (props) => {
             maxWidth: 710,
           }}
         >
-          <Flex sx={{ maxHeight: "85vh", flexDirection: "column" }}>
+          <Flex sx={{ flexDirection: "column" }}>
             <Box
               sx={{
                 textAlign: "center",
@@ -537,7 +538,7 @@ const TemplateOne = (props) => {
             >
               <span>Guest Book</span>
             </Box>
-            <Box flexGrow={1} flexShrink={1} overflowY="auto">
+            <Box flexGrow={1} flexShrink={1}>
               {comments.map((comment, i) => (
                 <Box key={i} sx={{ position: "relative", mb: i < (comments.length - 1) ? 4 : 0, }}>
                   <Box

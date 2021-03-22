@@ -115,12 +115,19 @@ export default function Home() {
                     }))
                   }}
                 >
-                  {new Array(5).fill(0).map((_, i) => (
+                  {[
+                    "/TemplateTwo-Capture.png",
+                    "/TemplateOne-Capture.png",
+                    "/TemplateTwo-Capture.png",
+                    "/TemplateOne-Capture.png",
+                    "/TemplateTwo-Capture.png",
+                    "/TemplateOne-Capture.png",
+                  ].map((v, i) => (
                     <Box key={i} px={3}>
                       <Box sx={{ width: 168, position: "relative" }} >
                         <AspectRatio ratio="6:13">
                           <BackgroundScrolling
-                            imageUrl={"https://source.unsplash.com/random/250x800"}
+                            imageUrl={v}
                             height="100%"
                             width="100%"
                             pause={state.currentIndex !== i}
