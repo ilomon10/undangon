@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 
 export const State = ({ defaultValue, children }) => {
   const [state, setState] = useState(defaultValue);
-  return children({ state, setState })
+  const ref = useRef();
+  return children({ state, setState, ref })
 }
