@@ -143,10 +143,12 @@ export default function Home() {
       </Box>
 
       <Box as="footer">
-        <Box py={4} sx={{ maxWidth: 750, mx: "auto" }}>
-          <Flex alignItems="center">
-            <IoLocationOutline />
-            <Box ml={2}>With love, from Manado</Box>
+        <Box py={4} px={3} sx={{ maxWidth: 750, mx: "auto" }}>
+          <Flex flexDirection={["column", "row"]} alignItems="center" opacity={0.5}>
+            <Flex alignItems="center" pb={[2, 0]}>
+              <IoLocationOutline />
+              <Box ml={2}>With love, from Manado</Box>
+            </Flex>
             <Box flexGrow={1} />
             <div>&#169; Ba Undang</div>
           </Flex>

@@ -14,7 +14,7 @@ export const BackgroundScrolling = ({
     const unbind = setInterval(() => {
       if (pause) return;
       setPosition(position => {
-        const ret = position < 100 ? (100 / 2) + position : 0;
+        const ret = position < 100 ? (100 / 4) + position : 0;
         onChange(ret);
         return ret;
       });
@@ -34,7 +34,7 @@ export const BackgroundScrolling = ({
           left: 0,
           backgroundImage: `url(${imageUrl})`,
           backgroundSize: "cover",
-          transition: "background-position 2000ms ease"
+          transition: "background-position 2000ms linear"
         }}
         style={{
           backgroundPosition: `0 ${position}%`
