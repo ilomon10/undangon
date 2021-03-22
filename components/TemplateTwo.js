@@ -205,8 +205,8 @@ const TemplateTwo = ({
                     <Box sx={{
                       mx: "auto",
                       flexShrink: 0,
-                      height: [100, 125],
-                      width: [100, 125],
+                      height: [100, 150],
+                      width: [100, 150],
                       borderRadius: 100,
                       overflow: "hidden"
                     }}>
