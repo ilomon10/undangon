@@ -2,5 +2,9 @@ module.exports = {
   env: {
     serverUrl: process.env.SERVER
   },
-  trailingSlash: true
+  trailingSlash: true,
+  i18n: {
+    locales: ['id-ID'],
+    defaultLocale: 'id-ID'
+  }
 }

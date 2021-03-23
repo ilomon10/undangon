@@ -9,13 +9,14 @@ import { BackgroundScrolling } from 'components/BackgroundScrolling';
 
 export default function Home() {
   return (
-    <Box>
+    <>
       <Head>
         <title>Ba Undang - Undangan Digital</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content="Buat undangan digital kamu sekarang dengan harga yang terjangkau, dan juga bisa mengurangi pemakaian kertas berlebihan." />
       </Head>
 
-      <Box as="header">
+      <header>
         <Flex
           sx={{
             px: 3,
@@ -26,18 +27,19 @@ export default function Home() {
             justifyContent: "center"
           }}
         >
-          <Box>
-            <Box as="img" height={36} src="/baundang.svg" />
-          </Box>
+          <div>
+            <Box as="img" alt="Logo Ba Undang" height={36} src="/baundang.svg" />
+          </div>
         </Flex>
-      </Box>
+      </header>
 
       <Box as="main" textAlign="center" overflow="hidden">
-        <Box as="section">
+        <section>
           <Box as="h1">Pakai Undangan Online</Box>
-          <Box as="h3" mt={2}>Tanpa Kertas. Tanpa Ribet.</Box>
+          <Box as="p" fontSize={3} mt={2}>Tanpa Kertas. Tanpa Ribet.</Box>
           <Button
             as="a"
+            rel="noreferrer"
             target="_blank"
             href="https://api.whatsapp.com/send?phone=6282187788484&text=Hallo%2C%0ASaya%20ingin%20membuat%20undangan%20online"
             text="Pesan Sekarang"
@@ -53,7 +55,7 @@ export default function Home() {
               py: 3,
             }}
           />
-        </Box>
+        </section>
         <Box as="section" mt={4} pb={3}>
           <Box
             sx={{
@@ -61,10 +63,13 @@ export default function Home() {
               position: "relative",
               ".slick-slide > div": {
                 opacity: 0.25,
-                transition: "opacity 2000ms ease",
+                transform: "scale(0.9)",
+                transition: "opacity 2000ms ease 0s, transform 1000ms ease 0s",
               },
               ".slick-slide.slick-current > div": {
-                opacity: 1
+                opacity: 1,
+                transform: "scale(1)",
+                transition: "opacity 2000ms ease 0s, transform 1000ms ease 500ms",
               }
             }}
           >
@@ -149,18 +154,18 @@ export default function Home() {
         </Box>
       </Box>
 
-      <Box as="footer">
+      <footer>
         <Box py={4} px={3} sx={{ maxWidth: 750, mx: "auto" }}>
-          <Flex flexDirection={["column", "row"]} alignItems="center" opacity={0.5}>
+          <Flex flexDirection={["column", "row"]} alignItems="center" opacity={0.75}>
             <Flex alignItems="center" pb={[2, 0]}>
               <IoLocationOutline />
-              <Box ml={2}>With love, from Manado</Box>
+              <Box ml={2}>Dengan cinta, dari Manado</Box>
             </Flex>
             <Box flexGrow={1} />
             <div>&#169; Ba Undang</div>
           </Flex>
         </Box>
-      </Box>
-    </Box >
+      </footer>
+    </>
   )
 }
