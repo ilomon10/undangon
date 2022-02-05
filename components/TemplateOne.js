@@ -291,15 +291,16 @@ const TemplateOne = (props) => {
           </Flex>
         </Flex>
 
-        <Box as="section" mt={6} px={2}>
-          <Box fontSize={2} color="gray.2" textAlign="center">Countdown</Box>
-          <Flex justifyContent="center">
-            <Counter
-              target={contractDateFunc}
-            >
-              {({ diff }) => {
-                const duration = moment.duration(diff);
-                return (
+        <Counter target={contractDateFunc}>
+          {({ diff }) => {
+            const duration = moment.duration(diff);
+            if(duration.seconds() < 0) {
+              return null;
+            }
+            return (
+              <Box as="section" mt={6} px={2}>
+                <Box fontSize={2} color="gray.2" textAlign="center">Countdown</Box>
+                <Flex justifyContent="center">
                   <Flex
                     sx={{
                       "> div": {
@@ -333,11 +334,11 @@ const TemplateOne = (props) => {
                       <div className="subtitle">Seconds</div>
                     </div>
                   </Flex>
-                )
-              }}
-            </Counter>
-          </Flex>
-        </Box>
+                </Flex>
+              </Box>
+            )
+          }}
+        </Counter>
 
         <Box
           as="section"
