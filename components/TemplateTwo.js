@@ -75,6 +75,7 @@ const TemplateTwo = ({
   }
 
   useEffect(() => {
+    console.log(contractDateFunc,);
     const fetch = async () => {
       try {
         let resComments = await axios.get(`${window.location.origin}/api/guestBook`, {
@@ -315,7 +316,7 @@ const TemplateTwo = ({
         <Counter target={contractDateFunc}>
           {({ diff }) => {
             const duration = moment.duration(diff);
-            if (duration.seconds() < 0) { return null; }
+            if (duration.milliseconds() < 0 || duration.seconds() < 0) { return null; }
             return (
               <Box as="section" mt={5} px={2}>
                 <Fade bottom>

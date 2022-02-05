@@ -293,7 +293,7 @@ const TemplateOne = (props) => {
         <Counter target={contractDateFunc}>
           {({ diff }) => {
             const duration = moment.duration(diff);
-            if (duration.seconds() < 0) { return null; }
+            if (duration.milliseconds() < 0 || duration.seconds() < 0) { return null; }
             return (
               <Box as="section" mt={6} px={2}>
                 <Box fontSize={2} color="gray.2" textAlign="center">Countdown</Box>
