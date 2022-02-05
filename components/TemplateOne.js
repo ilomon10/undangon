@@ -10,7 +10,6 @@ import AudioPlayer from "react-audio-player";
 import {
   AspectRatio, Box, Button, Input, Flex, State, Text, Counter,
 } from "./";
-import Client from "./client";
 import theme from "./theme";
 
 const extTheme = {
@@ -602,6 +601,71 @@ const TemplateOne = (props) => {
               </Box>
             </form>
           </Box>
+        </Box>
+
+        {/* Caution */}
+        <Box as="section"
+          sx={{ mt: 5, mx: "auto", px: 3, maxWidth: 710, textAlign: "center", lineHeight: 1.5 }}
+        >
+          <Box textAlign={["justify", "center"]}>Jangan ragu untuk datang, kami sudah berkordinasi dengan semua pihak terkait pencegahan penularan COVID-19. Acara kami akan mengikuti segala prosedur protokol kesehatan untuk mencegah penularan COVID-19. So, don't be panic, we look forward to seeing you there!</Box>
+          <Flex
+            sx={{
+              flexWrap: "wrap",
+              flexDirection: ["column", "row"],
+              maxWidth: 520,
+              mt: 3,
+              mx: "auto",
+              "> div": {
+                width: ["100%", "50%"],
+                px: [3, 2],
+                pb: 3,
+                "> div": {
+                  borderRadius: 4,
+                  borderWidth: 2,
+                  borderStyle: "solid",
+                  borderColor: "yellow.5",
+                }
+              }
+            }}
+          >
+            {[
+              "Tamu undangan wajib menggunakan masker.",
+              "Suhu tubuh normal dibawah 37.5deg",
+              "Jaga jarak antar orang minimal sekitar 1 meter.",
+              "Cuci tangan menggunakan air dan sabun atau menggunkan hand sanitizer",
+            ].map((v, i) => (
+              <div key={i}>
+                <div>
+                  <AspectRatio ratio="21:9">
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        left: 2,
+                        bottom: 2,
+                        lineHeight: 1,
+                        color: "yellow.3",
+                        fontSize: 4,
+                      }}
+                    >{i}</Box>
+                    <Flex
+                      sx={{
+                        position: "absolute",
+                        height: "100%",
+                        width: "100%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box px={2}>
+                        {v}
+                      </Box>
+                    </Flex>
+                  </AspectRatio>
+                </div>
+              </div>
+            ))}
+          </Flex>
+          <Box>Bagi para tamu undangan diharapkan mengikuti protokol pencegahan COVID-19</Box>
         </Box>
 
         {music &&
