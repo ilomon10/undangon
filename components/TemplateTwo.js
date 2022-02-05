@@ -307,20 +307,19 @@ const TemplateTwo = ({
         </Box>
 
         {/* Countdown */}
-        <Box as="section" mt={5} px={2}>
-          <Fade bottom>
-            <Box textAlign="center">
-              <Box fontFamily="script" fontSize={4} color="accent">Acara Spesial</Box>
-              <Box fontSize={[4, 5]} color="gray.6">Pernikahan Kami</Box>
-            </Box>
-          </Fade>
-          <Flex justifyContent="center" mt={4}>
-            <Counter
-              target={contractDateFunc}
-            >
-              {({ diff }) => {
-                const duration = moment.duration(diff);
-                return (
+        <Counter target={contractDateFunc}>
+          {({ diff }) => {
+            const duration = moment.duration(diff);
+            if (duration.seconds() < 0) { return null; }
+            return (
+              <Box as="section" mt={5} px={2}>
+                <Fade bottom>
+                  <Box textAlign="center">
+                    <Box fontFamily="script" fontSize={4} color="accent">Acara Spesial</Box>
+                    <Box fontSize={[4, 5]} color="gray.6">Pernikahan Kami</Box>
+                  </Box>
+                </Fade>
+                <Flex justifyContent="center" mt={4}>
                   <Flex
                     sx={{
                       "> div": {
@@ -354,27 +353,27 @@ const TemplateTwo = ({
                       <div className="subtitle">Seconds</div>
                     </div>
                   </Flex>
-                )
-              }}
-            </Counter>
-          </Flex>
-          <Box textAlign="center" mt={4}>
-            <Button
-              as="a"
-              target="_blank"
-              href={GoogleCalendarLink({
-                text: `Pernikahan: ${"Moriane"} dan ${"Irwan"}`,
-                details: `Acara pernikahan\n\n${"Irwan Setiawan Sitaba, S.T."}\nputra dari ${"Bapak Ronny Sitaba & Ibu Indayani Amien"}\n${"Moriane Elisabeth Worotitjan, S.H."}\nputri dari ${"Bapak Max P. Worotitjan & Ibu Martje C. Langitan"}`,
-                dates: {
-                  start: contractDateFunc.toISOString(),
-                  end: contractDateFunc.add(2, "hours").toISOString()
-                },
-                location: "Pondok Daun Restaurant"
-              })}
-              text="Remind Me"
-            />
-          </Box>
-        </Box>
+                </Flex>
+                <Box textAlign="center" mt={4}>
+                  <Button
+                    as="a"
+                    target="_blank"
+                    href={GoogleCalendarLink({
+                      text: `Pernikahan: ${"Moriane"} dan ${"Irwan"}`,
+                      details: `Acara pernikahan\n\n${"Irwan Setiawan Sitaba, S.T."}\nputra dari ${"Bapak Ronny Sitaba & Ibu Indayani Amien"}\n${"Moriane Elisabeth Worotitjan, S.H."}\nputri dari ${"Bapak Max P. Worotitjan & Ibu Martje C. Langitan"}`,
+                      dates: {
+                        start: contractDateFunc.toISOString(),
+                        end: contractDateFunc.add(2, "hours").toISOString()
+                      },
+                      location: "Pondok Daun Restaurant"
+                    })}
+                    text="Remind Me"
+                  />
+                </Box>
+              </Box>
+            )
+          }}
+        </Counter>
 
         {/* Location */}
         <Flex as="section"
