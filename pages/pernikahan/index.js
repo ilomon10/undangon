@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Box } from "../../components";
+import axios from "axios";
+import { Box } from "components";
 
 const serverUrl = process.env.serverUrl;
 
@@ -25,6 +26,7 @@ const Dari = ({ posts }) => {
 export const getStaticProps = async (context) => {
   let resPosts = await fetch(`${serverUrl}/wp-json/wp/v2/posts?_fields=id,slug`);
   let posts = await resPosts.json();
+  debugger;
   return {
     props: {
       posts

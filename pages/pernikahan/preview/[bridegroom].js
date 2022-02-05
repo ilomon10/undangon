@@ -1,8 +1,8 @@
 import Head from "next/head";
-import Template from "components/Template";
-import Client from "components/client";
+import { Client } from "../../../components";
+import Template from "../../../components/Template";
 
-const DariID = ({
+const Preview = ({
   slug,
   post: {
     id,
@@ -14,14 +14,13 @@ const DariID = ({
     gallery,
     music,
     featured_image,
-    optional
+    optional,
   }
 }) => {
   return (
     <>
       <Head>
         <title>Undangan Pernikahan: {bride.nickname} dan {groom.nickname}</title>
-        <meta property="og:image" content={featured_image} data-addsearch="no_crop" />
       </Head>
       <Template
         theme={theme}
@@ -39,27 +38,14 @@ const DariID = ({
         optional={optional}
       />
     </>
-  )
+  );
 }
 
-export default DariID;
-
-export const getStaticPaths = async () => {
-  let { data } = await Client.posts({
-    params: { "_fields": "slug" }
-  });
-  let paths = data.map(post => ({ params: { bridegroom: post.slug } }))
-  return {
-    paths,
-    fallback: false
-  }
-}
-
-export const getStaticProps = async (context) => {
+export async function getServerSideProps(context) {
   const { bridegroom } = context.params;
   let { data: post } = await Client.posts({
     params: {
-      // "_fields": "id,acf,thumbnail",
+      "_fields": "id,acf",
       "slug": bridegroom
     }
   });
@@ -73,3 +59,5 @@ export const getStaticProps = async (context) => {
     }
   }
 }
+
+export default Preview;
