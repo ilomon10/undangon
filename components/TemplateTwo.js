@@ -7,9 +7,8 @@ import { ThemeProvider } from "styled-components"
 import { IoCalendarOutline, IoTimeOutline } from "react-icons/io5";
 import { Fade, Flip } from "react-reveal";
 import AudioPlayer from "react-audio-player";
-import { AspectRatio, Button, Box, Client, Counter, Divider, Flex, Input, } from "./";
+import { AspectRatio, Button, Box, Counter, Divider, Flex, Input, } from "./";
 import { GoogleCalendarLink, MapboxImageLink } from "./helper"
-import { vanilla as vanillaClient, serverUrl } from "./client"
 import theme from "./theme"
 
 const extTheme = {
