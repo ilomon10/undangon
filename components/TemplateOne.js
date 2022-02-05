@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import moment from "moment";
 import axios from "axios";
 import PropTypes from "prop-types";
@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import AudioPlayer from "react-audio-player";
 import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import {
   AspectRatio, Box, Button, Input, Flex, State, Text, Counter,
@@ -43,7 +44,11 @@ const TemplateOne = (props) => {
   const contractDateFunc = moment(contract.date);
   const [comments, setComments] = useState([]);
 
-  const { register, handleSubmit, errors, formState: { isSubmitting } } = useForm();
+  const recaptchaRef = useRef();
+
+  const { register, handleSubmit, errors } = useForm();
+
+  const [loading, setLoading] = useState(false);
 
   const onComment = async (data) => {
 
@@ -74,6 +79,20 @@ const TemplateOne = (props) => {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  const executeRecaptcha = (event) => {
+    setLoading(true);
+    event.preventDefault();
+    recaptchaRef.current.execute();
+  }
+
+  const onReCAPTCHAChange = async (captchaCode) => {
+    if (captchaCode) {
+      await handleSubmit(onComment)();
+    }
+    setLoading(false);
+    recaptchaRef.current.reset();
   }
 
   useEffect(() => {
@@ -590,7 +609,13 @@ const TemplateOne = (props) => {
             </Box>
           </Flex>
           <Box sx={{ flexShrink: 1, maxWidth: [350], width: "100%", mx: "auto", pt: 4 }}>
-            <form onSubmit={handleSubmit(onComment)}>
+            <form onSubmit={executeRecaptcha}>
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                size="invisible"
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                onChange={onReCAPTCHAChange}
+              />
               <Flex mb={2} mx={-2}>
                 <Box px={2} width="50%">
                   <Input
@@ -620,7 +645,7 @@ const TemplateOne = (props) => {
                 />
               </Box>
               <Box>
-                <Button text="Send" type="submit" disabled={isSubmitting} />
+                <Button text="Send" type="submit" disabled={loading} />
               </Box>
             </form>
           </Box>

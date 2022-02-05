@@ -1,6 +1,6 @@
 import Head from "next/head"
 import axios from "axios";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useRef } from "react";
 import { useForm } from "react-hook-form";
 import moment from "moment"
 import { ThemeProvider } from "styled-components"
@@ -12,6 +12,7 @@ import { GoogleCalendarLink, MapboxImageLink } from "./helper"
 import theme from "./theme"
 import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const extTheme = {
   ...theme,
@@ -39,9 +40,13 @@ const TemplateTwo = ({
   const receptionDateFunc = moment(reception.date);
   const contractDateFunc = moment(contract.date);
 
+  const recaptchaRef = useRef();
+
   const [comments, setComments] = useState([]);
 
-  const { register, handleSubmit, setError, errors, formState: { isSubmitting } } = useForm();
+  const { register, handleSubmit, setError, errors } = useForm();
+
+  const [loading, setLoading] = useState(false);
 
   const onComment = async (data) => {
     const body = {
@@ -76,8 +81,21 @@ const TemplateTwo = ({
     }
   }
 
+  const executeRecaptcha = (event) => {
+    setLoading(true);
+    event.preventDefault();
+    recaptchaRef.current.execute();
+  }
+
+  const onReCAPTCHAChange = async (captchaCode) => {
+    if(captchaCode) {
+      await handleSubmit(onComment)();
+    }
+    setLoading(false);
+    recaptchaRef.current.reset();
+  }
+
   useEffect(() => {
-    console.log(contractDateFunc,);
     const fetch = async () => {
       try {
         let resComments = await axios.get(`${window.location.origin}/api/guestBook`, {
@@ -530,7 +548,13 @@ const TemplateTwo = ({
           </Box>
 
           <Box sx={{ flexShrink: 1, maxWidth: ["100%", 350], width: "100%", mx: "auto", pt: 4, px: 3 }}>
-            <form onSubmit={handleSubmit(onComment)}>
+            <form onSubmit={executeRecaptcha}>
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                size="invisible"
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                onChange={onReCAPTCHAChange}
+              />
               <Flex mb={2} mx={-2}>
                 <Box px={2} width="50%">
                   <Input
@@ -560,7 +584,7 @@ const TemplateTwo = ({
                 />
               </Box>
               <div>
-                <Button text="Kirim" type="submit" disabled={isSubmitting} />
+                <Button text="Kirim" type="submit" disabled={loading} />
               </div>
               {errors && errors.form &&
                 <Box color="red.3" mt={2} fontSize={1}>
