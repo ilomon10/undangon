@@ -278,7 +278,13 @@ const TemplateTwo = ({
           />
           <Box sx={{ maxWidth: 710, mx: "auto" }}>
             <Flex sx={{ mx: -3, px: 3, flexDirection: ["column", "row"], textAlign: "center" }}>
-              {[1, 2].map((_, i) => (
+              {[{
+                verse: optional.first_verse,
+                content: optional.first_verse_content,
+              }, {
+                verse: optional.second_verse,
+                content: optional.second_verse_content,
+              }].map(({ verse, content }, i) => (
                 <Box key={i} px={3} mb={[3, 0]}>
                   <Fade {...(i < 1 ? { left: true } : { right: true })}>
                     <Box sx={{
@@ -295,8 +301,8 @@ const TemplateTwo = ({
                         backgroundColor: "white",
                       }} />
                       <Box sx={{ position: "relative" }}>
-                        <Box fontSize={3} fontWeight="bold" fontFamily="script" >Dan firman-Nya: Sebab itu laki-laki akan meninggalkan ayah dan ibunya dan bersatu dengan isterinya, sehingga keduanya itu menjadi satu daging. Demikianlah mereka bukan lagi dua, melainkan satu. Karena itu, apa yang telah dipersatukan Allah, tidak boleh diceraikan manusia.</Box>
-                        <Box mt={2} fontSize={2} fontWeight="bold">Matius 19:5-6</Box>
+                        <Box fontSize={3} fontWeight="bold" fontFamily="script" >{content}</Box>
+                        <Box mt={2} fontSize={2} fontWeight="bold">{verse}</Box>
                       </Box>
                     </Box>
                   </Fade>
