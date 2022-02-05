@@ -10,6 +10,8 @@ import AudioPlayer from "react-audio-player";
 import { AspectRatio, Button, Box, Counter, Divider, Flex, Input, } from "./";
 import { GoogleCalendarLink, MapboxImageLink } from "./helper"
 import theme from "./theme"
+import Image from "next/image";
+import Zoom from "react-medium-image-zoom";
 
 const extTheme = {
   ...theme,
@@ -242,17 +244,41 @@ const TemplateTwo = ({
             <Box fontSize={[4, 5]} color="gray.6">Gallery</Box>
           </Fade>
           <Flex mt={5} mx={-2} flexWrap="wrap" justifyContent="center">
-            {gallery.map((url, i) => (
-              <Box key={i} width={[`${100 / 2}%`, `${100 / 3}%`]} px={2} pb={3}>
+            {gallery.map(({ url, alt, id, height, width }) => (
+              <Box key={id} width={[`${100 / 2}%`, `${100 / 3}%`]} px={2} pb={3}>
                 <Flip bottom fraction={0.5}>
-                  <AspectRatio ratio="1:1">
-                    <Box as="img"
-                      height="100%"
-                      width="100%"
-                      sx={{ objectFit: "cover" }}
-                      src={url}
-                    />
-                  </AspectRatio>
+                  <Box as={AspectRatio} ratio="1:1" sx={{ borderRadius: 8, overflow: "hidden", }} >
+                    <Zoom wrapStyle={{ height: "100%", width: "100%", opacity: 0 }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          height: "100%",
+                          width: "100%",
+                          justifyContent: "center",
+                          alignItems: "center"
+                        }}
+                      >
+                        <Image
+                          alt={alt}
+                          placeholder="blur"
+                          height={height}
+                          width={width}
+                          src={url}
+                        />
+                      </div>
+                    </Zoom>
+                    <Box sx={{
+                      pointerEvents: "none",
+                      position: "absolute",
+                      inset: 0,
+                    }}>
+                      <Image
+                        objectFit="cover"
+                        layout="fill"
+                        src={url}
+                      />
+                    </Box>
+                  </Box>
                 </Flip>
               </Box>
             ))}

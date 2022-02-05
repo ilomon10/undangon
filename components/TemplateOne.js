@@ -6,6 +6,8 @@ import Head from "next/head";
 import { ThemeProvider } from "styled-components";
 import { useForm } from "react-hook-form";
 import AudioPlayer from "react-audio-player";
+import Image from "next/image";
+import Zoom from "react-medium-image-zoom";
 
 import {
   AspectRatio, Box, Button, Input, Flex, State, Text, Counter,
@@ -496,18 +498,39 @@ const TemplateOne = (props) => {
             <div>Gallery</div>
           </Text>
           <Flex flexWrap="wrap" mx={-2}>
-            {gallery.map((url, i) => (
-              <Box key={i} width={[`${100 / 2}%`, `${100 / 3}%`]} sx={{ px: 2, pb: 3 }}>
-                <Box as={AspectRatio} ratio="1:1" sx={{ borderRadius: 8, overflow: "hidden" }}>
-                  <Box
-                    as="img"
-                    src={url}
-                    sx={{
-                      height: "100%",
-                      width: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
+            {gallery.map(({ url, alt, id, height, width }) => (
+              <Box key={id} width={[`${100 / 2}%`, `${100 / 3}%`]} sx={{ px: 2, pb: 3 }}>
+                <Box as={AspectRatio} ratio="1:1" sx={{ borderRadius: 8, overflow: "hidden", }} >
+                  <Zoom wrapStyle={{ height: "100%", width: "100%", opacity: 0 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        height: "100%",
+                        width: "100%",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      <Image
+                        alt={alt}
+                        placeholder="blur"
+                        height={height}
+                        width={width}
+                        src={url}
+                      />
+                    </div>
+                  </Zoom>
+                  <Box sx={{
+                    pointerEvents: "none",
+                    position: "absolute",
+                    inset: 0,
+                  }}>
+                    <Image
+                      objectFit="cover"
+                      layout="fill"
+                      src={url}
+                    />
+                  </Box>
                 </Box>
               </Box>
             ))}
@@ -668,7 +691,8 @@ const TemplateOne = (props) => {
           <Box>Bagi para tamu undangan diharapkan mengikuti protokol pencegahan COVID-19</Box>
         </Box>
 
-        {music &&
+        {
+          music &&
           <Box textAlign="center" pt={4}>
             <AudioPlayer
               src={music}
@@ -681,7 +705,7 @@ const TemplateOne = (props) => {
         <Box as="footer" my={5} textAlign="center" color="gray.3">
           <div>Made with ❤ by Ba Undang.</div>
         </Box>
-      </Box>
+      </Box >
     </ThemeProvider >
   );
 }
