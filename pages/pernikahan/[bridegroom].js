@@ -57,19 +57,25 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
   const { bridegroom } = context.params;
-  let { data: post } = await Client.posts({
+  let { data } = await Client.posts({
     params: {
-      // "_fields": "id,acf,thumbnail",
+      "_fields": "id,acf",
       "slug": bridegroom
     }
   });
+  const post = {
+    id: data[0].id,
+    ...data[0].acf
+  };
+
+  post.gallery = post.gallery.map(({ id, url, name, alt, width, height }) => {
+    return { id, url, name, alt, width, height };
+  });
+
   return {
     props: {
       slug: bridegroom,
-      post: {
-        id: post[0].id,
-        ...post[0].acf
-      }
+      post,
     }
   }
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import moment from "moment";
 import axios from "axios";
 import PropTypes from "prop-types";
@@ -6,11 +6,13 @@ import Head from "next/head";
 import { ThemeProvider } from "styled-components";
 import { useForm } from "react-hook-form";
 import AudioPlayer from "react-audio-player";
+import Image from "next/image";
+import Zoom from "react-medium-image-zoom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import {
   AspectRatio, Box, Button, Input, Flex, State, Text, Counter,
 } from "./";
-import Client from "./client";
 import theme from "./theme";
 
 const extTheme = {
@@ -35,13 +37,18 @@ const TemplateOne = (props) => {
     gallery,
     music,
     featured_image,
+    optional
   } = props;
 
   const receptionDateFunc = moment(reception.date);
   const contractDateFunc = moment(contract.date);
   const [comments, setComments] = useState([]);
 
-  const { register, handleSubmit, errors, formState: { isSubmitting } } = useForm();
+  const recaptchaRef = useRef();
+
+  const { register, handleSubmit, errors } = useForm();
+
+  const [loading, setLoading] = useState(false);
 
   const onComment = async (data) => {
 
@@ -74,6 +81,20 @@ const TemplateOne = (props) => {
     }
   }
 
+  const executeRecaptcha = (event) => {
+    setLoading(true);
+    event.preventDefault();
+    recaptchaRef.current.execute();
+  }
+
+  const onReCAPTCHAChange = async (captchaCode) => {
+    if (captchaCode) {
+      await handleSubmit(onComment)();
+    }
+    setLoading(false);
+    recaptchaRef.current.reset();
+  }
+
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -84,7 +105,6 @@ const TemplateOne = (props) => {
           }
         });
 
-        console.log(resComments);
         setComments(resComments.data);
       } catch (err) {
         console.error(err);
@@ -193,8 +213,8 @@ const TemplateOne = (props) => {
           sx={{ mt: 6, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
         >
           <Text as="div" mb={3} fontFamily="script" fontSize={6} >We Found Love</Text>
-          <Text as="p" mb={3} >And more than all, have love; the only way in which you may be completely joined together. And let the peace of Christ be ruling in your hearts, as it was the purpose of God for you to be one body; and give praise to God at all times</Text>
-          <Text as="p" fontWeight="bold">Colossians 3:14-15</Text>
+          <Text as="p" mb={3} >{optional.verse_content}</Text>
+          <Text as="p" fontWeight="bold">{optional.verse}</Text>
         </Box>
 
         <Flex as="section"
@@ -291,15 +311,14 @@ const TemplateOne = (props) => {
           </Flex>
         </Flex>
 
-        <Box as="section" mt={6} px={2}>
-          <Box fontSize={2} color="gray.2" textAlign="center">Countdown</Box>
-          <Flex justifyContent="center">
-            <Counter
-              target={contractDateFunc}
-            >
-              {({ diff }) => {
-                const duration = moment.duration(diff);
-                return (
+        <Counter target={contractDateFunc}>
+          {({ diff }) => {
+            const duration = moment.duration(diff);
+            if (duration.milliseconds() < 0 || duration.seconds() < 0) { return null; }
+            return (
+              <Box as="section" mt={6} px={2}>
+                <Box fontSize={2} color="gray.2" textAlign="center">Countdown</Box>
+                <Flex justifyContent="center">
                   <Flex
                     sx={{
                       "> div": {
@@ -333,11 +352,11 @@ const TemplateOne = (props) => {
                       <div className="subtitle">Seconds</div>
                     </div>
                   </Flex>
-                )
-              }}
-            </Counter>
-          </Flex>
-        </Box>
+                </Flex>
+              </Box>
+            )
+          }}
+        </Counter>
 
         <Box
           as="section"
@@ -498,18 +517,39 @@ const TemplateOne = (props) => {
             <div>Gallery</div>
           </Text>
           <Flex flexWrap="wrap" mx={-2}>
-            {gallery.map((url, i) => (
-              <Box key={i} width={[`${100 / 2}%`, `${100 / 3}%`]} sx={{ px: 2, pb: 3 }}>
-                <Box as={AspectRatio} ratio="1:1" sx={{ borderRadius: 8, overflow: "hidden" }}>
-                  <Box
-                    as="img"
-                    src={url}
-                    sx={{
-                      height: "100%",
-                      width: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
+            {gallery.map(({ url, alt, id, height, width }) => (
+              <Box key={id} width={[`${100 / 2}%`, `${100 / 3}%`]} sx={{ px: 2, pb: 3 }}>
+                <Box as={AspectRatio} ratio="1:1" sx={{ borderRadius: 8, overflow: "hidden", }} >
+                  <Zoom wrapStyle={{ height: "100%", width: "100%", opacity: 0 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        height: "100%",
+                        width: "100%",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      <Image
+                        alt={alt}
+                        placeholder="blur"
+                        height={height}
+                        width={width}
+                        src={url}
+                      />
+                    </div>
+                  </Zoom>
+                  <Box sx={{
+                    pointerEvents: "none",
+                    position: "absolute",
+                    inset: 0,
+                  }}>
+                    <Image
+                      objectFit="cover"
+                      layout="fill"
+                      src={url}
+                    />
+                  </Box>
                 </Box>
               </Box>
             ))}
@@ -569,7 +609,13 @@ const TemplateOne = (props) => {
             </Box>
           </Flex>
           <Box sx={{ flexShrink: 1, maxWidth: [350], width: "100%", mx: "auto", pt: 4 }}>
-            <form onSubmit={handleSubmit(onComment)}>
+            <form onSubmit={executeRecaptcha}>
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                size="invisible"
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                onChange={onReCAPTCHAChange}
+              />
               <Flex mb={2} mx={-2}>
                 <Box px={2} width="50%">
                   <Input
@@ -599,13 +645,79 @@ const TemplateOne = (props) => {
                 />
               </Box>
               <Box>
-                <Button text="Send" type="submit" disabled={isSubmitting} />
+                <Button text="Send" type="submit" disabled={loading} />
               </Box>
             </form>
           </Box>
         </Box>
 
-        {music &&
+        {/* Caution */}
+        <Box as="section"
+          sx={{ mt: 5, mx: "auto", px: 3, maxWidth: 710, textAlign: "center", lineHeight: 1.5 }}
+        >
+          <Box textAlign={["justify", "center"]}>Jangan ragu untuk datang, kami sudah berkordinasi dengan semua pihak terkait pencegahan penularan COVID-19. Acara kami akan mengikuti segala prosedur protokol kesehatan untuk mencegah penularan COVID-19. So, don't be panic, we look forward to seeing you there!</Box>
+          <Flex
+            sx={{
+              flexWrap: "wrap",
+              flexDirection: ["column", "row"],
+              maxWidth: 520,
+              mt: 3,
+              mx: "auto",
+              "> div": {
+                width: ["100%", "50%"],
+                px: [3, 2],
+                pb: 3,
+                "> div": {
+                  borderRadius: 4,
+                  borderWidth: 2,
+                  borderStyle: "solid",
+                  borderColor: "yellow.5",
+                }
+              }
+            }}
+          >
+            {[
+              "Tamu undangan wajib menggunakan masker.",
+              "Suhu tubuh normal dibawah 37.5deg",
+              "Jaga jarak antar orang minimal sekitar 1 meter.",
+              "Cuci tangan menggunakan air dan sabun atau menggunkan hand sanitizer",
+            ].map((v, i) => (
+              <div key={i}>
+                <div>
+                  <AspectRatio ratio="21:9">
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        left: 2,
+                        bottom: 2,
+                        lineHeight: 1,
+                        color: "yellow.3",
+                        fontSize: 4,
+                      }}
+                    >{i}</Box>
+                    <Flex
+                      sx={{
+                        position: "absolute",
+                        height: "100%",
+                        width: "100%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box px={2}>
+                        {v}
+                      </Box>
+                    </Flex>
+                  </AspectRatio>
+                </div>
+              </div>
+            ))}
+          </Flex>
+          <Box>Bagi para tamu undangan diharapkan mengikuti protokol pencegahan COVID-19</Box>
+        </Box>
+
+        {
+          music &&
           <Box textAlign="center" pt={4}>
             <AudioPlayer
               src={music}
@@ -618,7 +730,7 @@ const TemplateOne = (props) => {
         <Box as="footer" my={5} textAlign="center" color="gray.3">
           <div>Made with ❤ by Ba Undang.</div>
         </Box>
-      </Box>
+      </Box >
     </ThemeProvider >
   );
 }

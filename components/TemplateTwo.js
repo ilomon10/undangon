@@ -1,16 +1,18 @@
 import Head from "next/head"
 import axios from "axios";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useRef } from "react";
 import { useForm } from "react-hook-form";
 import moment from "moment"
 import { ThemeProvider } from "styled-components"
 import { IoCalendarOutline, IoTimeOutline } from "react-icons/io5";
 import { Fade, Flip } from "react-reveal";
 import AudioPlayer from "react-audio-player";
-import { AspectRatio, Button, Box, Client, Counter, Divider, Flex, Input, } from "./";
+import { AspectRatio, Button, Box, Counter, Divider, Flex, Input, } from "./";
 import { GoogleCalendarLink, MapboxImageLink } from "./helper"
-import { vanilla as vanillaClient, serverUrl } from "./client"
 import theme from "./theme"
+import Image from "next/image";
+import Zoom from "react-medium-image-zoom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const extTheme = {
   ...theme,
@@ -38,9 +40,13 @@ const TemplateTwo = ({
   const receptionDateFunc = moment(reception.date);
   const contractDateFunc = moment(contract.date);
 
+  const recaptchaRef = useRef();
+
   const [comments, setComments] = useState([]);
 
-  const { register, handleSubmit, setError, errors, formState: { isSubmitting } } = useForm();
+  const { register, handleSubmit, setError, errors } = useForm();
+
+  const [loading, setLoading] = useState(false);
 
   const onComment = async (data) => {
     const body = {
@@ -73,6 +79,20 @@ const TemplateTwo = ({
         message: err.response.message
       });
     }
+  }
+
+  const executeRecaptcha = (event) => {
+    setLoading(true);
+    event.preventDefault();
+    recaptchaRef.current.execute();
+  }
+
+  const onReCAPTCHAChange = async (captchaCode) => {
+    if(captchaCode) {
+      await handleSubmit(onComment)();
+    }
+    setLoading(false);
+    recaptchaRef.current.reset();
   }
 
   useEffect(() => {
@@ -168,8 +188,8 @@ const TemplateTwo = ({
                 as="a"
                 target="_blank"
                 href={GoogleCalendarLink({
-                  text: `Pernikahan: ${"Moriane"} dan ${"Irwan"}`,
-                  details: `Acara pernikahan\n\n${"Irwan Setiawan Sitaba, S.T."}\nputra dari ${"Bapak Ronny Sitaba & Ibu Indayani Amien"}\n${"Moriane Elisabeth Worotitjan, S.H."}\nputri dari ${"Bapak Max P. Worotitjan & Ibu Martje C. Langitan"}`,
+                  text: `Pernikahan: ${bride.nickname} dan ${groom.nickname}`,
+                  details: `Acara pernikahan\n\n${groom.full_name}\nputra dari ${groom.father} & ${groom.mother}\n${bride.full_name}\nputri dari ${bride.father} & ${bride.mother}`,
                   dates: {
                     start: contractDateFunc.toISOString(),
                     end: contractDateFunc.add(2, "hours").toISOString()
@@ -242,17 +262,41 @@ const TemplateTwo = ({
             <Box fontSize={[4, 5]} color="gray.6">Gallery</Box>
           </Fade>
           <Flex mt={5} mx={-2} flexWrap="wrap" justifyContent="center">
-            {gallery.map((url, i) => (
-              <Box key={i} width={[`${100 / 2}%`, `${100 / 3}%`]} px={2} pb={3}>
+            {gallery.map(({ url, alt, id, height, width }) => (
+              <Box key={id} width={[`${100 / 2}%`, `${100 / 3}%`]} px={2} pb={3}>
                 <Flip bottom fraction={0.5}>
-                  <AspectRatio ratio="1:1">
-                    <Box as="img"
-                      height="100%"
-                      width="100%"
-                      sx={{ objectFit: "cover" }}
-                      src={url}
-                    />
-                  </AspectRatio>
+                  <Box as={AspectRatio} ratio="1:1" sx={{ borderRadius: 8, overflow: "hidden", }} >
+                    <Zoom wrapStyle={{ height: "100%", width: "100%", opacity: 0 }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          height: "100%",
+                          width: "100%",
+                          justifyContent: "center",
+                          alignItems: "center"
+                        }}
+                      >
+                        <Image
+                          alt={alt}
+                          placeholder="blur"
+                          height={height}
+                          width={width}
+                          src={url}
+                        />
+                      </div>
+                    </Zoom>
+                    <Box sx={{
+                      pointerEvents: "none",
+                      position: "absolute",
+                      inset: 0,
+                    }}>
+                      <Image
+                        objectFit="cover"
+                        layout="fill"
+                        src={url}
+                      />
+                    </Box>
+                  </Box>
                 </Flip>
               </Box>
             ))}
@@ -278,7 +322,13 @@ const TemplateTwo = ({
           />
           <Box sx={{ maxWidth: 710, mx: "auto" }}>
             <Flex sx={{ mx: -3, px: 3, flexDirection: ["column", "row"], textAlign: "center" }}>
-              {[1, 2].map((_, i) => (
+              {[{
+                verse: optional.first_verse,
+                content: optional.first_verse_content,
+              }, {
+                verse: optional.second_verse,
+                content: optional.second_verse_content,
+              }].map(({ verse, content }, i) => (
                 <Box key={i} px={3} mb={[3, 0]}>
                   <Fade {...(i < 1 ? { left: true } : { right: true })}>
                     <Box sx={{
@@ -295,8 +345,8 @@ const TemplateTwo = ({
                         backgroundColor: "white",
                       }} />
                       <Box sx={{ position: "relative" }}>
-                        <Box fontSize={3} fontWeight="bold" fontFamily="script" >Dan firman-Nya: Sebab itu laki-laki akan meninggalkan ayah dan ibunya dan bersatu dengan isterinya, sehingga keduanya itu menjadi satu daging. Demikianlah mereka bukan lagi dua, melainkan satu. Karena itu, apa yang telah dipersatukan Allah, tidak boleh diceraikan manusia.</Box>
-                        <Box mt={2} fontSize={2} fontWeight="bold">Matius 19:5-6</Box>
+                        <Box fontSize={3} fontWeight="bold" fontFamily="script" >{content}</Box>
+                        <Box mt={2} fontSize={2} fontWeight="bold">{verse}</Box>
                       </Box>
                     </Box>
                   </Fade>
@@ -307,20 +357,19 @@ const TemplateTwo = ({
         </Box>
 
         {/* Countdown */}
-        <Box as="section" mt={5} px={2}>
-          <Fade bottom>
-            <Box textAlign="center">
-              <Box fontFamily="script" fontSize={4} color="accent">Acara Spesial</Box>
-              <Box fontSize={[4, 5]} color="gray.6">Pernikahan Kami</Box>
-            </Box>
-          </Fade>
-          <Flex justifyContent="center" mt={4}>
-            <Counter
-              target={contractDateFunc}
-            >
-              {({ diff }) => {
-                const duration = moment.duration(diff);
-                return (
+        <Counter target={contractDateFunc}>
+          {({ diff }) => {
+            const duration = moment.duration(diff);
+            if (duration.milliseconds() < 0 || duration.seconds() < 0) { return null; }
+            return (
+              <Box as="section" mt={5} px={2}>
+                <Fade bottom>
+                  <Box textAlign="center">
+                    <Box fontFamily="script" fontSize={4} color="accent">Acara Spesial</Box>
+                    <Box fontSize={[4, 5]} color="gray.6">Pernikahan Kami</Box>
+                  </Box>
+                </Fade>
+                <Flex justifyContent="center" mt={4}>
                   <Flex
                     sx={{
                       "> div": {
@@ -354,27 +403,27 @@ const TemplateTwo = ({
                       <div className="subtitle">Seconds</div>
                     </div>
                   </Flex>
-                )
-              }}
-            </Counter>
-          </Flex>
-          <Box textAlign="center" mt={4}>
-            <Button
-              as="a"
-              target="_blank"
-              href={GoogleCalendarLink({
-                text: `Pernikahan: ${"Moriane"} dan ${"Irwan"}`,
-                details: `Acara pernikahan\n\n${"Irwan Setiawan Sitaba, S.T."}\nputra dari ${"Bapak Ronny Sitaba & Ibu Indayani Amien"}\n${"Moriane Elisabeth Worotitjan, S.H."}\nputri dari ${"Bapak Max P. Worotitjan & Ibu Martje C. Langitan"}`,
-                dates: {
-                  start: contractDateFunc.toISOString(),
-                  end: contractDateFunc.add(2, "hours").toISOString()
-                },
-                location: "Pondok Daun Restaurant"
-              })}
-              text="Remind Me"
-            />
-          </Box>
-        </Box>
+                </Flex>
+                <Box textAlign="center" mt={4}>
+                  <Button
+                    as="a"
+                    target="_blank"
+                    href={GoogleCalendarLink({
+                      text: `Pernikahan: ${bride.nickname} dan ${groom.nickname}`,
+                      details: `Acara pernikahan\n\n${groom.full_name}\nputra dari ${groom.father} & ${groom.mother}\n${bride.full_name}\nputri dari ${bride.father} & ${bride.mother}`,
+                      dates: {
+                        start: contractDateFunc.toISOString(),
+                        end: contractDateFunc.add(2, "hours").toISOString()
+                      },
+                      location: "Pondok Daun Restaurant"
+                    })}
+                    text="Remind Me"
+                  />
+                </Box>
+              </Box>
+            )
+          }}
+        </Counter>
 
         {/* Location */}
         <Flex as="section"
@@ -499,7 +548,13 @@ const TemplateTwo = ({
           </Box>
 
           <Box sx={{ flexShrink: 1, maxWidth: ["100%", 350], width: "100%", mx: "auto", pt: 4, px: 3 }}>
-            <form onSubmit={handleSubmit(onComment)}>
+            <form onSubmit={executeRecaptcha}>
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                size="invisible"
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                onChange={onReCAPTCHAChange}
+              />
               <Flex mb={2} mx={-2}>
                 <Box px={2} width="50%">
                   <Input
@@ -529,7 +584,7 @@ const TemplateTwo = ({
                 />
               </Box>
               <div>
-                <Button text="Kirim" type="submit" disabled={isSubmitting} />
+                <Button text="Kirim" type="submit" disabled={loading} />
               </div>
               {errors && errors.form &&
                 <Box color="red.3" mt={2} fontSize={1}>
