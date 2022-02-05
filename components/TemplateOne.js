@@ -35,6 +35,7 @@ const TemplateOne = (props) => {
     gallery,
     music,
     featured_image,
+    optional
   } = props;
 
   const receptionDateFunc = moment(reception.date);
@@ -84,7 +85,6 @@ const TemplateOne = (props) => {
           }
         });
 
-        console.log(resComments);
         setComments(resComments.data);
       } catch (err) {
         console.error(err);
@@ -193,8 +193,8 @@ const TemplateOne = (props) => {
           sx={{ mt: 6, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
         >
           <Text as="div" mb={3} fontFamily="script" fontSize={6} >We Found Love</Text>
-          <Text as="p" mb={3} >And more than all, have love; the only way in which you may be completely joined together. And let the peace of Christ be ruling in your hearts, as it was the purpose of God for you to be one body; and give praise to God at all times</Text>
-          <Text as="p" fontWeight="bold">Colossians 3:14-15</Text>
+          <Text as="p" mb={3} >{optional.verse_content}</Text>
+          <Text as="p" fontWeight="bold">{optional.verse}</Text>
         </Box>
 
         <Flex as="section"
