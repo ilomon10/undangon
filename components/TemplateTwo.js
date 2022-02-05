@@ -168,8 +168,8 @@ const TemplateTwo = ({
                 as="a"
                 target="_blank"
                 href={GoogleCalendarLink({
-                  text: `Pernikahan: ${"Moriane"} dan ${"Irwan"}`,
-                  details: `Acara pernikahan\n\n${"Irwan Setiawan Sitaba, S.T."}\nputra dari ${"Bapak Ronny Sitaba & Ibu Indayani Amien"}\n${"Moriane Elisabeth Worotitjan, S.H."}\nputri dari ${"Bapak Max P. Worotitjan & Ibu Martje C. Langitan"}`,
+                  text: `Pernikahan: ${bride.nickname} dan ${groom.nickname}`,
+                  details: `Acara pernikahan\n\n${groom.full_name}\nputra dari ${groom.father} & ${groom.mother}\n${bride.full_name}\nputri dari ${bride.father} & ${bride.mother}`,
                   dates: {
                     start: contractDateFunc.toISOString(),
                     end: contractDateFunc.add(2, "hours").toISOString()
@@ -359,8 +359,8 @@ const TemplateTwo = ({
                     as="a"
                     target="_blank"
                     href={GoogleCalendarLink({
-                      text: `Pernikahan: ${"Moriane"} dan ${"Irwan"}`,
-                      details: `Acara pernikahan\n\n${"Irwan Setiawan Sitaba, S.T."}\nputra dari ${"Bapak Ronny Sitaba & Ibu Indayani Amien"}\n${"Moriane Elisabeth Worotitjan, S.H."}\nputri dari ${"Bapak Max P. Worotitjan & Ibu Martje C. Langitan"}`,
+                      text: `Pernikahan: ${bride.nickname} dan ${groom.nickname}`,
+                      details: `Acara pernikahan\n\n${groom.full_name}\nputra dari ${groom.father} & ${groom.mother}\n${bride.full_name}\nputri dari ${bride.father} & ${bride.mother}`,
                       dates: {
                         start: contractDateFunc.toISOString(),
                         end: contractDateFunc.add(2, "hours").toISOString()
