@@ -418,7 +418,7 @@ const TemplateOne = (props) => {
                   mb: 2
                 }}
               >{contract.location}</Box>
-              <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Bandung</Box>
+              <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{contract.city}</Box>
             </Box>
           </Flex>
           <Text color="gray.5">{contract.address}</Text>
@@ -484,7 +484,7 @@ const TemplateOne = (props) => {
                   mb: 2
                 }}
               >{reception.location}</Box>
-              <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Bandung</Box>
+              <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{reception.city}</Box>
             </Box>
           </Flex>
           <Text color="gray.5">{reception.address}</Text>
