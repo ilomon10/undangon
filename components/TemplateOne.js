@@ -213,8 +213,8 @@ const TemplateOne = (props) => {
           sx={{ mt: 6, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
         >
           <Text as="div" mb={3} fontFamily="script" fontSize={6} >We Found Love</Text>
-          <Text as="p" mb={3} >{optional.verse_content}</Text>
-          <Text as="p" fontWeight="bold">{optional.verse}</Text>
+          <Text as="p" mb={3} >{optional.verse_quote[0].content}</Text>
+          <Text as="p" fontWeight="bold">{optional.verse_quote[0].verse}</Text>
         </Box>
 
         <Flex as="section"
@@ -532,7 +532,6 @@ const TemplateOne = (props) => {
                     >
                       <Image
                         alt={alt}
-                        placeholder="blur"
                         height={height}
                         width={width}
                         src={url}

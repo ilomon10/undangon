@@ -278,7 +278,6 @@ const TemplateTwo = ({
                       >
                         <Image
                           alt={alt}
-                          placeholder="blur"
                           height={height}
                           width={width}
                           src={url}
@@ -322,13 +321,7 @@ const TemplateTwo = ({
           />
           <Box sx={{ maxWidth: 710, mx: "auto" }}>
             <Flex sx={{ mx: -3, px: 3, flexDirection: ["column", "row"], textAlign: "center" }}>
-              {[{
-                verse: optional.first_verse,
-                content: optional.first_verse_content,
-              }, {
-                verse: optional.second_verse,
-                content: optional.second_verse_content,
-              }].map(({ verse, content }, i) => (
+              {optional.verse_quote.map(({ verse, content }, i) => (
                 <Box key={i} px={3} mb={[3, 0]}>
                   <Fade {...(i < 1 ? { left: true } : { right: true })}>
                     <Box sx={{
