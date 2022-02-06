@@ -48,7 +48,7 @@ const TemplateOne = (props) => {
 
   const recaptchaRef = useRef();
 
-  const { register, handleSubmit, errors } = useForm();
+  const { register, handleSubmit, errors, reset } = useForm();
 
   const [loading, setLoading] = useState(false);
 
@@ -81,6 +81,7 @@ const TemplateOne = (props) => {
     } catch (err) {
       console.log(err);
     }
+    reset();
   }
 
   const executeRecaptcha = (event) => {
@@ -670,7 +671,7 @@ const TemplateOne = (props) => {
                 />
               </Box>
               <Box>
-                <Button text="Send" type="submit" disabled={loading} />
+                <Button text={loading ? "Loading..." : "Send"} type="submit" disabled={loading} />
               </Box>
             </form>
           </Box>

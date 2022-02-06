@@ -46,7 +46,7 @@ const TemplateTwo = ({
 
   const [comments, setComments] = useState([]);
 
-  const { register, handleSubmit, setError, errors } = useForm();
+  const { register, handleSubmit, setError, errors, reset } = useForm();
 
   const [loading, setLoading] = useState(false);
 
@@ -81,6 +81,7 @@ const TemplateTwo = ({
         message: err.response.message
       });
     }
+    reset();
   }
 
   const executeRecaptcha = (event) => {
@@ -604,7 +605,7 @@ const TemplateTwo = ({
                 />
               </Box>
               <div>
-                <Button text="Kirim" type="submit" disabled={loading} />
+                <Button text={loading ? "Loading..." : "Kirim"} type="submit" disabled={loading} />
               </div>
               {errors && errors.form &&
                 <Box color="red.3" mt={2} fontSize={1}>
