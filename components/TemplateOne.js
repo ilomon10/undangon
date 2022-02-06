@@ -11,9 +11,11 @@ import Zoom from "react-medium-image-zoom";
 import ReCAPTCHA from "react-google-recaptcha";
 
 import {
-  AspectRatio, Box, Button, Input, Flex, State, Text, Counter,
+  AspectRatio, Box, Button, Input, Flex, Text, Counter,
 } from "./";
 import theme from "./theme";
+import { getPercentage, getRatioFromDimension } from "./AspectRatio";
+import { GRADIENT } from "./blurImage";
 
 const extTheme = {
   ...theme,
@@ -517,41 +519,65 @@ const TemplateOne = (props) => {
             <div>Gallery</div>
           </Text>
           <Flex flexWrap="wrap" mx={-2}>
-            {gallery.map(({ url, alt, id, height, width }) => (
-              <Box key={id} width={[`${100 / 2}%`, `${100 / 3}%`]} sx={{ px: 2, pb: 3 }}>
-                <Box as={AspectRatio} ratio="1:1" sx={{ borderRadius: 8, overflow: "hidden", }} >
-                  <Zoom wrapStyle={{ height: "100%", width: "100%", opacity: 0 }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        height: "100%",
-                        width: "100%",
-                        justifyContent: "center",
-                        alignItems: "center"
-                      }}
+            {gallery.map(({ url, alt, id, height, width }) => {
+              let ratio;
+              let perc = { h: 100, w: 100 };
+              if (width > height) {
+                ratio = getRatioFromDimension(height, width);
+                perc.w = getPercentage(width - height, height);
+                perc.w = perc.w + 100;
+              } else {
+                ratio = getRatioFromDimension(height, width);
+                perc.h = getPercentage(width - height, height);
+                perc.h = perc.h + 100;
+              }
+              return (
+                <Box key={id} width={[`${100 / 2}%`, `${100 / 3}%`]} sx={{ px: 2, pb: 3 }}>
+                  <Box
+                    as={AspectRatio}
+                    ratio="1:1"
+                    sx={{
+                      borderRadius: 8,
+                      overflow: "hidden",
+                      ".img": {
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%,-50%)"
+                      }
+                    }}
+                  >
+                    <Box
+                      className="img"
+                      as={AspectRatio}
+                      portrait={!ratio.isPortrait}
+                      ratio={ratio.isPortrait ? `${width}:${height}` : `${height}:${width}`}
                     >
-                      <Image
-                        alt={alt}
-                        height={height}
-                        width={width}
-                        src={url}
-                      />
-                    </div>
-                  </Zoom>
-                  <Box sx={{
-                    pointerEvents: "none",
-                    position: "absolute",
-                    inset: 0,
-                  }}>
-                    <Image
-                      objectFit="cover"
-                      layout="fill"
-                      src={url}
-                    />
+                      <Zoom wrapStyle={{ height: `100%`, width: `100%` }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            height: "100%",
+                            width: "100%",
+                            justifyContent: "center",
+                            alignItems: "center"
+                          }}
+                        >
+                          <Image
+                            alt={alt}
+                            placeholder="blur"
+                            blurDataURL={GRADIENT}
+                            height={height}
+                            width={width}
+                            src={url}
+                          />
+                        </div>
+                      </Zoom>
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
-            ))}
+              )
+            })}
           </Flex>
         </Box>
 
