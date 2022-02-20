@@ -11,12 +11,13 @@ const DariID = ({
     bride,
     groom,
     theme,
+    mode,
     contract,
     reception,
     gallery,
     music,
     featured_image,
-    optional
+    optional,
   }
 }) => {
   const router = useRouter();
@@ -41,6 +42,7 @@ const DariID = ({
       </Head>
       <Template
         theme={theme}
+        mode={mode}
         post={{
           id: id,
           slug: slug

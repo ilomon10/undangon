@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import moment from "moment";
 import axios from "axios";
 import PropTypes from "prop-types";
@@ -15,7 +15,7 @@ import { Fade, Flip } from "react-reveal";
 import {
   AspectRatio, Box, Button, Input, Flex, Text, Counter,
 } from "./";
-import theme from "./theme";
+import theme, { getTheme } from "./theme";
 import { getPercentage, getRatioFromDimension } from "./AspectRatio";
 import { GRADIENT } from "./blurImage";
 
@@ -23,7 +23,20 @@ const extTheme = {
   ...theme,
   colors: {
     ...theme.colors,
-    "accent": "#ffab70"
+    "accent": "#ffab70",
+    "text": theme.colors["black"],
+    "background": theme.colors["white"],
+    "lightText": theme.colors["gray"][4],
+    "lighterText": theme.colors["gray"][6],
+    modes: {
+      "dark": {
+        "lighterText": theme.colors["gray"][4],
+        "lightText": theme.colors["gray"][6],
+        "text": theme.colors["white"],
+        "background": theme.colors["black"],
+        "borderLine": theme.colors["gray"][8]
+      }
+    }
   },
   fonts: {
     serif: "Roboto Slab",
@@ -41,8 +54,15 @@ const TemplateOne = (props) => {
     gallery,
     music,
     featured_image,
-    optional
+    optional,
+    mode
   } = props;
+
+  const baseTheme = useMemo(() => {
+    return getTheme(mode, extTheme);
+  }, [mode]);
+
+  console.log(baseTheme, mode);
 
   const { query: searchParams } = useRouter();
   const [opened, setOpened] = useState(false);
@@ -57,7 +77,6 @@ const TemplateOne = (props) => {
   const { register, handleSubmit, errors, reset } = useForm();
 
   const [loading, setLoading] = useState(false);
-  const [isAudioReady, setIsAudioReady] = useState(false);
 
   const onComment = async (data) => {
 
@@ -145,8 +164,11 @@ const TemplateOne = (props) => {
   }, []);
 
   return (
-    <ThemeProvider theme={extTheme}>
-      <Box sx={{ fontFamily: "serif" }} overflowX="hidden">
+    <ThemeProvider theme={baseTheme}>
+      <Box sx={{
+        fontFamily: "serif",
+        backgroundColor: "background"
+      }} overflowX="hidden">
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;700&family=Roboto+Slab:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -329,12 +351,12 @@ const TemplateOne = (props) => {
             }}
           >
             <Fade bottom>
-              <Box sx={{ fontSize: [5, 6], mb: 4, color: "gray.6" }}>
+              <Box sx={{ fontSize: [5, 6], mb: 4, color: "lightText" }}>
                 <Box display={["block", "inline-block"]}>SAVE</Box>
                 <Box display={["block", "inline"]} fontFamily="script"> the </Box>
                 <Box display={["block", "inline-block"]}>DATE</Box>
               </Box>
-              <Box sx={{ fontSize: 5, mb: 4, fontWeight: 500 }}>
+              <Box sx={{ fontSize: 5, mb: 4, fontWeight: 500, color: "text" }}>
                 <span>{contractDateFunc.format("MMM")}</span>
                 <Box
                   as="span"
@@ -358,10 +380,11 @@ const TemplateOne = (props) => {
                     fontSize: [5, 6],
                     textTransform: "uppercase",
                     whiteSpace: "nowrap",
-                    transform: `scale(0.95)`
+                    transform: `scale(0.95)`,
+                    color: "text"
                   }}
                 >
-                  <Box display={["inline", "block"]}>{bride.nickname}</Box>
+                  <Box display={["inline", "block"]}>{groom.nickname}</Box>
                   <Box
                     sx={{
                       display: ["inline", "block"],
@@ -369,10 +392,10 @@ const TemplateOne = (props) => {
                       fontFamily: "script"
                     }}
                   >{` & `}</Box>
-                  <Box display={["inline", "block"]}>{groom.nickname}</Box>
+                  <Box display={["inline", "block"]}>{bride.nickname}</Box>
                 </Box>
               </Box>
-              <Box color="gray.4" fontSize={1}>
+              <Box color="lightText" fontSize={1}>
                 <div>To be followed by food, laughter</div>
                 <div>and a happily ever after.</div>
               </Box>
@@ -382,68 +405,33 @@ const TemplateOne = (props) => {
 
         <Box as="section"
           className="page second-page"
-          sx={{ mt: 6, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
+          sx={{
+            mt: 6,
+            mx: "auto",
+            px: 3,
+            maxWidth: 710,
+            textAlign: "center",
+          }}
         >
           <Fade bottom>
-            <Text as="div" mb={3} fontFamily="script" fontSize={6} >We Found Love</Text>
-            <Text as="p" mb={3} >{optional.verse_quote[0].content}</Text>
-            <Text as="p" fontWeight="bold">{optional.verse_quote[0].verse}</Text>
+            <Text as="div" color="accent" mb={3} fontFamily="script" fontSize={6} >We Found Love</Text>
+            <Text as="p" color="text" mb={3} >{optional.verse_quote[0].content}</Text>
+            <Text as="p" color="lightText" fontWeight="bold">{optional.verse_quote[0].verse}</Text>
           </Fade>
         </Box>
 
         <Flex as="section"
           sx={{
+            height: "75vh",
             mt: 6,
             mx: "auto",
             px: 3,
             maxWidth: 710,
             flexDirection: ["column", "row"],
             alignItems: "center",
+            justifyContent: "center"
           }}
         >
-          <Flex
-            sx={{
-              mb: [4, 0],
-              width: ["auto", "50%"],
-              flexDirection: ["row", "column"],
-              alignItems: "center",
-            }}
-          >
-            <Fade left>
-              <Box
-                sx={{
-                  mx: [0, "auto"],
-                  mb: [0, 4],
-                  mr: [3, "auto"],
-                  overflow: "hidden",
-                  height: [115, 175],
-                  width: [115, 175],
-                  borderRadius: "100%",
-                  position: "relative",
-                  flexShrink: 0
-                }}
-              >
-                <Box
-                  as="img"
-                  src={bride.image}
-                  sx={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "cover",
-                  }}
-                />
-              </Box>
-              <Box sx={{ textAlign: ["left", "center"], mb: 3, fontSize: 1 }}>
-                <Box as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 1, color: "accent" }}>{bride.nickname}</Box>
-                <Box as="div" sx={{ color: "gray.5", mb: [2, 4] }}>{bride.full_name}</Box>
-                <Box sx={{ mb: 2 }}>Putri dari:</Box>
-                <Box color="gray.5">
-                  <div>{bride.father}</div>
-                  <div>{bride.mother}</div>
-                </Box>
-              </Box>
-            </Fade>
-          </Flex>
           <Flex
             sx={{
               mb: 0,
@@ -478,15 +466,59 @@ const TemplateOne = (props) => {
               </Box>
               <Box sx={{ textAlign: ["left", "center"], mb: 3, fontSize: 1 }}>
                 <Box as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 1, color: "accent" }}>{groom.nickname}</Box>
-                <Box as="div" sx={{ color: "gray.5", mb: [2, 4] }}>{groom.full_name}</Box>
-                <Box sx={{ mb: 2 }}>Putra dari:</Box>
-                <Box color="gray.5">
+                <Box as="div" sx={{ color: "lighterText", mb: [2, 4] }}>{groom.full_name}</Box>
+                <Box sx={{ mb: 2, color: "lightText" }}>Putra dari:</Box>
+                <Box color="lighterText">
                   <div>{groom.father}</div>
                   <div>{groom.mother}</div>
                 </Box>
               </Box>
             </Fade>
           </Flex>
+          <Flex
+            sx={{
+              mb: [4, 0],
+              width: ["auto", "50%"],
+              flexDirection: ["row-reverse", "column"],
+              alignItems: "center",
+            }}
+          >
+            <Fade left>
+              <Box
+                sx={{
+                  mx: [0, "auto"],
+                  mb: [0, 4],
+                  ml: [3, "auto"],
+                  overflow: "hidden",
+                  height: [115, 175],
+                  width: [115, 175],
+                  borderRadius: "100%",
+                  position: "relative",
+                  flexShrink: 0
+                }}
+              >
+                <Box
+                  as="img"
+                  src={bride.image}
+                  sx={{
+                    height: "100%",
+                    width: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </Box>
+              <Box sx={{ textAlign: ["right", "center"], mb: 3, fontSize: 1 }}>
+                <Box as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 1, color: "accent" }}>{bride.nickname}</Box>
+                <Box as="div" sx={{ color: "lighterText", mb: [2, 4] }}>{bride.full_name}</Box>
+                <Box sx={{ mb: 2, color: "lightText" }}>Putri dari:</Box>
+                <Box color="lighterText">
+                  <div>{bride.father}</div>
+                  <div>{bride.mother}</div>
+                </Box>
+              </Box>
+            </Fade>
+          </Flex>
+
         </Flex>
 
         <Counter target={contractDateFunc}>
@@ -495,7 +527,7 @@ const TemplateOne = (props) => {
             if (duration.milliseconds() < 0 || duration.seconds() < 0) { return null; }
             return (
               <Box as="section" mt={6} px={2}>
-                <Box fontSize={2} color="gray.4" textAlign="center">Countdown</Box>
+                <Box fontSize={2} color="lightText" textAlign="center">Countdown</Box>
                 <Flex justifyContent="center">
                   <Flex
                     sx={{
@@ -506,9 +538,11 @@ const TemplateOne = (props) => {
                         ".title": {
                           p: 2,
                           fontSize: [5, 6],
+                          color: "text",
                         },
                         ".subtitle": {
                           fontSize: [1, 2],
+                          color: "lighterText"
                         }
                       }
                     }}
@@ -554,6 +588,7 @@ const TemplateOne = (props) => {
                 justifyContent: "center",
                 alignItems: "center",
                 mb: 3,
+                color: "lighterText",
                 "> *": {
                   flexShrink: 0
                 }
@@ -563,7 +598,7 @@ const TemplateOne = (props) => {
                 <Box
                   sx={{
                     borderBottomWidth: 2,
-                    borderBottomColor: "gray.3",
+                    borderBottomColor: "borderLine",
                     borderBottomStyle: "solid",
                     pb: 2,
                     mb: 2
@@ -575,7 +610,7 @@ const TemplateOne = (props) => {
                 sx={{
                   width: ["25%", "20%"],
                   borderWidth: 2,
-                  borderColor: "black",
+                  borderColor: "borderLine",
                   borderStyle: "solid",
                   borderBottom: 0,
                   borderTop: 0,
@@ -591,7 +626,7 @@ const TemplateOne = (props) => {
                 <Box
                   sx={{
                     borderBottomWidth: 2,
-                    borderBottomColor: "gray.3",
+                    borderBottomColor: "borderLine",
                     borderBottomStyle: "solid",
                     pb: 2,
                     mb: 2
@@ -600,7 +635,7 @@ const TemplateOne = (props) => {
                 <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{contract.city}</Box>
               </Box>
             </Flex>
-            <Text color="gray.5">{contract.address}</Text>
+            <Text color="lighterText">{contract.address}</Text>
           </Fade>
         </Box>
 
@@ -622,6 +657,7 @@ const TemplateOne = (props) => {
                 justifyContent: "center",
                 alignItems: "center",
                 mb: 3,
+                color: "lighterText",
                 "> *": {
                   flexShrink: 0
                 }
@@ -631,7 +667,7 @@ const TemplateOne = (props) => {
                 <Box
                   sx={{
                     borderBottomWidth: 2,
-                    borderBottomColor: "gray.3",
+                    borderBottomColor: "borderLine",
                     borderBottomStyle: "solid",
                     pb: 2,
                     mb: 2
@@ -643,7 +679,7 @@ const TemplateOne = (props) => {
                 sx={{
                   width: ["25%", "20%"],
                   borderWidth: 2,
-                  borderColor: "black",
+                  borderColor: "borderLine",
                   borderStyle: "solid",
                   borderBottom: 0,
                   borderTop: 0,
@@ -659,7 +695,7 @@ const TemplateOne = (props) => {
                 <Box
                   sx={{
                     borderBottomWidth: 2,
-                    borderBottomColor: "gray.3",
+                    borderBottomColor: "borderLine",
                     borderBottomStyle: "solid",
                     pb: 2,
                     mb: 2
@@ -694,7 +730,7 @@ const TemplateOne = (props) => {
         </Box>
 
         <Box as="section" sx={{ mt: 5, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}>
-          <Text sx={{ display: "block", fontFamily: "script", fontSize: 6, mb: 4 }}>
+          <Text sx={{ display: "block", fontFamily: "script", fontSize: 6, mb: 4, color: "lighterText" }}>
             <div>Wedding</div>
             <div>Gallery</div>
           </Text>
@@ -780,7 +816,8 @@ const TemplateOne = (props) => {
                 fontFamily: "script",
                 fontSize: 6,
                 flexShrink: 0,
-                mb: 4
+                mb: 4,
+                color: "lighterText"
               }}
             >
               <span>Guest Book</span>
@@ -793,22 +830,22 @@ const TemplateOne = (props) => {
                       sx={{
                         borderWidth: 1,
                         borderStyle: "solid",
-                        borderColor: "gray.2"
+                        borderColor: "borderLine"
                       }}
                     >
                       <Box sx={{
-                        bg: "gray.1",
+                        bg: "borderLine",
                         p: 2,
                         fontSize: 2,
-                        // color: "gray.5",
+                        color: "text",
                         borderBottomWidth: 1,
                         borderBottomStyle: "solid",
-                        borderBottomColor: "gray.2"
+                        borderBottomColor: "borderLine"
                       }}>
                         <Box as="span" display={["block", "inline"]}>{comment["author_name"]}</Box>
-                        <Box as="span" display={["block", "inline"]} color="gray.5"> - {moment(comment["date"]).calendar()}</Box>
+                        <Box as="span" display={["block", "inline"]} color="lighterText"> - {moment(comment["date"]).calendar()}</Box>
                       </Box>
-                      <Box fontSize={4} fontFamily="script" p={2}>
+                      <Box fontSize={4} fontFamily="script" p={2} color="text">
                         <div dangerouslySetInnerHTML={{ __html: comment.content.rendered }} />
                       </Box>
                     </Box>
@@ -876,8 +913,17 @@ const TemplateOne = (props) => {
         </Box>
 
         {/* Caution */}
-        <Box as="section"
-          sx={{ mt: 5, mx: "auto", px: 3, maxWidth: 710, textAlign: "center", lineHeight: 1.5 }}
+        <Box
+          as="section"
+          sx={{
+            mt: 5,
+            mx: "auto",
+            px: 3,
+            maxWidth: 710,
+            textAlign: "center",
+            lineHeight: 1.5,
+            color: "lightText"
+          }}
         >
           <Box textAlign={["justify", "center"]}>Jangan ragu untuk datang, kami sudah berkordinasi dengan semua pihak terkait pencegahan penularan COVID-19. Acara kami akan mengikuti segala prosedur protokol kesehatan untuk mencegah penularan COVID-19. So, don't be panic, we look forward to seeing you there!</Box>
           <Flex
@@ -938,7 +984,7 @@ const TemplateOne = (props) => {
                         fontSize: 4,
                         height: 30,
                         width: 30,
-                        backgroundColor: "white",
+                        backgroundColor: "background",
                         borderRadius: 4,
                         border: "2px solid white",
                         borderColor: "yellow.6",
@@ -978,15 +1024,12 @@ const TemplateOne = (props) => {
             <AudioPlayer
               ref={audioPlayerRef}
               src={music}
-              onCanPlay={() => {
-                setIsAudioReady(true);
-              }}
               controls
             />
           </Box>
         }
 
-        <Box as="footer" my={5} textAlign="center" color="gray.3">
+        <Box as="footer" my={5} textAlign="center" color="lightText">
           <div>Made with ❤ by Ba Undang.</div>
         </Box>
       </Box>
