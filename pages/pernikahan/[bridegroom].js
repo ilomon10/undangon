@@ -19,6 +19,8 @@ const DariID = ({
   }
 }) => {
   const previewImage = featured_image["sizes"]["post-thumbnail"];
+  const previewImageWidth = featured_image["sizes"]["post-thumbnail-width"];
+  const previewImageHeight = featured_image["sizes"]["post-thumbnail-height"];
   return (
     <>
       <Head>
@@ -30,6 +32,8 @@ const DariID = ({
         <meta property="og:title" content={`The Wedding of ${bride.nickname} & ${groom.nickname} - Ba Undang`} key="ogtitle" />
         <meta property="og:description" content={`Save the date ${moment(contract.date).format("DD MMMM YYYY")}`} key="ogdesc" />
         <meta property="og:image" content={previewImage} key="ogimage" />
+        <meta property="og:image:width" content={previewImageWidth} key="ogimagewidth" />
+        <meta property="og:image:height" content={previewImageHeight} key="ogimageheight" />
         <meta property="og:site_name" content="Ba Undang" key="ogsitename" />
         <meta property="og:url" content={`https://baundang.me/`} key="ogurl" />
       </Head>
