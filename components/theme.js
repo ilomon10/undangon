@@ -1,3 +1,12 @@
+import merge from 'lodash.merge'
+import get from 'lodash.get'
+
+export const getTheme = (mode, baseTheme) => {
+  return merge({}, baseTheme, {
+    colors: get(baseTheme.colors.modes, mode, baseTheme.colors),
+  })
+}
+
 export const colors = {
   "black": "#1b1f23",
   "white": "#fff",

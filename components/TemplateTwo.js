@@ -13,6 +13,8 @@ import theme from "./theme"
 import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
 import ReCAPTCHA from "react-google-recaptcha";
+import { getPercentage, getRatioFromDimension } from "./AspectRatio";
+import { GRADIENT } from "./blurImage";
 
 const extTheme = {
   ...theme,
@@ -44,7 +46,7 @@ const TemplateTwo = ({
 
   const [comments, setComments] = useState([]);
 
-  const { register, handleSubmit, setError, errors } = useForm();
+  const { register, handleSubmit, setError, errors, reset } = useForm();
 
   const [loading, setLoading] = useState(false);
 
@@ -79,6 +81,7 @@ const TemplateTwo = ({
         message: err.response.message
       });
     }
+    reset();
   }
 
   const executeRecaptcha = (event) => {
@@ -88,7 +91,7 @@ const TemplateTwo = ({
   }
 
   const onReCAPTCHAChange = async (captchaCode) => {
-    if(captchaCode) {
+    if (captchaCode) {
       await handleSubmit(onComment)();
     }
     setLoading(false);
@@ -262,44 +265,68 @@ const TemplateTwo = ({
             <Box fontSize={[4, 5]} color="gray.6">Gallery</Box>
           </Fade>
           <Flex mt={5} mx={-2} flexWrap="wrap" justifyContent="center">
-            {gallery.map(({ url, alt, id, height, width }) => (
-              <Box key={id} width={[`${100 / 2}%`, `${100 / 3}%`]} px={2} pb={3}>
-                <Flip bottom fraction={0.5}>
-                  <Box as={AspectRatio} ratio="1:1" sx={{ borderRadius: 8, overflow: "hidden", }} >
-                    <Zoom wrapStyle={{ height: "100%", width: "100%", opacity: 0 }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          height: "100%",
-                          width: "100%",
-                          justifyContent: "center",
-                          alignItems: "center"
-                        }}
+            {gallery.map(({ url, alt, id, height, width }) => {
+              let ratio;
+              let perc = { h: 100, w: 100 };
+              if (width > height) {
+                ratio = getRatioFromDimension(height, width);
+                perc.w = getPercentage(width - height, height);
+                perc.w = perc.w + 100;
+              } else {
+                ratio = getRatioFromDimension(height, width);
+                perc.h = getPercentage(width - height, height);
+                perc.h = perc.h + 100;
+              }
+              // console.log(ratio);
+              return (
+                <Box key={id} width={[`${100 / 2}%`, `${100 / 3}%`]} px={2} pb={3}>
+                  <Flip bottom fraction={0.5}>
+                    <Box
+                      as={AspectRatio}
+                      ratio="1:1"
+                      sx={{
+                        borderRadius: 8,
+                        overflow: "hidden",
+                        backgroundColor: "gray.1",
+                        ".img": {
+                          position: "absolute",
+                          left: "50%",
+                          transform: "translateX(-50%)"
+                        }
+                      }}
+                    >
+                      <Box
+                        className="img"
+                        as={AspectRatio}
+                        portrait={!ratio.isPortrait}
+                        ratio={ratio.isPortrait ? `${width}:${height}` : `${height}:${width}`}
                       >
-                        <Image
-                          alt={alt}
-                          placeholder="blur"
-                          height={height}
-                          width={width}
-                          src={url}
-                        />
-                      </div>
-                    </Zoom>
-                    <Box sx={{
-                      pointerEvents: "none",
-                      position: "absolute",
-                      inset: 0,
-                    }}>
-                      <Image
-                        objectFit="cover"
-                        layout="fill"
-                        src={url}
-                      />
+                        <Zoom wrapStyle={{ height: "100%", width: "100%" }}>
+                          <div
+                            style={{
+                              display: "flex",
+                              height: "100%",
+                              width: "100%",
+                              justifyContent: "center",
+                              alignItems: "center"
+                            }}
+                          >
+                            <Image
+                              placeholder="blur"
+                              blurDataURL={GRADIENT}
+                              alt={alt}
+                              height={height}
+                              width={width}
+                              src={url}
+                            />
+                          </div>
+                        </Zoom>
+                      </Box>
                     </Box>
-                  </Box>
-                </Flip>
-              </Box>
-            ))}
+                  </Flip>
+                </Box>
+              )
+            })}
           </Flex>
         </Box>
 
@@ -322,13 +349,7 @@ const TemplateTwo = ({
           />
           <Box sx={{ maxWidth: 710, mx: "auto" }}>
             <Flex sx={{ mx: -3, px: 3, flexDirection: ["column", "row"], textAlign: "center" }}>
-              {[{
-                verse: optional.first_verse,
-                content: optional.first_verse_content,
-              }, {
-                verse: optional.second_verse,
-                content: optional.second_verse_content,
-              }].map(({ verse, content }, i) => (
+              {optional.verse_quote.map(({ verse, content }, i) => (
                 <Box key={i} px={3} mb={[3, 0]}>
                   <Fade {...(i < 1 ? { left: true } : { right: true })}>
                     <Box sx={{
@@ -584,7 +605,7 @@ const TemplateTwo = ({
                 />
               </Box>
               <div>
-                <Button text="Kirim" type="submit" disabled={loading} />
+                <Button text={loading ? "Loading..." : "Kirim"} type="submit" disabled={loading} />
               </div>
               {errors && errors.form &&
                 <Box color="red.3" mt={2} fontSize={1}>
