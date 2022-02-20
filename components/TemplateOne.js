@@ -989,7 +989,7 @@ const TemplateOne = (props) => {
         <Box as="footer" my={5} textAlign="center" color="gray.3">
           <div>Made with ❤ by Ba Undang.</div>
         </Box>
-      </Box >
+      </Box>
     </ThemeProvider >
   );
 }
