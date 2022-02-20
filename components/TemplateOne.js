@@ -216,7 +216,7 @@ const TemplateOne = (props) => {
                   transform: "translate(-50%, -50%)",
                   borderRadius: 8,
                   overflow: "hidden",
-                  maxWidth: 393,
+                  maxWidth: 512,
                   maxHeight: 851,
                   height: "100%",
                   width: "100%",
@@ -260,6 +260,7 @@ const TemplateOne = (props) => {
                 px: 2,
                 color: "white",
                 textAlign: "center",
+                maxWidth: 512,
               }}>
                 <Box sx={{ textShadow: "1px 1px 4px rgba(0,0,0,0.65)" }}>
                   <Box sx={{ fontSize: 2, fontWeight: "bold", mb: 2, mt: 4 }}>Dear Mr/Mrs/Ms</Box>
