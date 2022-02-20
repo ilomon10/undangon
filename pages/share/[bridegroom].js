@@ -1,6 +1,6 @@
 import "normalize.css/normalize.css";
 import "@blueprintjs/core/lib/css/blueprint.css";
-import { FormGroup, InputGroup, Button, TextArea, Classes } from "@blueprintjs/core";
+import { FormGroup, InputGroup, Button, TextArea, Classes, Collapse } from "@blueprintjs/core";
 import Head from "next/head";
 import Template from "components/Template";
 import Client from "components/client";
@@ -17,18 +17,14 @@ const DariID = ({
     contract,
   }
 }) => {
-  const url = `https://baundang.me/pernikahan/${slug}`;
+  const urlRaw = `https://baundang.me/pernikahan/${slug}`;
   const transformDescription = (raw, opt) => {
     let text = raw;
     let data = {
       to: "",
-      url: url,
-      date: moment(contract.date).format("dddd, DD MMMM YYYY"),
-      groom: groom.nickname,
-      bride: bride.nickname,
+      url: "",
       ...opt
     }
-    data.url = `${data.url}?untuk=${data["to"]}`;
 
     for (let key in data) {
       text = text.replace(`{{${key}}}`, data[key]);
@@ -54,15 +50,28 @@ const DariID = ({
       >
         <Formik
           initialValues={{
+            "isVarOpen": false,
             "to": "",
-            "description": "Dear {{to}},\n\nWith all due respect, we send this e-invitation : \n{{url}}\n\nWe ask for your blessing on our wedding day. However, due to the circumstances of the Covid-19 pandemic and to acknowledge with health protocols, we apologize for not being able to invite you to attend the wedding ceremony. You can still be a part of our Wedding by leave your wishes . \n\n⏰ – {{date}}\n\nThank you for all the prayers and support. It will be a wonderful gift for us. \n\n\nWith pray & love,\n{{groom}} & {{bride}}\n\n\n#BaundangMe",
+            "url": urlRaw,
+            "date": moment(contract.date).format("dddd, DD MMMM YYYY"),
+            "groom": groom.nickname,
+            "bride": bride.nickname,
+            "description": "Dear {{to}},\n\nWith all due respect, we send this e-invitation : \n{{url}}\n\nWe ask for your blessing on our wedding day. However, due to the circumstances of the Covid-19 pandemic and to acknowledge with health protocols, we apologize for not being able to invite you to attend the wedding ceremony. You can still be a part of our Wedding by leave your wishes . \n\n⏰ – {{date}}\n\nThank you for all the prayers and support. It will be a wonderful gift for us. \n\n\nWith pray & love,\n{{groom}} & {{bride}}\n\n\n#BaundangMe\n",
           }}
           onSubmit={async (values, { setSubmitting }) => {
+            const text = transformDescription(values["description"], {
+              to: values["to"],
+              url: values["url"],
+              date: values["date"],
+              groom: values["groom"],
+              bride: values["bride"],
+            })
+            console.log(text);
             try {
               await navigator.share({
-                url: `${url}?untuk=${values["to"]}`,
+                url: values["url"],
                 title: `Undangan Pernikahan: ${groom.nickname} & ${bride.nickname}`,
-                text: values["description"],
+                text,
               });
             } catch (err) {
               console.error(err);
@@ -80,7 +89,12 @@ const DariID = ({
                   id="f-to"
                   name="to"
                   value={values["to"]}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    handleChange(e);
+                    const value = e.target.value;
+                    const params = new URLSearchParams(`?untuk=${value}`);
+                    setFieldValue("url", value ? `${urlRaw}?${params.toString()}` : values["url"]);
+                  }}
                   placeholder="Who?"
                 />
               </FormGroup>
@@ -100,6 +114,38 @@ const DariID = ({
                   fill={true}
                 />
               </FormGroup>
+
+              <Box textAlign="right">
+                <Button
+                  minimal={true}
+                  small={true}
+                  text="Variable Reference"
+                  onClick={() => {
+                    setFieldValue("isVarOpen", !values["isVarOpen"]);
+                  }}
+                />
+              </Box>
+              <Box mb={3}>
+                <Collapse isOpen={values["isVarOpen"]}>
+                  {[
+                    ["to", values["to"]],
+                    ["url", values["url"]],
+                    ["date", values["date"]],
+                    ["groom", values["groom"]],
+                    ["bride", values["bride"]],
+                  ].map(([a, b]) => (
+                    <Box key={a}>
+                      <Box
+                        className={Classes.CODE}
+                        sx={{
+                          display: "inline-block",
+                        }}
+                      >{`{{${a}}}`}</Box> {b}
+                    </Box>
+                  ))}
+                </Collapse>
+              </Box>
+
               <FormGroup label="Preview">
                 <Box
                   className={Classes.CODE_BLOCK}
@@ -107,7 +153,13 @@ const DariID = ({
                     whiteSpace: "pre-line"
                   }}
                 >
-                  {transformDescription(values["description"], { to: values["to"] })}
+                  {transformDescription(values["description"], {
+                    to: values["to"],
+                    url: values["url"],
+                    date: values["date"],
+                    groom: values["groom"],
+                    bride: values["bride"],
+                  })}
                 </Box>
               </FormGroup>
               <Box sx={{ textAlign: "center" }}>
