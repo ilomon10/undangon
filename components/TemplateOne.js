@@ -152,31 +152,114 @@ const TemplateOne = (props) => {
           <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;700&family=Roboto+Slab:wght@300;400;500;600&display=swap" rel="stylesheet" />
         </Head>
 
-        {(searchParams.untuk && !opened) &&
-          <Box sx={{
-            position: "fixed",
-            zIndex: 999,
-            inset: 0,
-          }}>
+        {(searchParams.untuk) &&
+          <Box
+            className={opened && "opened"}
+            sx={{
+              position: "fixed",
+              zIndex: 999,
+              inset: 0,
+              opacity: "1",
+              transition: "500ms ease-out",
+              transitionDelay: "2000ms",
+              "&.opened": {
+                opacity: "0",
+                visibility: "hidden",
+              },
+              "& > .image": {
+                opacity: "1",
+                transform: "translateX(0)",
+                transition: "500ms ease-out",
+                transitionDelay: "1500ms",
+              },
+              "&.opened > .image": {
+                opacity: "0",
+                transform: "translateX(393px)",
+              },
+              "& > .image .overlay": {
+                opacity: "0.5",
+                transition: "500ms ease-out 500ms",
+                transitionDelay: "500ms",
+              },
+              "&.opened > .image .overlay": {
+                opacity: "0",
+              },
+              "& > .text": {
+                opacity: "1",
+                transition: "500ms ease-out",
+              },
+              "&.opened > .text": {
+                opacity: "0",
+              }
+            }}
+          >
             <Box sx={{
               position: "absolute",
               inset: 0,
               background: "rgb(0,142,145)",
               background: "linear-gradient(35deg, rgba(0,142,145,1) 0%, rgba(255,171,112,1) 100%)",
-              opacity: 0.85
+              opacity: 0.95
             }} />
-            <Flex sx={{
-              position: "absolute",
-              inset: 0,
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column"
-            }}>
+            <Box
+              className="image"
+              sx={{
+                position: "absolute",
+                inset: 0,
+                p: 3,
+              }}
+            >
+              <Box
+                sx={{
+                  position: "relative",
+                  left: "50%",
+                  top: "50%",
+                  transform: "translate(-50%, -50%)",
+                  borderRadius: 8,
+                  overflow: "hidden",
+                  maxWidth: 393,
+                  maxHeight: 851,
+                  height: "100%",
+                  width: "100%",
+                  boxShadow: "0px 0px 36px -16px grey",
+                }}
+              >
+                <Box
+                  className="overlay"
+                  sx={{
+                    position: "absolute",
+                    inset: 0,
+                    background: "rgb(0,142,145)",
+                    background: "linear-gradient(35deg, rgba(255,171,112,1) 0%, rgba(0,142,145,1) 100%)",
+                    opacity: 0.50
+                  }}
+                />
+                <Box
+                  as="img"
+                  src={featured_image["url"]}
+                  sx={{
+                    display: "block",
+                    height: "100%",
+                    width: "100%",
+                    objectFit: "cover"
+                  }}
+                />
+              </Box>
+            </Box>
+            <Flex
+              className="text"
+              sx={{
+                position: "absolute",
+                inset: 0,
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column"
+              }}
+            >
               <Box sx={{
                 py: 4,
                 px: 2,
                 color: "white",
-                textAlign: "center"
+                textAlign: "center",
               }}>
                 <Box sx={{ textShadow: "1px 1px 4px rgba(0,0,0,0.65)" }}>
                   <Box sx={{ fontSize: 2, fontWeight: "bold", mb: 2, mt: 4 }}>Dear Mr/Mrs/Ms</Box>
@@ -185,7 +268,13 @@ const TemplateOne = (props) => {
                 </Box>
                 <Box
                   as="button"
-                  onClick={() => { openInvitation() }}
+                  onClick={() => {
+                    if (opened) {
+                      closeInvitation();
+                    } else {
+                      openInvitation();
+                    }
+                  }}
                   sx={{
                     border: "1px solid white",
                     borderColor: "gray.4",
@@ -218,8 +307,9 @@ const TemplateOne = (props) => {
           >
             <Box
               as="img"
-              src={featured_image}
+              src={featured_image["url"]}
               sx={{
+                display: "block",
                 height: "100%",
                 width: "100%",
                 objectFit: "cover"

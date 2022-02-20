@@ -14,6 +14,12 @@ export default function Home() {
         <title>Ba Undang - Undangan Digital</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="description" content="Buat undangan digital kamu sekarang dengan harga yang terjangkau, dan juga bisa mengurangi pemakaian kertas berlebihan." />
+
+        <meta property="og:title" content={`Ba Undang - Undangan Digital`} key="ogtitle" />
+        <meta property="og:description" content={"Buat undangan digital kamu sekarang dengan harga yang terjangkau, dan juga bisa mengurangi pemakaian kertas berlebihan."} key="ogdesc" />
+        <meta property="og:image" content={"https://baundang.me/baundang.svg"} key="ogimage"/>
+        <meta property="og:site_name" content="Ba Undang" key="ogsitename"/>
+        <meta property="og:url" content="https://baundang.me/" key="ogurl"/>
       </Head>
 
       <header>

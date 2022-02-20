@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Template from "components/Template";
 import Client from "components/client";
+import moment from "moment";
 
 const DariID = ({
   slug,
@@ -17,11 +18,21 @@ const DariID = ({
     optional
   }
 }) => {
+  const previewImage = featured_image["sizes"]["medium"];
+  const previewImageWidth = featured_image["sizes"]["medium-width"];
+  const previewImageHeight = featured_image["sizes"]["medium-height"];
   return (
     <>
       <Head>
         <title>Undangan Pernikahan: {bride.nickname} dan {groom.nickname}</title>
-        <meta property="og:image" content={featured_image} data-addsearch="no_crop" />
+
+        <meta property="og:title" content={`The Wedding of ${bride.nickname} & ${groom.nickname}`} key="ogtitle" />
+        <meta property="og:description" content={`Save the date ${moment(contract.date).format("DDD MMMM YYYY")}`} key="ogdesc" />
+        <meta property="og:image" content={previewImage} key="ogimage"/>
+        <meta property="og:image:width" content={previewImageWidth} key="ogimagewidth"/>
+        <meta property="og:image:height" content={previewImageHeight} key="ogimageheight"/>
+        <meta property="og:site_name" content="Ba Undang" key="ogsitename"/>
+        <meta property="og:url" content="https://baundang.me/" key="ogurl"/>
       </Head>
       <Template
         theme={theme}
