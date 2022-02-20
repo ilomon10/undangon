@@ -13,11 +13,15 @@ import { useRouter } from "next/router";
 import { Fade, Flip } from "react-reveal";
 
 import {
-  AspectRatio, Box, Button, Input, Flex, Text, Counter,
+  AspectRatio, Box, Input, Flex, Text, Counter,
 } from "./";
+import { AnchorButton, Button } from "@blueprintjs/core";
 import theme, { getTheme } from "./theme";
 import { getPercentage, getRatioFromDimension } from "./AspectRatio";
 import { GRADIENT } from "./blurImage";
+
+import "normalize.css/normalize.css";
+import "@blueprintjs/core/lib/css/blueprint.css";
 
 const extTheme = {
   ...theme,
@@ -61,8 +65,6 @@ const TemplateOne = (props) => {
   const baseTheme = useMemo(() => {
     return getTheme(mode, extTheme);
   }, [mode]);
-
-  console.log(baseTheme, mode);
 
   const { query: searchParams } = useRouter();
   const [opened, setOpened] = useState(false);
@@ -157,7 +159,7 @@ const TemplateOne = (props) => {
         });
         setComments(resComments.data);
       } catch (err) {
-        console.error(err);
+        // do nothing
       }
     }
     fetch();
@@ -422,7 +424,7 @@ const TemplateOne = (props) => {
 
         <Flex as="section"
           sx={{
-            height: "75vh",
+            // height: "75vh",
             mt: 6,
             mx: "auto",
             px: 3,
@@ -635,7 +637,15 @@ const TemplateOne = (props) => {
                 <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{contract.city}</Box>
               </Box>
             </Flex>
-            <Text color="lighterText">{contract.address}</Text>
+            <Text color="lightText">{contract.address}</Text>
+            <Box mt={2}>
+              <AnchorButton
+                href={`https://www.google.com/maps/search/?api=1&query=${contract.pinpoint.latitude},${contract.pinpoint.longitude}`}
+                outlined={true}
+                intent="warning"
+                text="See location on Google Maps"
+              />
+            </Box>
           </Fade>
         </Box>
 
@@ -705,9 +715,18 @@ const TemplateOne = (props) => {
               </Box>
             </Flex>
             <Text color="gray.5">{reception.address}</Text>
+            <Box mt={2}>
+              <AnchorButton
+                href={`https://www.google.com/maps/search/?api=1&query=${reception.pinpoint.latitude},${reception.pinpoint.longitude}`}
+                outlined={true}
+                intent="warning"
+                text="See location on Google Maps"
+              />
+            </Box>
           </Fade>
         </Box>
 
+        {/* Maps */}
         <Box
           sx={{
             mt: 5,
@@ -729,6 +748,7 @@ const TemplateOne = (props) => {
           />
         </Box>
 
+        {/* Wedding Gallery */}
         <Box as="section" sx={{ mt: 5, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}>
           <Text sx={{ display: "block", fontFamily: "script", fontSize: 6, mb: 4, color: "lighterText" }}>
             <div>Wedding</div>
@@ -886,7 +906,11 @@ const TemplateOne = (props) => {
               </Box>
               <Flex mt={2}>
                 <Box>
-                  <Button text={loading ? "Loading..." : "Send"} type="submit" disabled={loading} />
+                  <Button
+                    text={"Send"}
+                    type="submit"
+                    loading={loading}
+                  />
                 </Box>
                 <Box sx={{
                   height: 30,
