@@ -9,6 +9,8 @@ import AudioPlayer from "react-audio-player";
 import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
 import ReCAPTCHA from "react-google-recaptcha";
+import { useRouter } from "next/router";
+import { Fade, Flip } from "react-reveal";
 
 import {
   AspectRatio, Box, Button, Input, Flex, Text, Counter,
@@ -42,15 +44,20 @@ const TemplateOne = (props) => {
     optional
   } = props;
 
+  const { query: searchParams } = useRouter();
+  const [opened, setOpened] = useState(false);
+
   const receptionDateFunc = moment(reception.date);
   const contractDateFunc = moment(contract.date);
   const [comments, setComments] = useState([]);
 
   const recaptchaRef = useRef();
+  const audioPlayerRef = useRef();
 
   const { register, handleSubmit, errors, reset } = useForm();
 
   const [loading, setLoading] = useState(false);
+  const [isAudioReady, setIsAudioReady] = useState(false);
 
   const onComment = async (data) => {
 
@@ -98,6 +105,28 @@ const TemplateOne = (props) => {
     recaptchaRef.current.reset();
   }
 
+  const openInvitation = async (force = true) => {
+    document.body.style.overflow = "";
+    if (force) {
+      const audioEl = audioPlayerRef.current.audioEl.current;
+      audioEl.play();
+    }
+    setOpened(true);
+  }
+
+  const closeInvitation = async () => {
+    document.body.style.overflow = "hidden";
+    setOpened(false);
+  }
+
+  useEffect(() => {
+    if (searchParams.untuk) {
+      closeInvitation();
+    } else {
+      openInvitation(false);
+    }
+  }, [searchParams.untuk]);
+
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -107,7 +136,6 @@ const TemplateOne = (props) => {
             "post": id
           }
         });
-
         setComments(resComments.data);
       } catch (err) {
         console.error(err);
@@ -123,6 +151,54 @@ const TemplateOne = (props) => {
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;700&family=Roboto+Slab:wght@300;400;500;600&display=swap" rel="stylesheet" />
         </Head>
+
+        {(searchParams.untuk && !opened) &&
+          <Box sx={{
+            position: "fixed",
+            zIndex: 999,
+            inset: 0,
+          }}>
+            <Box sx={{
+              position: "absolute",
+              inset: 0,
+              background: "rgb(0,142,145)",
+              background: "linear-gradient(35deg, rgba(0,142,145,1) 0%, rgba(255,171,112,1) 100%)",
+              opacity: 0.85
+            }} />
+            <Flex sx={{
+              position: "absolute",
+              inset: 0,
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column"
+            }}>
+              <Box sx={{
+                py: 4,
+                px: 2,
+                color: "white",
+                textAlign: "center"
+              }}>
+                <Box sx={{ textShadow: "1px 1px 4px rgba(0,0,0,0.65)" }}>
+                  <Box sx={{ fontSize: 2, fontWeight: "bold", mb: 2, mt: 4 }}>Dear Mr/Mrs/Ms</Box>
+                  <Box sx={{ fontSize: 5, mb: 4 }}>{searchParams.untuk}</Box>
+                  <Box sx={{ fontSize: 2, mb: 4 }}>You are invited to our wedding</Box>
+                </Box>
+                <Box
+                  as="button"
+                  onClick={() => { openInvitation() }}
+                  sx={{
+                    border: "1px solid white",
+                    borderColor: "gray.4",
+                    borderRadius: 4,
+                    px: 3,
+                    py: 2,
+                  }}
+                >
+                  Open Invitation
+                </Box>
+              </Box>
+            </Flex>
+          </Box>}
 
         <Flex as="section"
           sx={{
@@ -161,53 +237,55 @@ const TemplateOne = (props) => {
               px: 3,
             }}
           >
-            <Box sx={{ fontSize: [5, 6], mb: 4, color: "gray.6" }}>
-              <Box display={["block", "inline-block"]}>SAVE</Box>
-              <Box display={["block", "inline"]} fontFamily="script"> the </Box>
-              <Box display={["block", "inline-block"]}>DATE</Box>
-            </Box>
-            <Box sx={{ fontSize: 5, mb: 4, fontWeight: 500 }}>
-              <span>{contractDateFunc.format("MMM")}</span>
-              <Box
-                as="span"
-                sx={{
-                  borderWidth: 2,
-                  borderColor: "gray.3",
-                  borderStyle: "solid",
-                  borderTop: 0,
-                  borderBottom: 0,
-                  fontWeight: 400,
-                  px: 3,
-                  mx: 3,
-                }}
-              >{receptionDateFunc.format("DD")}</Box>
-              <span>{receptionDateFunc.get("year")}</span>
-            </Box>
-            <Box mb={4}>
-              <Box sx={{ color: "accent", fontSize: 2 }}>For Wedding Of</Box>
-              <Box
-                sx={{
-                  fontSize: [5, 6],
-                  textTransform: "uppercase",
-                  whiteSpace: "nowrap",
-                  transform: `scale(0.95)`
-                }}
-              >
-                <Box display={["inline", "block"]}>{bride.nickname}</Box>
+            <Fade bottom>
+              <Box sx={{ fontSize: [5, 6], mb: 4, color: "gray.6" }}>
+                <Box display={["block", "inline-block"]}>SAVE</Box>
+                <Box display={["block", "inline"]} fontFamily="script"> the </Box>
+                <Box display={["block", "inline-block"]}>DATE</Box>
+              </Box>
+              <Box sx={{ fontSize: 5, mb: 4, fontWeight: 500 }}>
+                <span>{contractDateFunc.format("MMM")}</span>
+                <Box
+                  as="span"
+                  sx={{
+                    borderWidth: 2,
+                    borderColor: "gray.3",
+                    borderStyle: "solid",
+                    borderTop: 0,
+                    borderBottom: 0,
+                    fontWeight: 400,
+                    px: 3,
+                    mx: 3,
+                  }}
+                >{receptionDateFunc.format("DD")}</Box>
+                <span>{receptionDateFunc.get("year")}</span>
+              </Box>
+              <Box mb={4}>
+                <Box sx={{ color: "accent", fontSize: 2 }}>For Wedding Of</Box>
                 <Box
                   sx={{
-                    display: ["inline", "block"],
-                    textTransform: "lowercase",
-                    fontFamily: "script"
+                    fontSize: [5, 6],
+                    textTransform: "uppercase",
+                    whiteSpace: "nowrap",
+                    transform: `scale(0.95)`
                   }}
-                >{` & `}</Box>
-                <Box display={["inline", "block"]}>{groom.nickname}</Box>
+                >
+                  <Box display={["inline", "block"]}>{bride.nickname}</Box>
+                  <Box
+                    sx={{
+                      display: ["inline", "block"],
+                      textTransform: "lowercase",
+                      fontFamily: "script"
+                    }}
+                  >{` & `}</Box>
+                  <Box display={["inline", "block"]}>{groom.nickname}</Box>
+                </Box>
               </Box>
-            </Box>
-            <Box color="gray.4" fontSize={1}>
-              <div>To be followed by food, laughter</div>
-              <div>and a happily ever after.</div>
-            </Box>
+              <Box color="gray.4" fontSize={1}>
+                <div>To be followed by food, laughter</div>
+                <div>and a happily ever after.</div>
+              </Box>
+            </Fade>
           </Flex>
         </Flex>
 
@@ -215,9 +293,11 @@ const TemplateOne = (props) => {
           className="page second-page"
           sx={{ mt: 6, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
         >
-          <Text as="div" mb={3} fontFamily="script" fontSize={6} >We Found Love</Text>
-          <Text as="p" mb={3} >{optional.verse_quote[0].content}</Text>
-          <Text as="p" fontWeight="bold">{optional.verse_quote[0].verse}</Text>
+          <Fade bottom>
+            <Text as="div" mb={3} fontFamily="script" fontSize={6} >We Found Love</Text>
+            <Text as="p" mb={3} >{optional.verse_quote[0].content}</Text>
+            <Text as="p" fontWeight="bold">{optional.verse_quote[0].verse}</Text>
+          </Fade>
         </Box>
 
         <Flex as="section"
@@ -238,38 +318,40 @@ const TemplateOne = (props) => {
               alignItems: "center",
             }}
           >
-            <Box
-              sx={{
-                mx: [0, "auto"],
-                mb: [0, 4],
-                mr: [3, "auto"],
-                overflow: "hidden",
-                height: [115, 175],
-                width: [115, 175],
-                borderRadius: "100%",
-                position: "relative",
-                flexShrink: 0
-              }}
-            >
+            <Fade left>
               <Box
-                as="img"
-                src={bride.image}
                 sx={{
-                  height: "100%",
-                  width: "100%",
-                  objectFit: "cover",
+                  mx: [0, "auto"],
+                  mb: [0, 4],
+                  mr: [3, "auto"],
+                  overflow: "hidden",
+                  height: [115, 175],
+                  width: [115, 175],
+                  borderRadius: "100%",
+                  position: "relative",
+                  flexShrink: 0
                 }}
-              />
-            </Box>
-            <Box sx={{ textAlign: ["left", "center"], mb: 3, fontSize: 1 }}>
-              <Box as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 1, color: "accent" }}>{bride.nickname}</Box>
-              <Box as="div" sx={{ color: "gray.5", mb: [2, 4] }}>{bride.full_name}</Box>
-              <Box sx={{ mb: 2 }}>Putri dari:</Box>
-              <Box color="gray.5">
-                <div>{bride.father}</div>
-                <div>{bride.mother}</div>
+              >
+                <Box
+                  as="img"
+                  src={bride.image}
+                  sx={{
+                    height: "100%",
+                    width: "100%",
+                    objectFit: "cover",
+                  }}
+                />
               </Box>
-            </Box>
+              <Box sx={{ textAlign: ["left", "center"], mb: 3, fontSize: 1 }}>
+                <Box as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 1, color: "accent" }}>{bride.nickname}</Box>
+                <Box as="div" sx={{ color: "gray.5", mb: [2, 4] }}>{bride.full_name}</Box>
+                <Box sx={{ mb: 2 }}>Putri dari:</Box>
+                <Box color="gray.5">
+                  <div>{bride.father}</div>
+                  <div>{bride.mother}</div>
+                </Box>
+              </Box>
+            </Fade>
           </Flex>
           <Flex
             sx={{
@@ -279,38 +361,40 @@ const TemplateOne = (props) => {
               alignItems: "center"
             }}
           >
-            <Box
-              sx={{
-                mx: [0, "auto"],
-                mb: [0, 4],
-                mr: [3, "auto"],
-                overflow: "hidden",
-                height: [115, 175],
-                width: [115, 175],
-                borderRadius: "100%",
-                position: "relative",
-                flexShrink: 0
-              }}
-            >
+            <Fade right>
               <Box
-                as="img"
-                src={groom.image}
                 sx={{
-                  height: "100%",
-                  width: "100%",
-                  objectFit: "cover",
+                  mx: [0, "auto"],
+                  mb: [0, 4],
+                  mr: [3, "auto"],
+                  overflow: "hidden",
+                  height: [115, 175],
+                  width: [115, 175],
+                  borderRadius: "100%",
+                  position: "relative",
+                  flexShrink: 0
                 }}
-              />
-            </Box>
-            <Box sx={{ textAlign: ["left", "center"], mb: 3, fontSize: 1 }}>
-              <Box as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 1, color: "accent" }}>{groom.nickname}</Box>
-              <Box as="div" sx={{ color: "gray.5", mb: [2, 4] }}>{groom.full_name}</Box>
-              <Box sx={{ mb: 2 }}>Putra dari:</Box>
-              <Box color="gray.5">
-                <div>{groom.father}</div>
-                <div>{groom.mother}</div>
+              >
+                <Box
+                  as="img"
+                  src={groom.image}
+                  sx={{
+                    height: "100%",
+                    width: "100%",
+                    objectFit: "cover",
+                  }}
+                />
               </Box>
-            </Box>
+              <Box sx={{ textAlign: ["left", "center"], mb: 3, fontSize: 1 }}>
+                <Box as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 1, color: "accent" }}>{groom.nickname}</Box>
+                <Box as="div" sx={{ color: "gray.5", mb: [2, 4] }}>{groom.full_name}</Box>
+                <Box sx={{ mb: 2 }}>Putra dari:</Box>
+                <Box color="gray.5">
+                  <div>{groom.father}</div>
+                  <div>{groom.mother}</div>
+                </Box>
+              </Box>
+            </Fade>
           </Flex>
         </Flex>
 
@@ -320,7 +404,7 @@ const TemplateOne = (props) => {
             if (duration.milliseconds() < 0 || duration.seconds() < 0) { return null; }
             return (
               <Box as="section" mt={6} px={2}>
-                <Box fontSize={2} color="gray.2" textAlign="center">Countdown</Box>
+                <Box fontSize={2} color="gray.4" textAlign="center">Countdown</Box>
                 <Flex justifyContent="center">
                   <Flex
                     sx={{
@@ -372,59 +456,61 @@ const TemplateOne = (props) => {
             whiteSpace: ["normal", "nowrap"],
           }}
         >
-          <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>Akad Nikah</Text>
-          <Flex
-            sx={{
-              justifyContent: "center",
-              alignItems: "center",
-              mb: 3,
-              "> *": {
-                flexShrink: 0
-              }
-            }}
-          >
-            <Box width={["37.5%", "40%"]}>
-              <Box
-                sx={{
-                  borderBottomWidth: 2,
-                  borderBottomColor: "gray.3",
-                  borderBottomStyle: "solid",
-                  pb: 2,
-                  mb: 2
-                }}
-              >{contractDateFunc.format("hh:mm")} WIB - Selesai</Box>
-              <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Akad Nikah</Box>
-            </Box>
-            <Box
+          <Fade bottom>
+            <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>Akad Nikah</Text>
+            <Flex
               sx={{
-                width: ["25%", "20%"],
-                borderWidth: 2,
-                borderColor: "black",
-                borderStyle: "solid",
-                borderBottom: 0,
-                borderTop: 0,
-                px: [1, 2],
-                // mx: [2, 4]
+                justifyContent: "center",
+                alignItems: "center",
+                mb: 3,
+                "> *": {
+                  flexShrink: 0
+                }
               }}
             >
-              <Box sx={{ fontSize: 2 }}>{contractDateFunc.format("MMMM")}</Box>
-              <Box sx={{ fontSize: [5, 6], lineHeight: 1 }}>{contractDateFunc.format("DD")}</Box>
-              <Box sx={{ fontSize: 3 }}>{contractDateFunc.format("YYYY")}</Box>
-            </Box>
-            <Box width={["37.5%", "40%"]}>
+              <Box width={["37.5%", "40%"]}>
+                <Box
+                  sx={{
+                    borderBottomWidth: 2,
+                    borderBottomColor: "gray.3",
+                    borderBottomStyle: "solid",
+                    pb: 2,
+                    mb: 2
+                  }}
+                >{contractDateFunc.format("hh:mm")} WIB - Selesai</Box>
+                <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Akad Nikah</Box>
+              </Box>
               <Box
                 sx={{
-                  borderBottomWidth: 2,
-                  borderBottomColor: "gray.3",
-                  borderBottomStyle: "solid",
-                  pb: 2,
-                  mb: 2
+                  width: ["25%", "20%"],
+                  borderWidth: 2,
+                  borderColor: "black",
+                  borderStyle: "solid",
+                  borderBottom: 0,
+                  borderTop: 0,
+                  px: [1, 2],
+                  // mx: [2, 4]
                 }}
-              >{contract.location}</Box>
-              <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{contract.city}</Box>
-            </Box>
-          </Flex>
-          <Text color="gray.5">{contract.address}</Text>
+              >
+                <Box sx={{ fontSize: 2 }}>{contractDateFunc.format("MMMM")}</Box>
+                <Box sx={{ fontSize: [5, 6], lineHeight: 1 }}>{contractDateFunc.format("DD")}</Box>
+                <Box sx={{ fontSize: 3 }}>{contractDateFunc.format("YYYY")}</Box>
+              </Box>
+              <Box width={["37.5%", "40%"]}>
+                <Box
+                  sx={{
+                    borderBottomWidth: 2,
+                    borderBottomColor: "gray.3",
+                    borderBottomStyle: "solid",
+                    pb: 2,
+                    mb: 2
+                  }}
+                >{contract.location}</Box>
+                <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{contract.city}</Box>
+              </Box>
+            </Flex>
+            <Text color="gray.5">{contract.address}</Text>
+          </Fade>
         </Box>
 
         <Box
@@ -438,59 +524,61 @@ const TemplateOne = (props) => {
             whiteSpace: ["normal", "nowrap"],
           }}
         >
-          <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>Resepsi</Text>
-          <Flex
-            sx={{
-              justifyContent: "center",
-              alignItems: "center",
-              mb: 3,
-              "> *": {
-                flexShrink: 0
-              }
-            }}
-          >
-            <Box width={["37.5%", "40%"]}>
-              <Box
-                sx={{
-                  borderBottomWidth: 2,
-                  borderBottomColor: "gray.3",
-                  borderBottomStyle: "solid",
-                  pb: 2,
-                  mb: 2
-                }}
-              >05:00 WIB - Selesai</Box>
-              <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Resepsi</Box>
-            </Box>
-            <Box
+          <Fade bottom>
+            <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>Resepsi</Text>
+            <Flex
               sx={{
-                width: ["25%", "20%"],
-                borderWidth: 2,
-                borderColor: "black",
-                borderStyle: "solid",
-                borderBottom: 0,
-                borderTop: 0,
-                px: [1, 2],
-                // mx: [2, 4]
+                justifyContent: "center",
+                alignItems: "center",
+                mb: 3,
+                "> *": {
+                  flexShrink: 0
+                }
               }}
             >
-              <Box sx={{ fontSize: 2 }}>{receptionDateFunc.format("MMMM")}</Box>
-              <Box sx={{ fontSize: [5, 6], lineHeight: 1 }}>{receptionDateFunc.format("DD")}</Box>
-              <Box sx={{ fontSize: 3 }}>{receptionDateFunc.format("YYYY")}</Box>
-            </Box>
-            <Box width={["37.5%", "40%"]}>
+              <Box width={["37.5%", "40%"]}>
+                <Box
+                  sx={{
+                    borderBottomWidth: 2,
+                    borderBottomColor: "gray.3",
+                    borderBottomStyle: "solid",
+                    pb: 2,
+                    mb: 2
+                  }}
+                >05:00 WIB - Selesai</Box>
+                <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Resepsi</Box>
+              </Box>
               <Box
                 sx={{
-                  borderBottomWidth: 2,
-                  borderBottomColor: "gray.3",
-                  borderBottomStyle: "solid",
-                  pb: 2,
-                  mb: 2
+                  width: ["25%", "20%"],
+                  borderWidth: 2,
+                  borderColor: "black",
+                  borderStyle: "solid",
+                  borderBottom: 0,
+                  borderTop: 0,
+                  px: [1, 2],
+                  // mx: [2, 4]
                 }}
-              >{reception.location}</Box>
-              <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{reception.city}</Box>
-            </Box>
-          </Flex>
-          <Text color="gray.5">{reception.address}</Text>
+              >
+                <Box sx={{ fontSize: 2 }}>{receptionDateFunc.format("MMMM")}</Box>
+                <Box sx={{ fontSize: [5, 6], lineHeight: 1 }}>{receptionDateFunc.format("DD")}</Box>
+                <Box sx={{ fontSize: 3 }}>{receptionDateFunc.format("YYYY")}</Box>
+              </Box>
+              <Box width={["37.5%", "40%"]}>
+                <Box
+                  sx={{
+                    borderBottomWidth: 2,
+                    borderBottomColor: "gray.3",
+                    borderBottomStyle: "solid",
+                    pb: 2,
+                    mb: 2
+                  }}
+                >{reception.location}</Box>
+                <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{reception.city}</Box>
+              </Box>
+            </Flex>
+            <Text color="gray.5">{reception.address}</Text>
+          </Fade>
         </Box>
 
         <Box
@@ -534,48 +622,50 @@ const TemplateOne = (props) => {
               }
               return (
                 <Box key={id} width={[`${100 / 2}%`, `${100 / 3}%`]} sx={{ px: 2, pb: 3 }}>
-                  <Box
-                    as={AspectRatio}
-                    ratio="1:1"
-                    sx={{
-                      borderRadius: 8,
-                      overflow: "hidden",
-                      ".img": {
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%,-50%)"
-                      }
-                    }}
-                  >
+                  <Flip bottom fraction={0.5}>
                     <Box
-                      className="img"
                       as={AspectRatio}
-                      portrait={!ratio.isPortrait}
-                      ratio={ratio.isPortrait ? `${width}:${height}` : `${height}:${width}`}
+                      ratio="1:1"
+                      sx={{
+                        borderRadius: 8,
+                        overflow: "hidden",
+                        ".img": {
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%,-50%)"
+                        }
+                      }}
                     >
-                      <Zoom wrapStyle={{ height: `100%`, width: `100%` }}>
-                        <div
-                          style={{
-                            display: "flex",
-                            height: "100%",
-                            width: "100%",
-                            justifyContent: "center",
-                            alignItems: "center"
-                          }}
-                        >
-                          <Image
-                            alt={alt}
-                            placeholder="blur"
-                            blurDataURL={GRADIENT}
-                            height={height}
-                            width={width}
-                            src={url}
-                          />
-                        </div>
-                      </Zoom>
+                      <Box
+                        className="img"
+                        as={AspectRatio}
+                        portrait={!ratio.isPortrait}
+                        ratio={ratio.isPortrait ? `${width}:${height}` : `${height}:${width}`}
+                      >
+                        <Zoom wrapStyle={{ height: `100%`, width: `100%` }}>
+                          <div
+                            style={{
+                              display: "flex",
+                              height: "100%",
+                              width: "100%",
+                              justifyContent: "center",
+                              alignItems: "center"
+                            }}
+                          >
+                            <Image
+                              alt={alt}
+                              placeholder="blur"
+                              blurDataURL={GRADIENT}
+                              height={height}
+                              width={width}
+                              src={url}
+                            />
+                          </div>
+                        </Zoom>
+                      </Box>
                     </Box>
-                  </Box>
+                  </Flip>
                 </Box>
               )
             })}
@@ -607,41 +697,37 @@ const TemplateOne = (props) => {
             <Box flexGrow={1} flexShrink={1}>
               {comments.map((comment, i) => (
                 <Box key={i} sx={{ position: "relative", mb: i < (comments.length - 1) ? 4 : 0, }}>
-                  <Box
-                    sx={{
-                      borderWidth: 1,
-                      borderStyle: "solid",
-                      borderColor: "gray.2"
-                    }}
-                  >
-                    <Box sx={{
-                      bg: "gray.1",
-                      p: 2,
-                      fontSize: 2,
-                      // color: "gray.5",
-                      borderBottomWidth: 1,
-                      borderBottomStyle: "solid",
-                      borderBottomColor: "gray.2"
-                    }}>
-                      <Box as="span" display={["block", "inline"]}>{comment["author_name"]}</Box>
-                      <Box as="span" display={["block", "inline"]} color="gray.5"> - {moment(comment["date"]).calendar()}</Box>
+                  <Fade bottom>
+                    <Box
+                      sx={{
+                        borderWidth: 1,
+                        borderStyle: "solid",
+                        borderColor: "gray.2"
+                      }}
+                    >
+                      <Box sx={{
+                        bg: "gray.1",
+                        p: 2,
+                        fontSize: 2,
+                        // color: "gray.5",
+                        borderBottomWidth: 1,
+                        borderBottomStyle: "solid",
+                        borderBottomColor: "gray.2"
+                      }}>
+                        <Box as="span" display={["block", "inline"]}>{comment["author_name"]}</Box>
+                        <Box as="span" display={["block", "inline"]} color="gray.5"> - {moment(comment["date"]).calendar()}</Box>
+                      </Box>
+                      <Box fontSize={4} fontFamily="script" p={2}>
+                        <div dangerouslySetInnerHTML={{ __html: comment.content.rendered }} />
+                      </Box>
                     </Box>
-                    <Box fontSize={4} fontFamily="script" p={2}>
-                      <div dangerouslySetInnerHTML={{ __html: comment.content.rendered }} />
-                    </Box>
-                  </Box>
+                  </Fade>
                 </Box>
               ))}
             </Box>
           </Flex>
           <Box sx={{ flexShrink: 1, maxWidth: [350], width: "100%", mx: "auto", pt: 4 }}>
             <form onSubmit={executeRecaptcha}>
-              <ReCAPTCHA
-                ref={recaptchaRef}
-                size="invisible"
-                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                onChange={onReCAPTCHAChange}
-              />
               <Flex mb={2} mx={-2}>
                 <Box px={2} width="50%">
                   <Input
@@ -670,9 +756,30 @@ const TemplateOne = (props) => {
                   sx={{ resize: "vertical" }}
                 />
               </Box>
-              <Box>
-                <Button text={loading ? "Loading..." : "Send"} type="submit" disabled={loading} />
-              </Box>
+              <Flex mt={2}>
+                <Box>
+                  <Button text={loading ? "Loading..." : "Send"} type="submit" disabled={loading} />
+                </Box>
+                <Box sx={{
+                  height: 30,
+                  width: "100%",
+                  ".grecaptcha-badge": {
+                    mx: "auto"
+                  },
+                  "> div": {
+                    mt: -3,
+                    transform: "scale(0.5)",
+                  },
+                }}>
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    size="invisible"
+                    badge="inline"
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                    onChange={onReCAPTCHAChange}
+                  />
+                </Box>
+              </Flex>
             </form>
           </Box>
         </Box>
@@ -746,8 +853,11 @@ const TemplateOne = (props) => {
           music &&
           <Box textAlign="center" pt={4}>
             <AudioPlayer
+              ref={audioPlayerRef}
               src={music}
-              autoPlay
+              onCanPlay={() => {
+                setIsAudioReady(true);
+              }}
               controls
             />
           </Box>
