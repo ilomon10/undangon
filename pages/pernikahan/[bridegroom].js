@@ -2,6 +2,7 @@ import Head from "next/head";
 import Template from "components/Template";
 import Client from "components/client";
 import moment from "moment";
+import { useRouter } from "next/router";
 
 const DariID = ({
   slug,
@@ -18,6 +19,7 @@ const DariID = ({
     optional
   }
 }) => {
+  const router = useRouter();
   const previewImage = featured_image["sizes"]["post-thumbnail"];
   const previewImageWidth = featured_image["sizes"]["post-thumbnail-width"];
   const previewImageHeight = featured_image["sizes"]["post-thumbnail-height"];
@@ -35,7 +37,7 @@ const DariID = ({
         <meta property="og:image:width" content={previewImageWidth} key="ogimagewidth" />
         <meta property="og:image:height" content={previewImageHeight} key="ogimageheight" />
         <meta property="og:site_name" content="Ba Undang" key="ogsitename" />
-        <meta property="og:url" content={`https://baundang.me/`} key="ogurl" />
+        <meta property="og:url" content={`https://baundang.me${router.asPath}`} key="ogurl" />
       </Head>
       <Template
         theme={theme}
