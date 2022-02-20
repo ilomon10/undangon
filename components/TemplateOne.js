@@ -900,25 +900,50 @@ const TemplateOne = (props) => {
               }
             }}
           >
-            {[
-              "Tamu undangan wajib menggunakan masker.",
-              "Suhu tubuh normal dibawah 37.5deg",
-              "Jaga jarak antar orang minimal sekitar 1 meter.",
-              "Cuci tangan menggunakan air dan sabun atau menggunkan hand sanitizer",
+            {[{
+              desc: "Tamu undangan wajib menggunakan masker.",
+              imgUrl: "/safety_protocol-wear_mask.jpg",
+            }, {
+              desc: "Suhu tubuh normal dibawah 37.5deg",
+              imgUrl: "/safety_protocol-check_temp.jpeg",
+            }, {
+              desc: "Jaga jarak antar orang minimal sekitar 1 meter.",
+              imgUrl: "/safety_protocol-social_distancing.jpg",
+            }, {
+              desc: "Cuci tangan menggunakan air dan sabun atau menggunkan hand sanitizer",
+              imgUrl: "/safety_protocol-wash_hand.jpg",
+            },
             ].map((v, i) => (
               <div key={i}>
                 <div>
                   <AspectRatio ratio="21:9">
                     <Box
                       sx={{
+                        backgroundImage: `url(${v["imgUrl"]})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
                         position: "absolute",
-                        left: 2,
-                        bottom: 2,
-                        lineHeight: 1,
-                        color: "yellow.3",
-                        fontSize: 4,
+                        inset: 0,
+                        width: "100%",
+                        height: "100%",
                       }}
-                    >{i}</Box>
+                    />
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        left: "-2px",
+                        bottom: "-2px",
+                        lineHeight: 1,
+                        color: "yellow.6",
+                        fontSize: 4,
+                        height: 30,
+                        width: 30,
+                        backgroundColor: "white",
+                        borderRadius: 4,
+                        border: "2px solid white",
+                        borderColor: "yellow.6",
+                      }}
+                    >{i + 1}</Box>
                     <Flex
                       sx={{
                         position: "absolute",
@@ -928,8 +953,15 @@ const TemplateOne = (props) => {
                         alignItems: "center",
                       }}
                     >
-                      <Box px={2}>
-                        {v}
+                      <Box
+                        px={2}
+                        sx={{
+                          color: "yellow.5",
+                          fontWeight: "bold",
+                          textShadow: "1px 1px 2px rgb(0,0,0)"
+                        }}
+                      >
+                        {v["desc"]}
                       </Box>
                     </Flex>
                   </AspectRatio>
