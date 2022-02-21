@@ -184,36 +184,45 @@ const TemplateOne = (props) => {
               zIndex: 999,
               inset: 0,
               opacity: "1",
-              transition: "500ms ease-out",
-              transitionDelay: "2000ms",
+              transitionDelay: "0ms",
+              transition: "0ms ease-out",
               "&.opened": {
                 opacity: "0",
                 visibility: "hidden",
+                transition: "500ms ease-out",
+                transitionDelay: "2000ms",
               },
               "& > .image": {
                 opacity: "1",
                 transform: "translateX(0)",
-                transition: "500ms ease-out",
-                transitionDelay: "1500ms",
+                transition: "0ms ease-out",
+                transitionDelay: "0ms",
               },
               "&.opened > .image": {
                 opacity: "0",
                 transform: "translateX(393px)",
+                transition: "500ms ease-out",
+                transitionDelay: "1500ms",
               },
               "& > .image .overlay": {
                 opacity: "0.5",
-                transition: "500ms ease-out 500ms",
-                transitionDelay: "500ms",
+                transition: "0ms ease-out",
+                transitionDelay: "0ms",
               },
               "&.opened > .image .overlay": {
                 opacity: "0",
+                transition: "500ms ease-out 500ms",
+                transitionDelay: "500ms",
               },
               "& > .text": {
                 opacity: "1",
-                transition: "500ms ease-out",
+                transition: "0ms ease-out",
+                transitionDelay: "0ms",
               },
               "&.opened > .text": {
                 opacity: "0",
+                transition: "500ms ease-out",
+                transitionDelay: "0ms",
               }
             }}
           >
