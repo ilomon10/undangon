@@ -614,8 +614,8 @@ const TemplateOne = (props) => {
                     pb: 2,
                     mb: 2
                   }}
-                >{contractDateFunc.format("hh:mm")} WIB - Selesai</Box>
-                <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Akad Nikah</Box>
+                >{contractDateFunc.format("HH:mm")} WITA - Selesai</Box>
+                <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Pemberkatan Nikah</Box>
               </Box>
               <Box
                 sx={{
@@ -691,7 +691,7 @@ const TemplateOne = (props) => {
                     pb: 2,
                     mb: 2
                   }}
-                >05:00 WIB - Selesai</Box>
+                >{receptionDateFunc.format("HH:mm")} WITA - Selesai</Box>
                 <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Resepsi</Box>
               </Box>
               <Box
