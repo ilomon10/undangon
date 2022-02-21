@@ -584,7 +584,7 @@ const TemplateOne = (props) => {
           }}
         >
           <Fade bottom>
-            <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>Akad Nikah</Text>
+            <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>Pemberkatan Nikah</Text>
             <Flex
               sx={{
                 justifyContent: "center",
