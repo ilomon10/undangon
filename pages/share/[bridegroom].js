@@ -1,13 +1,20 @@
 import "normalize.css/normalize.css";
 import "@blueprintjs/core/lib/css/blueprint.css";
-import { FormGroup, InputGroup, Button, TextArea, Classes, Collapse } from "@blueprintjs/core";
+import { FormGroup, InputGroup, Button, TextArea, Text, Classes, Collapse } from "@blueprintjs/core";
 import Head from "next/head";
-import Template from "components/Template";
 import Client from "components/client";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { Formik } from "formik";
-import { Box } from "components";
+import { Box, Flex } from "components";
+
+const htmlFormat = [
+  { symbol: "*", open: "<b>", close: "</b>" },
+  { symbol: "_", open: "<em>", close: "</em>" },
+  { symbol: "~", open: "<del>", close: "</del>" },
+]
+
+const defaultText = "Kepada {{to}},\n\nDengan segala hormat, kami mengirimkan undangan elektronik ini : \n{{url}}\n\nKami mohon restu di hari pernikahan kami. Walaupun, keadaan pandemi Covid-19 dan dengan tetap menjaga protokol kesehatan, kami mengundang Anda untuk menghadiri upacara pernikahan. Anda masih bisa menjadi bagian dari Pernikahan kami dengan meninggalkan keinginan Anda.\n\n⏰ – {{date}}\n\nTerima kasih atas semua doa dan dukungannya. Ini akan menjadi hadiah yang luar biasa untuk kita.\n\nWith pray & love,\n{{groom}} & {{bride}}\n\n\n#BaundangMe\n";
 
 const DariID = ({
   slug,
@@ -17,6 +24,9 @@ const DariID = ({
     contract,
   }
 }) => {
+
+  const router = useRouter();
+
   const urlRaw = `https://baundang.me/pernikahan/${slug}`;
   const transformDescription = (raw, opt) => {
     let text = raw;
@@ -32,10 +42,37 @@ const DariID = ({
 
     return text;
   }
+
+  const transformToPreview = (raw, opt) => {
+    let text = raw;
+    try {
+      for (let { symbol, open, close } of htmlFormat) {
+        if (!text) return text;
+
+        const rx = `\\${symbol}([^\\${symbol}~]+)\\${symbol}`;
+        const regex = new RegExp(rx, 'g');
+        const match = text.match(regex);
+
+        if (!match) return text;
+
+        match.forEach(m => {
+          let formatted = m;
+          for (let i = 0; i < 2; i++) {
+            formatted = formatted.replace(symbol, i > 0 ? close : open);
+          }
+          text = text.replace(m, formatted);
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    return text;
+  }
+
   return (
     <>
       <Head>
-        <title>Undangan Pernikahan: {bride.nickname} dan {groom.nickname}</title>
+        <title>Undangan Pernikahan: {groom.nickname} dan {bride.nickname}</title>
       </Head>
       <Box
         sx={{
@@ -56,7 +93,7 @@ const DariID = ({
             "date": moment(contract.date).format("dddd, DD MMMM YYYY"),
             "groom": groom.nickname,
             "bride": bride.nickname,
-            "description": "Dear {{to}},\n\nWith all due respect, we send this e-invitation : \n{{url}}\n\nWe ask for your blessing on our wedding day. However, due to the circumstances of the Covid-19 pandemic and to acknowledge with health protocols, we apologize for not being able to invite you to attend the wedding ceremony. You can still be a part of our Wedding by leave your wishes . \n\n⏰ – {{date}}\n\nThank you for all the prayers and support. It will be a wonderful gift for us. \n\n\nWith pray & love,\n{{groom}} & {{bride}}\n\n\n#BaundangMe\n",
+            "description": defaultText,
           }}
           onSubmit={async (values, { setSubmitting }) => {
             const text = transformDescription(values["description"], {
@@ -66,11 +103,17 @@ const DariID = ({
               groom: values["groom"],
               bride: values["bride"],
             })
-            console.log(text);
             try {
+              router.push({
+                query: {
+                  ...router.query,
+                  text: values["description"],
+                }
+              }, undefined, { shallow: true });
+
               await navigator.share({
                 url: values["url"],
-                title: `Undangan Pernikahan: ${groom.nickname} & ${bride.nickname}`,
+                title: `Undangan Pernikahan: ${groom.nickname} & ${bride.nickname} `,
                 text,
               });
             } catch (err) {
@@ -93,11 +136,30 @@ const DariID = ({
                     handleChange(e);
                     const value = e.target.value;
                     const params = new URLSearchParams(`?untuk=${value}`);
-                    setFieldValue("url", value ? `${urlRaw}?${params.toString()}` : values["url"]);
+                    setFieldValue("url", value ? `${urlRaw}?${params.toString()} ` : values["url"]);
                   }}
                   placeholder="Who?"
                 />
               </FormGroup>
+              {router.query["text"] &&
+                <Flex alignItems="center" mb={2}>
+                  <Box flexShrink={0} sx={{ whiteSpace: "nowrap" }}>
+                    <Button
+                      small={true}
+                      outlined={true}
+                      text="Use last text template"
+                      onClick={() => {
+                        setFieldValue("description", router.query["text"]);
+                      }}
+                    />
+                  </Box>
+                  <Box flexGrow={1} ml={2} >
+                    <Text ellipsize={true}>
+                      {router.query["text"]}
+                    </Text>
+                  </Box>
+                </Flex>
+              }
               <FormGroup
                 for="f-description"
                 label="Message"
@@ -148,19 +210,21 @@ const DariID = ({
 
               <FormGroup label="Preview">
                 <Box
-                  className={Classes.CODE_BLOCK}
                   sx={{
                     whiteSpace: "pre-line"
                   }}
-                >
-                  {transformDescription(values["description"], {
-                    to: values["to"],
-                    url: values["url"],
-                    date: values["date"],
-                    groom: values["groom"],
-                    bride: values["bride"],
-                  })}
-                </Box>
+                  dangerouslySetInnerHTML={{
+                    __html: transformToPreview(
+                      transformDescription(values["description"], {
+                        to: values["to"],
+                        url: values["url"],
+                        date: values["date"],
+                        groom: values["groom"],
+                        bride: values["bride"],
+                      })
+                    )
+                  }}
+                />
               </FormGroup>
               <Box sx={{ textAlign: "center" }}>
                 <Button

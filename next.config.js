@@ -6,6 +6,9 @@ module.exports = {
   env: {
     serverUrl: process.env.SERVER
   },
+  compiler: {
+    styledComponents: true,
+  },
   trailingSlash: true,
   i18n: {
     locales: ['id-ID'],

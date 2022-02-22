@@ -1,15 +1,15 @@
+import Head from "next/head";
+import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState, useEffect, useRef, useMemo } from "react";
 import moment from "moment";
 import axios from "axios";
 import PropTypes from "prop-types";
-import Head from "next/head";
 import { ThemeProvider } from "styled-components";
 import { useForm } from "react-hook-form";
 import AudioPlayer from "react-audio-player";
-import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useRouter } from "next/router";
 import { Fade, Flip } from "react-reveal";
 
 import {
@@ -184,36 +184,45 @@ const TemplateOne = (props) => {
               zIndex: 999,
               inset: 0,
               opacity: "1",
-              transition: "500ms ease-out",
-              transitionDelay: "2000ms",
+              transitionDelay: "0ms",
+              transition: "0ms ease-out",
               "&.opened": {
                 opacity: "0",
                 visibility: "hidden",
+                transition: "500ms ease-out",
+                transitionDelay: "2000ms",
               },
               "& > .image": {
                 opacity: "1",
                 transform: "translateX(0)",
-                transition: "500ms ease-out",
-                transitionDelay: "1500ms",
+                transition: "0ms ease-out",
+                transitionDelay: "0ms",
               },
               "&.opened > .image": {
                 opacity: "0",
                 transform: "translateX(393px)",
+                transition: "500ms ease-out",
+                transitionDelay: "1500ms",
               },
               "& > .image .overlay": {
                 opacity: "0.5",
-                transition: "500ms ease-out 500ms",
-                transitionDelay: "500ms",
+                transition: "0ms ease-out",
+                transitionDelay: "0ms",
               },
               "&.opened > .image .overlay": {
                 opacity: "0",
+                transition: "500ms ease-out 500ms",
+                transitionDelay: "500ms",
               },
               "& > .text": {
                 opacity: "1",
-                transition: "500ms ease-out",
+                transition: "0ms ease-out",
+                transitionDelay: "0ms",
               },
               "&.opened > .text": {
                 opacity: "0",
+                transition: "500ms ease-out",
+                transitionDelay: "0ms",
               }
             }}
           >
@@ -584,7 +593,7 @@ const TemplateOne = (props) => {
           }}
         >
           <Fade bottom>
-            <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>Akad Nikah</Text>
+            <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>Pemberkatan Nikah</Text>
             <Flex
               sx={{
                 justifyContent: "center",
@@ -605,8 +614,8 @@ const TemplateOne = (props) => {
                     pb: 2,
                     mb: 2
                   }}
-                >{contractDateFunc.format("hh:mm")} WIB - Selesai</Box>
-                <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Akad Nikah</Box>
+                >{contractDateFunc.format("HH:mm")} WITA - Selesai</Box>
+                <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Pemberkatan Nikah</Box>
               </Box>
               <Box
                 sx={{
@@ -682,7 +691,7 @@ const TemplateOne = (props) => {
                     pb: 2,
                     mb: 2
                   }}
-                >05:00 WIB - Selesai</Box>
+                >{receptionDateFunc.format("HH:mm")} WITA - Selesai</Box>
                 <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Resepsi</Box>
               </Box>
               <Box
