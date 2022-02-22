@@ -35,7 +35,7 @@ const DariID = ({
   return (
     <>
       <Head>
-        <title>Undangan Pernikahan: {bride.nickname} dan {groom.nickname}</title>
+        <title>Undangan Pernikahan: {groom.nickname} dan {bride.nickname}</title>
       </Head>
       <Box
         sx={{
@@ -56,7 +56,7 @@ const DariID = ({
             "date": moment(contract.date).format("dddd, DD MMMM YYYY"),
             "groom": groom.nickname,
             "bride": bride.nickname,
-            "description": "Dear {{to}},\n\nWith all due respect, we send this e-invitation : \n{{url}}\n\nWe ask for your blessing on our wedding day. However, due to the circumstances of the Covid-19 pandemic and to acknowledge with health protocols, we apologize for not being able to invite you to attend the wedding ceremony. You can still be a part of our Wedding by leave your wishes . \n\n⏰ – {{date}}\n\nThank you for all the prayers and support. It will be a wonderful gift for us. \n\n\nWith pray & love,\n{{groom}} & {{bride}}\n\n\n#BaundangMe\n",
+            "description": "Kepada {{to}},\n\nDengan segala hormat, kami mengirimkan undangan elektronik ini : \n{{url}}\n\nKami mohon restu di hari pernikahan kami. Walaupun, keadaan pandemi Covid-19 dan dengan tetap menjaga protokol kesehatan, kami mengundang Anda untuk menghadiri upacara pernikahan. Anda masih bisa menjadi bagian dari Pernikahan kami dengan meninggalkan keinginan Anda.\n\n⏰ – {{date}}\n\nTerima kasih atas semua doa dan dukungannya. Ini akan menjadi hadiah yang luar biasa untuk kita.\n\nWith pray & love,\n{{groom}} & {{bride}}\n\n\n#BaundangMe\n",
           }}
           onSubmit={async (values, { setSubmitting }) => {
             const text = transformDescription(values["description"], {
@@ -66,7 +66,7 @@ const DariID = ({
               groom: values["groom"],
               bride: values["bride"],
             })
-            console.log(text);
+            // console.log(text, values);
             try {
               await navigator.share({
                 url: values["url"],

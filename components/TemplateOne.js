@@ -1,15 +1,15 @@
+import Head from "next/head";
+import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState, useEffect, useRef, useMemo } from "react";
 import moment from "moment";
 import axios from "axios";
 import PropTypes from "prop-types";
-import Head from "next/head";
 import { ThemeProvider } from "styled-components";
 import { useForm } from "react-hook-form";
 import AudioPlayer from "react-audio-player";
-import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useRouter } from "next/router";
 import { Fade, Flip } from "react-reveal";
 
 import {
