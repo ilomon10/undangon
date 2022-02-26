@@ -14,18 +14,19 @@ const htmlFormat = [
   { symbol: "~", open: "<del>", close: "</del>" },
 ]
 
-const defaultText = "Kepada {{to}},\n\nDengan segala hormat, kami mengirimkan undangan elektronik ini : \n{{url}}\n\nKami mohon restu di hari pernikahan kami. Walaupun, keadaan pandemi Covid-19 dan dengan tetap menjaga protokol kesehatan, kami mengundang Anda untuk menghadiri upacara pernikahan. Anda masih bisa menjadi bagian dari Pernikahan kami dengan meninggalkan keinginan Anda.\n\n⏰ – {{date}}\n\nTerima kasih atas semua doa dan dukungannya. Ini akan menjadi hadiah yang luar biasa untuk kita.\n\nWith pray & love,\n{{groom}} & {{bride}}\n\n\n#BaundangMe\n";
-
 const DariID = ({
   slug,
   post: {
     bride,
     groom,
-    contract,
+    location_time_date,
+    share_message
   }
 }) => {
 
   const router = useRouter();
+  
+  const date = moment(location_time_date[0].date);
 
   const urlRaw = `https://baundang.me/pernikahan/${slug}`;
   const transformDescription = (raw, opt) => {
@@ -90,10 +91,10 @@ const DariID = ({
             "isVarOpen": false,
             "to": "",
             "url": urlRaw,
-            "date": moment(contract.date).format("dddd, DD MMMM YYYY"),
+            "date": date.format("dddd, DD MMMM YYYY"),
             "groom": groom.nickname,
             "bride": bride.nickname,
-            "description": defaultText,
+            "description": share_message,
           }}
           onSubmit={async (values, { setSubmitting }) => {
             const text = transformDescription(values["description"], {

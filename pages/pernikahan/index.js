@@ -26,7 +26,8 @@ const Dari = ({ posts }) => {
 export const getStaticProps = async (context) => {
   let resPosts = await fetch(`${serverUrl}/wp-json/wp/v2/posts?_fields=id,slug`);
   let posts = await resPosts.json();
-  debugger;
+  console.log(posts);
+  // debugger;
   return {
     props: {
       posts

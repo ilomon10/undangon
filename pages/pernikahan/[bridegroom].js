@@ -12,8 +12,7 @@ const DariID = ({
     groom,
     theme,
     mode,
-    contract,
-    reception,
+    location_time_date,
     gallery,
     music,
     featured_image,
@@ -24,6 +23,8 @@ const DariID = ({
   const previewImage = featured_image["sizes"]["post-thumbnail"];
   const previewImageWidth = featured_image["sizes"]["post-thumbnail-width"];
   const previewImageHeight = featured_image["sizes"]["post-thumbnail-height"];
+
+  const date = moment(location_time_date[0].date);
   return (
     <>
       <Head>
@@ -33,7 +34,7 @@ const DariID = ({
 
         <meta property="og:type" content="article" key="ogtype" />
         <meta property="og:title" content={`The Wedding of ${bride.nickname} & ${groom.nickname} - Ba Undang`} key="ogtitle" />
-        <meta property="og:description" content={`Save the date ${moment(contract.date).format("DD MMMM YYYY")}`} key="ogdesc" />
+        <meta property="og:description" content={`Save the date ${date.format("DD MMMM YYYY")}`} key="ogdesc" />
         <meta property="og:image" content={previewImage} key="ogimage" />
         <meta property="og:image:width" content={previewImageWidth} key="ogimagewidth" />
         <meta property="og:image:height" content={previewImageHeight} key="ogimageheight" />
@@ -49,8 +50,7 @@ const DariID = ({
         }}
         bride={bride}
         groom={groom}
-        contract={contract}
-        reception={reception}
+        location_time_date={location_time_date}
         gallery={gallery}
         music={music}
         featured_image={featured_image}
