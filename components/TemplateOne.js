@@ -53,8 +53,7 @@ const TemplateOne = (props) => {
     post: { id },
     groom,
     bride,
-    reception,
-    contract,
+    location_time_date,
     gallery,
     music,
     featured_image,
@@ -69,12 +68,12 @@ const TemplateOne = (props) => {
   const { query: searchParams } = useRouter();
   const [opened, setOpened] = useState(false);
 
-  const receptionDateFunc = moment(reception.date);
-  const contractDateFunc = moment(contract.date);
   const [comments, setComments] = useState([]);
 
   const recaptchaRef = useRef();
   const audioPlayerRef = useRef();
+
+  const date = moment(location_time_date[0].date);
 
   const { register, handleSubmit, errors, reset } = useForm();
 
@@ -368,7 +367,7 @@ const TemplateOne = (props) => {
                 <Box display={["block", "inline-block"]}>DATE</Box>
               </Box>
               <Box sx={{ fontSize: 5, mb: 4, fontWeight: 500, color: "text" }}>
-                <span>{contractDateFunc.format("MMM")}</span>
+                <span>{date.format("MMM")}</span>
                 <Box
                   as="span"
                   sx={{
@@ -381,8 +380,8 @@ const TemplateOne = (props) => {
                     px: 3,
                     mx: 3,
                   }}
-                >{receptionDateFunc.format("DD")}</Box>
-                <span>{receptionDateFunc.get("year")}</span>
+                >{date.format("DD")}</Box>
+                <span>{date.get("year")}</span>
               </Box>
               <Box mb={4}>
                 <Box sx={{ color: "accent", fontSize: 2 }}>For Wedding Of</Box>
@@ -532,7 +531,7 @@ const TemplateOne = (props) => {
 
         </Flex>
 
-        <Counter target={contractDateFunc}>
+        <Counter target={date}>
           {({ diff }) => {
             const duration = moment.duration(diff);
             if (duration.milliseconds() < 0 || duration.seconds() < 0) { return null; }
@@ -581,159 +580,88 @@ const TemplateOne = (props) => {
           }}
         </Counter>
 
-        <Box
-          as="section"
-          sx={{
-            mt: [4, 5],
-            mx: "auto",
-            px: 3,
-            maxWidth: 710,
-            textAlign: "center",
-            whiteSpace: ["normal", "nowrap"],
-          }}
-        >
-          <Fade bottom>
-            <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>Pemberkatan Nikah</Text>
-            <Flex
+        {location_time_date.map((ltd) => {
+          const date = moment(ltd.date);
+          return (
+            <Box
+              key={ltd.label}
+              as="section"
               sx={{
-                justifyContent: "center",
-                alignItems: "center",
-                mb: 3,
-                color: "lighterText",
-                "> *": {
-                  flexShrink: 0
-                }
+                mt: [4, 5],
+                mx: "auto",
+                px: 3,
+                maxWidth: 710,
+                textAlign: "center",
+                whiteSpace: ["normal", "nowrap"],
               }}
             >
-              <Box width={["37.5%", "40%"]}>
-                <Box
+              <Fade bottom>
+                <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>{ltd.label}</Text>
+                <Flex
                   sx={{
-                    borderBottomWidth: 2,
-                    borderBottomColor: "borderLine",
-                    borderBottomStyle: "solid",
-                    pb: 2,
-                    mb: 2
+                    justifyContent: "center",
+                    alignItems: "center",
+                    mb: 3,
+                    color: "lighterText",
+                    "> *": {
+                      flexShrink: 0
+                    }
                   }}
-                >{contractDateFunc.format("HH:mm")} WITA - Selesai</Box>
-                <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Pemberkatan Nikah</Box>
-              </Box>
-              <Box
-                sx={{
-                  width: ["25%", "20%"],
-                  borderWidth: 2,
-                  borderColor: "borderLine",
-                  borderStyle: "solid",
-                  borderBottom: 0,
-                  borderTop: 0,
-                  px: [1, 2],
-                  // mx: [2, 4]
-                }}
-              >
-                <Box sx={{ fontSize: 2 }}>{contractDateFunc.format("MMMM")}</Box>
-                <Box sx={{ fontSize: [5, 6], lineHeight: 1 }}>{contractDateFunc.format("DD")}</Box>
-                <Box sx={{ fontSize: 3 }}>{contractDateFunc.format("YYYY")}</Box>
-              </Box>
-              <Box width={["37.5%", "40%"]}>
-                <Box
-                  sx={{
-                    borderBottomWidth: 2,
-                    borderBottomColor: "borderLine",
-                    borderBottomStyle: "solid",
-                    pb: 2,
-                    mb: 2
-                  }}
-                >{contract.location}</Box>
-                <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{contract.city}</Box>
-              </Box>
-            </Flex>
-            <Text color="lightText">{contract.address}</Text>
-            <Box mt={2}>
-              <AnchorButton
-                href={`https://www.google.com/maps/search/?api=1&query=${contract.pinpoint.latitude},${contract.pinpoint.longitude}`}
-                outlined={true}
-                intent="warning"
-                text="See location on Google Maps"
-              />
+                >
+                  <Box width={["37.5%", "40%"]}>
+                    <Box
+                      sx={{
+                        borderBottomWidth: 2,
+                        borderBottomColor: "borderLine",
+                        borderBottomStyle: "solid",
+                        pb: 2,
+                        mb: 2
+                      }}
+                    >{date.format("HH:mm")} WITA - Selesai</Box>
+                    <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{ltd.label}</Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      width: ["25%", "20%"],
+                      borderWidth: 2,
+                      borderColor: "borderLine",
+                      borderStyle: "solid",
+                      borderBottom: 0,
+                      borderTop: 0,
+                      px: [1, 2],
+                      // mx: [2, 4]
+                    }}
+                  >
+                    <Box sx={{ fontSize: 2 }}>{date.format("MMMM")}</Box>
+                    <Box sx={{ fontSize: [5, 6], lineHeight: 1 }}>{date.format("DD")}</Box>
+                    <Box sx={{ fontSize: 3 }}>{date.format("YYYY")}</Box>
+                  </Box>
+                  <Box width={["37.5%", "40%"]}>
+                    <Box
+                      sx={{
+                        borderBottomWidth: 2,
+                        borderBottomColor: "borderLine",
+                        borderBottomStyle: "solid",
+                        pb: 2,
+                        mb: 2
+                      }}
+                    >{ltd.address.name}</Box>
+                    <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{ltd.address.city}</Box>
+                  </Box>
+                </Flex>
+                <Text color="lightText">{ltd.address.location}</Text>
+                <Box mt={2}>
+                  <AnchorButton
+                    href={`https://www.google.com/maps/search/?api=1&query=${ltd.pinpoint.latitude},${ltd.pinpoint.longitude}`}
+                    outlined={true}
+                    intent="warning"
+                    text="See location on Google Maps"
+                  />
+                </Box>
+              </Fade>
             </Box>
-          </Fade>
-        </Box>
-
-        <Box
-          as="section"
-          sx={{
-            mt: [4, 5],
-            mx: "auto",
-            px: 3,
-            maxWidth: 710,
-            textAlign: "center",
-            whiteSpace: ["normal", "nowrap"],
-          }}
-        >
-          <Fade bottom>
-            <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>Resepsi</Text>
-            <Flex
-              sx={{
-                justifyContent: "center",
-                alignItems: "center",
-                mb: 3,
-                color: "lighterText",
-                "> *": {
-                  flexShrink: 0
-                }
-              }}
-            >
-              <Box width={["37.5%", "40%"]}>
-                <Box
-                  sx={{
-                    borderBottomWidth: 2,
-                    borderBottomColor: "borderLine",
-                    borderBottomStyle: "solid",
-                    pb: 2,
-                    mb: 2
-                  }}
-                >{receptionDateFunc.format("HH:mm")} WITA - Selesai</Box>
-                <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>Resepsi</Box>
-              </Box>
-              <Box
-                sx={{
-                  width: ["25%", "20%"],
-                  borderWidth: 2,
-                  borderColor: "borderLine",
-                  borderStyle: "solid",
-                  borderBottom: 0,
-                  borderTop: 0,
-                  px: [1, 2],
-                  // mx: [2, 4]
-                }}
-              >
-                <Box sx={{ fontSize: 2 }}>{receptionDateFunc.format("MMMM")}</Box>
-                <Box sx={{ fontSize: [5, 6], lineHeight: 1 }}>{receptionDateFunc.format("DD")}</Box>
-                <Box sx={{ fontSize: 3 }}>{receptionDateFunc.format("YYYY")}</Box>
-              </Box>
-              <Box width={["37.5%", "40%"]}>
-                <Box
-                  sx={{
-                    borderBottomWidth: 2,
-                    borderBottomColor: "borderLine",
-                    borderBottomStyle: "solid",
-                    pb: 2,
-                    mb: 2
-                  }}
-                >{reception.location}</Box>
-                <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{reception.city}</Box>
-              </Box>
-            </Flex>
-            <Text color="gray.5">{reception.address}</Text>
-            <Box mt={2}>
-              <AnchorButton
-                href={`https://www.google.com/maps/search/?api=1&query=${reception.pinpoint.latitude},${reception.pinpoint.longitude}`}
-                outlined={true}
-                intent="warning"
-                text="See location on Google Maps"
-              />
-            </Box>
-          </Fade>
-        </Box>
+          )
+        })}
 
         {/* Maps */}
         <Box
@@ -748,7 +676,7 @@ const TemplateOne = (props) => {
         >
           <Box
             as="img"
-            src={`https://api.mapbox.com/styles/v1/mapbox/light-v10/static/pin-s-heart+ff0000(${contract.pinpoint.longitude},${contract.pinpoint.latitude}),pin-s-restaurant+00eeff(${reception.pinpoint.longitude},${reception.pinpoint.latitude})/auto/${1024}x${300}@2x?access_token=pk.eyJ1IjoiaWxvbW9uMTAiLCJhIjoiY2piZjh1cHVwMTRnbjJ3bzI1MWwwN2g3ZCJ9.txWBAfB2D7-vueg7G9FORA&attribution=false&logo=false&padding=100`}
+            src={`https://api.mapbox.com/styles/v1/mapbox/light-v10/static/${location_time_date.map(({ pinpoint: pp }) => `pin-s-${pp.icon}+${pp.color.replace("#", "")}(${pp.longitude},${pp.latitude})`).join(",")}/auto/${1024}x${300}@2x?access_token=pk.eyJ1IjoiaWxvbW9uMTAiLCJhIjoiY2piZjh1cHVwMTRnbjJ3bzI1MWwwN2g3ZCJ9.txWBAfB2D7-vueg7G9FORA&attribution=false&logo=false&padding=100`}
             sx={{
               height: "100%",
               width: "100%",

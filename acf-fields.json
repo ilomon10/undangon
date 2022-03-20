@@ -29,6 +29,31 @@
                 "placeholder": ""
             },
             {
+                "key": "field_6212bb8c95b71",
+                "label": "Mode",
+                "name": "mode",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "light": "Light",
+                    "dark": "Dark"
+                },
+                "default_value": "light",
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "value",
+                "ajax": 0,
+                "placeholder": ""
+            },
+            {
                 "key": "field_604b23b660c41",
                 "label": "Music",
                 "name": "music",
@@ -60,7 +85,7 @@
                     "class": "",
                     "id": ""
                 },
-                "return_format": "url",
+                "return_format": "array",
                 "preview_size": "medium",
                 "library": "uploadedTo",
                 "min_width": 512,
@@ -306,20 +331,43 @@
                 ]
             },
             {
-                "key": "field_60446c855e308",
-                "label": "Contract",
-                "name": "contract",
-                "type": "group",
+                "key": "field_621a4cfe08f1a",
+                "label": "Location Time Date",
+                "name": "location_time_date",
+                "type": "repeater",
                 "instructions": "",
-                "required": 0,
+                "required": 1,
                 "conditional_logic": 0,
                 "wrapper": {
                     "width": "",
                     "class": "",
                     "id": ""
                 },
-                "layout": "block",
+                "collapsed": "field_621a4d4708f1b",
+                "min": 1,
+                "max": 0,
+                "layout": "table",
+                "button_label": "",
                 "sub_fields": [
+                    {
+                        "key": "field_621a4d4708f1b",
+                        "label": "Label",
+                        "name": "label",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 1,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                            "width": "",
+                            "class": "",
+                            "id": ""
+                        },
+                        "default_value": "",
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "maxlength": ""
+                    },
                     {
                         "key": "field_60446c855e309",
                         "label": "Date",
@@ -329,7 +377,7 @@
                         "required": 1,
                         "conditional_logic": 0,
                         "wrapper": {
-                            "width": "33.33333333333333",
+                            "width": "",
                             "class": "",
                             "id": ""
                         },
@@ -341,39 +389,83 @@
                         "key": "field_60446c855e30a",
                         "label": "Address",
                         "name": "address",
-                        "type": "text",
+                        "type": "group",
                         "instructions": "",
                         "required": 1,
                         "conditional_logic": 0,
                         "wrapper": {
-                            "width": "33.33333333333333",
+                            "width": "",
                             "class": "",
                             "id": ""
                         },
-                        "default_value": "",
-                        "placeholder": "",
-                        "prepend": "",
-                        "append": "",
-                        "maxlength": ""
-                    },
-                    {
-                        "key": "field_60446c855e30b",
-                        "label": "Location",
-                        "name": "location",
-                        "type": "text",
-                        "instructions": "",
-                        "required": 1,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "33.33333333333333",
-                            "class": "",
-                            "id": ""
-                        },
-                        "default_value": "",
-                        "placeholder": "",
-                        "prepend": "",
-                        "append": "",
-                        "maxlength": ""
+                        "layout": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_621a53a249fa9",
+                                "label": "Name",
+                                "name": "name",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "key": "field_60446c855e30b",
+                                "label": "Location",
+                                "name": "location",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "key": "field_61ffbb6b3a8d0",
+                                "label": "City",
+                                "name": "city",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 1,
+                                "conditional_logic": [
+                                    [
+                                        {
+                                            "field": "field_6043893e7ff82",
+                                            "operator": "==",
+                                            "value": "one"
+                                        }
+                                    ]
+                                ],
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            }
+                        ]
                     },
                     {
                         "key": "field_60446c855e30c",
@@ -431,137 +523,47 @@
                                 "min": "",
                                 "max": "",
                                 "step": ""
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "key": "field_60446c235e302",
-                "label": "Reception",
-                "name": "reception",
-                "type": "group",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "layout": "block",
-                "sub_fields": [
-                    {
-                        "key": "field_6043884ff8d2a",
-                        "label": "Date",
-                        "name": "date",
-                        "type": "date_time_picker",
-                        "instructions": "",
-                        "required": 1,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "33.33333333333333",
-                            "class": "",
-                            "id": ""
-                        },
-                        "display_format": "F j, Y g:i a",
-                        "return_format": "Y-m-d H:i:s",
-                        "first_day": 0
-                    },
-                    {
-                        "key": "field_604397a7464e0",
-                        "label": "Address",
-                        "name": "address",
-                        "type": "text",
-                        "instructions": "",
-                        "required": 1,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "33.33333333333333",
-                            "class": "",
-                            "id": ""
-                        },
-                        "default_value": "",
-                        "placeholder": "",
-                        "prepend": "",
-                        "append": "",
-                        "maxlength": ""
-                    },
-                    {
-                        "key": "field_60439873f38b7",
-                        "label": "Location",
-                        "name": "location",
-                        "type": "text",
-                        "instructions": "",
-                        "required": 1,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "33.33333333333333",
-                            "class": "",
-                            "id": ""
-                        },
-                        "default_value": "",
-                        "placeholder": "",
-                        "prepend": "",
-                        "append": "",
-                        "maxlength": ""
-                    },
-                    {
-                        "key": "field_6043881df8d29",
-                        "label": "Pinpoint",
-                        "name": "pinpoint",
-                        "type": "group",
-                        "instructions": "",
-                        "required": 0,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "",
-                            "class": "",
-                            "id": ""
-                        },
-                        "layout": "block",
-                        "sub_fields": [
-                            {
-                                "key": "field_6044fcd66254a",
-                                "label": "Latitude",
-                                "name": "latitude",
-                                "type": "number",
-                                "instructions": "",
-                                "required": 0,
-                                "conditional_logic": 0,
-                                "wrapper": {
-                                    "width": "50",
-                                    "class": "",
-                                    "id": ""
-                                },
-                                "default_value": "",
-                                "placeholder": "",
-                                "prepend": "",
-                                "append": "",
-                                "min": "",
-                                "max": "",
-                                "step": ""
                             },
                             {
-                                "key": "field_6044fd036254b",
-                                "label": "Longitude",
-                                "name": "longitude",
-                                "type": "number",
+                                "key": "field_621a51e86be86",
+                                "label": "Icon",
+                                "name": "icon",
+                                "type": "select",
                                 "instructions": "",
                                 "required": 0,
                                 "conditional_logic": 0,
                                 "wrapper": {
-                                    "width": "50",
+                                    "width": "",
                                     "class": "",
                                     "id": ""
                                 },
-                                "default_value": "",
-                                "placeholder": "",
-                                "prepend": "",
-                                "append": "",
-                                "min": "",
-                                "max": "",
-                                "step": ""
+                                "choices": {
+                                    "heart": "heart",
+                                    "restaurant": "restaurant",
+                                    "alcohol-shop": "alcohol-shop"
+                                },
+                                "default_value": false,
+                                "allow_null": 0,
+                                "multiple": 0,
+                                "ui": 0,
+                                "return_format": "value",
+                                "ajax": 0,
+                                "placeholder": ""
+                            },
+                            {
+                                "key": "field_621a5327a20e2",
+                                "label": "Color",
+                                "name": "color",
+                                "type": "color_picker",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": ""
                             }
                         ]
                     }
@@ -580,7 +582,7 @@
                     "class": "",
                     "id": ""
                 },
-                "return_format": "url",
+                "return_format": "array",
                 "preview_size": "medium",
                 "insert": "append",
                 "library": "uploadedTo",
@@ -601,15 +603,7 @@
                 "type": "group",
                 "instructions": "",
                 "required": 1,
-                "conditional_logic": [
-                    [
-                        {
-                            "field": "field_6043893e7ff82",
-                            "operator": "==contains",
-                            "value": "two"
-                        }
-                    ]
-                ],
+                "conditional_logic": 0,
                 "wrapper": {
                     "width": "",
                     "class": "",
@@ -624,7 +618,15 @@
                         "type": "image",
                         "instructions": "",
                         "required": 1,
-                        "conditional_logic": 0,
+                        "conditional_logic": [
+                            [
+                                {
+                                    "field": "field_6043893e7ff82",
+                                    "operator": "==",
+                                    "value": "two"
+                                }
+                            ]
+                        ],
                         "wrapper": {
                             "width": "",
                             "class": "",
@@ -642,145 +644,84 @@
                         "mime_types": ""
                     },
                     {
-                        "key": "field_61fe412ffdfc8",
-                        "label": "First Verse",
-                        "name": "first_verse",
-                        "type": "text",
+                        "key": "field_61ffb55e33b63",
+                        "label": "Verse Quote",
+                        "name": "verse_quote",
+                        "type": "repeater",
                         "instructions": "",
                         "required": 1,
                         "conditional_logic": 0,
                         "wrapper": {
-                            "width": "50",
+                            "width": "",
                             "class": "",
                             "id": ""
                         },
-                        "default_value": "",
-                        "placeholder": "",
-                        "prepend": "",
-                        "append": "",
-                        "maxlength": ""
-                    },
-                    {
-                        "key": "field_61fe419dfdfc9",
-                        "label": "First Verse Content",
-                        "name": "first_verse_content",
-                        "type": "textarea",
-                        "instructions": "",
-                        "required": 1,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "50",
-                            "class": "",
-                            "id": ""
-                        },
-                        "default_value": "",
-                        "placeholder": "",
-                        "maxlength": "",
-                        "rows": "",
-                        "new_lines": ""
-                    },
-                    {
-                        "key": "field_61fe41b8fdfca",
-                        "label": "Second Verse",
-                        "name": "second_verse",
-                        "type": "text",
-                        "instructions": "",
-                        "required": 1,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "50",
-                            "class": "",
-                            "id": ""
-                        },
-                        "default_value": "",
-                        "placeholder": "",
-                        "prepend": "",
-                        "append": "",
-                        "maxlength": ""
-                    },
-                    {
-                        "key": "field_61fe41bffdfcb",
-                        "label": "Second Verse Content",
-                        "name": "second_verse_content",
-                        "type": "textarea",
-                        "instructions": "",
-                        "required": 1,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "50",
-                            "class": "",
-                            "id": ""
-                        },
-                        "default_value": "",
-                        "placeholder": "",
-                        "maxlength": "",
-                        "rows": "",
-                        "new_lines": ""
+                        "collapsed": "",
+                        "min": 1,
+                        "max": 0,
+                        "layout": "table",
+                        "button_label": "",
+                        "sub_fields": [
+                            {
+                                "key": "field_61ffb57f33b64",
+                                "label": "Verse",
+                                "name": "verse",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": "",
+                                "maxlength": ""
+                            },
+                            {
+                                "key": "field_61ffb5d733b66",
+                                "label": "Content",
+                                "name": "content",
+                                "type": "textarea",
+                                "instructions": "",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "placeholder": "",
+                                "maxlength": "",
+                                "rows": "",
+                                "new_lines": ""
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "key": "field_61fe439b26186",
-                "label": "Optional",
-                "name": "optional",
-                "type": "group",
+                "key": "field_621a562d684b7",
+                "label": "Share Message",
+                "name": "share_message",
+                "type": "textarea",
                 "instructions": "",
-                "required": 1,
-                "conditional_logic": [
-                    [
-                        {
-                            "field": "field_6043893e7ff82",
-                            "operator": "==contains",
-                            "value": "one"
-                        }
-                    ]
-                ],
+                "required": 0,
+                "conditional_logic": 0,
                 "wrapper": {
                     "width": "",
                     "class": "",
                     "id": ""
                 },
-                "layout": "block",
-                "sub_fields": [
-                    {
-                        "key": "field_61fe439b26188",
-                        "label": "Verse",
-                        "name": "verse",
-                        "type": "text",
-                        "instructions": "",
-                        "required": 1,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "50",
-                            "class": "",
-                            "id": ""
-                        },
-                        "default_value": "",
-                        "placeholder": "",
-                        "prepend": "",
-                        "append": "",
-                        "maxlength": ""
-                    },
-                    {
-                        "key": "field_61fe439b26189",
-                        "label": "Verse Content",
-                        "name": "verse_content",
-                        "type": "textarea",
-                        "instructions": "",
-                        "required": 1,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                            "width": "50",
-                            "class": "",
-                            "id": ""
-                        },
-                        "default_value": "",
-                        "placeholder": "",
-                        "maxlength": "",
-                        "rows": "",
-                        "new_lines": ""
-                    }
-                ]
+                "default_value": "Kepada {{to}},\r\n\r\nDengan segala hormat, kami mengirimkan undangan elektronik ini : \r\n{{url}}\r\n\r\nKami mohon restu di hari pernikahan kami. Walaupun, keadaan pandemi Covid-19 dan dengan tetap menjaga protokol kesehatan, kami mengundang Anda untuk menghadiri upacara pernikahan. Anda masih bisa menjadi bagian dari Pernikahan kami dengan meninggalkan keinginan Anda.\r\n\r\n⏰ – {{date}}\r\n\r\nTerima kasih atas semua doa dan dukungannya. Ini akan menjadi hadiah yang luar biasa untuk kita.\r\n\r\nWith pray & love,\r\n{{groom}} & {{bride}}\r\n\r\n\r\n#BaundangMe",
+                "placeholder": "",
+                "maxlength": "",
+                "rows": "",
+                "new_lines": ""
             }
         ],
         "location": [
