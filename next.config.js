@@ -4,7 +4,9 @@ module.exports = {
     minimumCacheTTL: 60,
   },
   env: {
-    serverUrl: process.env.SERVER
+    serverUrl: process.env.SERVER,
+    appName: process.env.APP_NAME,
+    appDomain: process.env.APP_DOMAIN
   },
   compiler: {
     styledComponents: true,

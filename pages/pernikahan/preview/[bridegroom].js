@@ -9,8 +9,8 @@ const Preview = ({
     bride,
     groom,
     theme,
-    contract,
-    reception,
+    mode,
+    location_time_date,
     gallery,
     music,
     featured_image,
@@ -24,14 +24,14 @@ const Preview = ({
       </Head>
       <Template
         theme={theme}
+        mode={mode}
         post={{
           id: id,
           slug: slug
         }}
         bride={bride}
         groom={groom}
-        contract={contract}
-        reception={reception}
+        location_time_date={location_time_date}
         gallery={gallery}
         music={music}
         featured_image={featured_image}
