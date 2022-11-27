@@ -36,7 +36,7 @@ export default function Home() {
           content={`https://${CONSTANTS.APP_DOMAIN}/logo.svg`}
           key="ogimage"
         />
-        <meta property="og:site_name" content="Manjo" key="ogsitename" />
+        <meta property="og:site_name" content={`${CONSTANTS.APP_NAME}`} key="ogsitename" />
         <meta
           property="og:url"
           content={`https://${CONSTANTS.APP_DOMAIN}/`}

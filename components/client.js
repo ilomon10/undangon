@@ -1,9 +1,8 @@
 import axios from "axios";
-
-export const serverUrl = new URL(process.env.serverUrl);
+import { SERVER_URL } from "./Constants";
 
 export const vanilla = (function () {
-  const baseURL = `${serverUrl.toString()}/wp-json/wp/v2`;
+  const baseURL = `${SERVER_URL.toString()}/api`;
   function f({
     url,
     method,
@@ -45,7 +44,7 @@ export const vanilla = (function () {
 })()
 
 export const client = axios.create({
-  baseURL: `${serverUrl.toString()}/wp-json/wp/v2`
+  baseURL: `${SERVER_URL.toString()}/wp-json/wp/v2`
 });
 
 export default {
