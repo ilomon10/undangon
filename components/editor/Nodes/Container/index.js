@@ -1,18 +1,25 @@
 import { useEditor, useNode } from "@craftjs/core"
 import { Box } from "components/Grid";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { ContainerSettings } from "./ContainerSettings";
 
-export const Container = ({ height, width, children }) => {
+export const Container = ({
+  children,
+  height, width,
+
+  paddingTop,
+  paddingRight,
+  paddingLeft,
+  paddingBottom,
+
+  marginTop,
+  marginRight,
+  marginLeft,
+  marginBottom,
+}) => {
   const { isActive, connectors: { connect, drag } } = useNode((node) => ({
     isActive: node.events.selected,
   }));
-  const { isDragged } = useEditor(state => {
-    const [draggedId] = state.events.dragged;
-    return {
-      isDragged: !!draggedId,
-    }
-  });
   return (
     <Box
       ref={ref => connect(drag(ref))}
@@ -20,10 +27,20 @@ export const Container = ({ height, width, children }) => {
         position: "relative",
         minHeight: 25,
         height: height,
-        width: width
+        width: width,
+
+        paddingTop,
+        paddingRight,
+        paddingLeft,
+        paddingBottom,
+
+        marginTop,
+        marginRight,
+        marginLeft,
+        marginBottom,
       }}
     >
-      {(isActive || isDragged) &&
+      {(isActive) &&
         <Box sx={{
           pointerEvent: "none",
           position: "absolute",
@@ -37,6 +54,20 @@ export const Container = ({ height, width, children }) => {
 }
 
 Container.craft = {
+  props: {
+    height: 100,
+    width: 100,
+
+    paddingTop: 0,
+    paddingRight: 0,
+    paddingLeft: 0,
+    paddingBottom: 0,
+
+    marginTop: 0,
+    marginRight: 0,
+    marginLeft: 0,
+    marginBottom: 0,
+  },
   related: {
     settings: ContainerSettings
   }

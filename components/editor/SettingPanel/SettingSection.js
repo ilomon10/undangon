@@ -1,6 +1,7 @@
-import { Collapse, Icon, Label } from "@blueprintjs/core"
+import { Collapse, Icon } from "@blueprintjs/core"
+import { useNode } from "@craftjs/core";
 import { Box, Flex } from "components/Grid"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 
 export const SettingSection = ({
   icon,
@@ -10,23 +11,53 @@ export const SettingSection = ({
   children
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { nodeProps } = useNode((node) => ({
+    nodeProps: props &&
+      props.reduce((res, key) => {
+        res[key] = node.data.props[key] || null;
+        return res;
+      }, {}),
+  }))
+  const summary = useMemo(() => {
+    let ret;
+    if (typeof label !== "function") {
+      ret = label;
+    } else {
+      ret = label(props.reduce((acc, key) => {
+        acc[key] = nodeProps[key];
+        return acc;
+      }, {}))
+    }
+    return ret;
+  }, [label, props, nodeProps]);
+
   return (
-    <Box>
+    <Box sx={{
+      borderBottom: "1px solid white",
+      borderBottomColor: "gray.2"
+    }}>
       <Flex
+        type="button"
         sx={{
-          borderBottom: "1px solid white",
-          borderBottomColor: "gray.1"
+          cursor: "pointer",
+          px: 2,
+          py: 2,
         }}
         onClick={() => setIsOpen(open => !open)}
       >
         {icon &&
           <span><Icon icon={icon} /></span>}
-        <span>{text}</span>
-        {label &&
-          <span>{label}</span>}
+        <Box as="span" sx={{ flexGrow: 1 }}>{text}</Box>
+        {summary &&
+          <span>{summary}</span>}
       </Flex>
       <Collapse isOpen={isOpen}>
-        {children}
+        <Box sx={{
+          px: 2,
+          my: 2,
+        }}>
+          {children}
+        </Box>
       </Collapse>
     </Box>
   )

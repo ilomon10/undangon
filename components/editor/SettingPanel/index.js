@@ -22,9 +22,9 @@ export const SettingPanel = () => {
   return (
     <Box sx={{
       my: 2,
-      px: 2,
+      // px: 2,
     }}>
-      <Box as="h3" sx={{ mb: 2 }}>Design</Box>
+      <Box as="h3" sx={{ mb: 2, px: 2 }}>Design</Box>
 
       {selected ? (
         <Box>

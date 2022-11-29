@@ -12,7 +12,7 @@ export const Viewport = ({ children }) => {
     }}>
       <Box sx={{
         borderBottom: "1px solid white",
-        borderBottomColor: "gray.2",
+        borderBottomColor: "gray.3",
       }}>
         <Toolbar />
       </Box>
@@ -21,18 +21,21 @@ export const Viewport = ({ children }) => {
       }}>
         <Box sx={{
           borderRight: "1px solid white",
-          borderRightColor: "gray.2",
+          borderRightColor: "gray.3",
         }}>
           <Toolbox />
         </Box>
         <Box sx={{
           flexGrow: 1,
-          backgroundColor: "gray.1"
+          backgroundColor: "gray.2",
+          overflowY: "auto",
+          height: "1px",
+          minHeight: "100%"
         }}>{children}</Box>
         <Box sx={{
           width: 280,
           borderLeft: "1px solid white",
-          borderLeftColor: "gray.2",
+          borderLeftColor: "gray.3",
         }}>
           <SettingPanel />
         </Box>
