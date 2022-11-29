@@ -1,11 +1,21 @@
+import { Button, ButtonGroup } from '@blueprintjs/core';
 import { useEditor } from '@craftjs/core';
-import React from 'react';
+import { Box, Flex } from 'components/Grid';
+import React, { useEffect } from 'react';
 
 export const Toolbar = () => {
-
   return (
-    <div className="py-1 h-full">
-      Toolbar
-    </div>
+    <Flex sx={{
+      px: 2,
+      py: 2,
+    }}>
+      <Box>
+        <ButtonGroup>
+          <Button icon="undo" />
+          <Button icon="redo" />
+          <Button icon="floppy-disk" />
+        </ButtonGroup>
+      </Box>
+    </Flex>
   );
 };

@@ -30,6 +30,7 @@ export const Viewport = ({ children }) => {
           backgroundColor: "gray.1"
         }}>{children}</Box>
         <Box sx={{
+          width: 280,
           borderLeft: "1px solid white",
           borderLeftColor: "gray.2",
         }}>

@@ -19,8 +19,8 @@ export default function TemplateEditor() {
           <Frame>
             <Container>
               <Element is={Container} canvas>
-                <Text />
-                <Text />
+                <Text text="Ini Text 1" />
+                <Text text="Text 2" />
                 <Button />
               </Element>
             </Container>
