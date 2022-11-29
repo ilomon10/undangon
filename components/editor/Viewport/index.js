@@ -1,75 +1,41 @@
-import { useEditor } from '@craftjs/core';
-import cx from 'classnames';
-import React, { useEffect } from 'react';
-
-import { Header } from './Header';
-import { Sidebar } from './Sidebar';
-import { Toolbox } from './Toolbox';
+import { Box, Flex } from "components/Grid"
+import { SettingPanel } from "../SettingPanel"
+import { Toolbar } from "../Toolbar"
+import { Toolbox } from "../Toolbox"
 
 export const Viewport = ({ children }) => {
-  const {
-    enabled,
-    connectors,
-    actions: { setOptions },
-  } = useEditor((state) => ({
-    enabled: state.options.enabled,
-  }));
-
-  useEffect(() => {
-    if (!window) {
-      return;
-    }
-
-    window.requestAnimationFrame(() => {
-      // Notify doc site
-      window.parent.postMessage(
-        {
-          LANDING_PAGE_LOADED: true,
-        },
-        '*'
-      );
-
-      setTimeout(() => {
-        setOptions((options) => {
-          options.enabled = true;
-        });
-      }, 200);
-    });
-  }, [setOptions]);
-
   return (
-    <div className="viewport">
-      <div
-        className={cx(['flex h-full overflow-hidden flex-row w-full fixed'])}
-      >
-        <Toolbox />
-        <div className="page-container flex flex-1 h-full flex-col">
-          <Header />
-          <div
-            className={cx([
-              'craftjs-renderer flex-1 h-full w-full transition pb-8 overflow-auto',
-              {
-                'bg-renderer-gray': enabled,
-              },
-            ])}
-            ref={(ref) => connectors.select(connectors.hover(ref, null), null)}
-          >
-            <div className="relative flex-col flex items-center pt-8">
-              {children}
-            </div>
-            <div
-              className={
-                'flex items-center justify-center w-full pt-6 text-xs text-light-gray-2'
-              }
-            >
-              <a href="https://www.netlify.com">
-                This site is powered by Netlify
-              </a>
-            </div>
-          </div>
-        </div>
-        <Sidebar />
-      </div>
-    </div>
-  );
-};
+    <Flex sx={{
+      position: "fixed",
+      inset: 0,
+      flexDirection: "column"
+    }}>
+      <Box sx={{
+        borderBottom: "1px solid white",
+        borderBottomColor: "gray.2",
+      }}>
+        <Toolbar />
+      </Box>
+      <Flex sx={{
+        flexGrow: 1
+      }}>
+        <Box sx={{
+          borderRight: "1px solid white",
+          borderRightColor: "gray.2",
+        }}>
+          <Toolbox />
+        </Box>
+        <Box sx={{
+          flexGrow: 1,
+          backgroundColor: "gray.1"
+        }}>{children}</Box>
+        <Box sx={{
+          borderLeft: "1px solid white",
+          borderLeftColor: "gray.2",
+        }}>
+          <SettingPanel />
+        </Box>
+      </Flex>
+    </Flex>
+  )
+}

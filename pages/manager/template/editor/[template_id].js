@@ -1,21 +1,32 @@
 import { Editor, Frame, Element } from '@craftjs/core';
+import { Button, Container, Text } from "components/editor/Nodes";
 
 import { Box } from "components";
 import { Viewport } from 'components/editor';
-import { RenderNode } from "components/editor/RenderNode";
+import { BlueprintWrapper } from 'components/BlueprintWrapper';
 
 export default function TemplateEditor() {
   return (
-    <Box>
+    <BlueprintWrapper>
       <Editor
-        onRender={RenderNode}
+        resolver={{
+          Button,
+          Container,
+          Text
+        }}
       >
         <Viewport>
           <Frame>
-            <Element canvas/>
+            <Container>
+              <Element is={Container} canvas>
+                <Text />
+                <Text />
+                <Button />
+              </Element>
+            </Container>
           </Frame>
         </Viewport>
       </Editor>
-    </Box>
+    </BlueprintWrapper>
   )
 }
