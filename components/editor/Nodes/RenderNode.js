@@ -1,37 +1,14 @@
-import { Icon } from '@blueprintjs/core';
-import { useNode, useEditor } from '@craftjs/core';
+import { useEditor, useNode } from "@craftjs/core";
+import { Button, Icon } from "@blueprintjs/core";
 import { ROOT_NODE } from '@craftjs/utils';
-import React, { useEffect, useRef, useCallback } from 'react';
-import ReactDOM from 'react-dom';
-import styled from 'styled-components';
-
-const IndicatorDiv = styled.div`
-  height: 30px;
-  margin-top: -29px;
-  font-size: 12px;
-  line-height: 12px;
-
-  svg {
-    fill: #fff;
-    width: 15px;
-    height: 15px;
-  }
-`;
-
-const Btn = styled.a`
-  padding: 0 0px;
-  opacity: 0.9;
-  display: flex;
-  align-items: center;
-  > div {
-    position: relative;
-    top: -50%;
-    left: -50%;
-  }
-`;
+import { Box, Flex } from "components/Grid";
+import { useCallback, useEffect, useRef } from "react";
+import ReactDOM from "react-dom";
+import styled from "styled-components";
 
 export const RenderNode = ({ render }) => {
   const { id } = useNode();
+  const currentRef = useRef();
   const { actions, query, isActive } = useEditor((_, query) => ({
     isActive: query.getEvent('selected').contains(id),
   }));
@@ -53,8 +30,6 @@ export const RenderNode = ({ render }) => {
     parent: node.data.parent,
     props: node.data.props,
   }));
-
-  const currentRef = useRef();
 
   useEffect(() => {
     if (dom) {
@@ -83,6 +58,7 @@ export const RenderNode = ({ render }) => {
   }, [dom, getPos]);
 
   useEffect(() => {
+
     document
       .querySelector('.craftjs-renderer')
       .addEventListener('scroll', scroll);
@@ -96,49 +72,70 @@ export const RenderNode = ({ render }) => {
 
   return (
     <>
-      {isHover || isActive
-        ? ReactDOM.createPortal(
+      {isHover || isActive ?
+        ReactDOM.createPortal(
           <IndicatorDiv
-            ref={currentRef}
-            className="px-2 py-2 text-white bg-primary fixed flex items-center"
+            innerRef={currentRef}
+            sx={{
+              backgroundColor: "blue.4",
+              px: 2,
+              py: 1
+            }}
             style={{
               left: getPos(dom).left,
               top: getPos(dom).top,
               zIndex: 9999,
             }}
           >
-            <h2 className="flex-1 mr-4">{name}</h2>
-            {moveable ? (
-              <Btn className="mr-2 cursor-move" ref={drag}>
-                <Icon icon="move" />
-              </Btn>
-            ) : null}
+            <Box>{name}</Box>
+
             {id !== ROOT_NODE && (
-              <Btn
-                className="mr-2 cursor-pointer"
+              <Box
+                ref={drag}
+                sx={{ ml: 2 }}
                 onClick={() => {
                   actions.selectNode(parent);
                 }}
               >
-                <Icon icon="arrow-up" />
-              </Btn>
+                <Icon
+                  size={10}
+                  icon="arrow-up"
+                  color="white"
+                />
+              </Box>
             )}
-            {deletable ? (
-              <Btn
-                className="cursor-pointer"
-                onMouseDown={(e) => {
-                  e.stopPropagation();
-                  actions.delete(id);
+            {moveable ? (
+              <Box
+                ref={drag}
+                sx={{
+                  ml: 2
                 }}
               >
-                <Icon icon="trash" />
-              </Btn>
+                <Icon
+                  size={10}
+                  icon="drag-handle-vertical"
+                  color="white"
+                />
+              </Box>
             ) : null}
           </IndicatorDiv>,
           document.querySelector('.page-container')
-        )
-        : null}
+        ) : null}
       {render}
     </>
-  );
-};
+  )
+}
+
+const IndicatorDiv = styled(Flex)({
+  position: "fixed",
+
+  alignItems: "center",
+  marginTop: "-20px",
+  fontSize: "10px",
+  lineHeight: '10px',
+  color: "white",
+
+  "svg": {
+    fill: "#fff",
+  },
+})

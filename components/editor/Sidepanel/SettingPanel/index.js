@@ -1,6 +1,8 @@
+import { NonIdealState } from "@blueprintjs/core";
 import { useEditor } from "@craftjs/core"
 import { Box } from "components/Grid"
 import { createElement } from "react";
+import { PanelSection } from "../PanelSection";
 
 export const SettingPanel = () => {
   const { selected } = useEditor((state) => {
@@ -20,17 +22,22 @@ export const SettingPanel = () => {
   });
 
   return (
-    <Box sx={{
-      my: 2,
-      // px: 2,
-    }}>
-      <Box as="h3" sx={{ mb: 2, px: 2 }}>Design</Box>
-
-      {selected ? (
-        <Box>
-          {selected.settings && createElement(selected.settings)}
-        </Box>
-      ) : null}
-    </Box>
+    <PanelSection text="Design">
+      <Box
+        sx={{
+          minHeight: 280
+        }}
+      >
+        {!selected &&
+          <Box>
+            <NonIdealState description="Select any nodes to start editing" />
+          </Box>}
+        {selected ? (
+          <Box>
+            {selected.settings && createElement(selected.settings)}
+          </Box>
+        ) : null}
+      </Box>
+    </PanelSection>
   );
 }

@@ -1,14 +1,17 @@
 import { FormGroup, InputGroup } from "@blueprintjs/core";
 import { useNode } from "@craftjs/core";
-import { SettingSection } from "components/editor/SettingPanel/SettingSection";
+import { ColorPicker } from "components/ColorPicker";
+import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import { Flex } from "components/Grid";
 
 export const ContainerSettings = () => {
-  const { 
+  const {
     actions: { setProp },
     height, width,
     paddingTop, paddingRight, paddingLeft, paddingBottom,
     marginTop, marginRight, marginLeft, marginBottom,
+    backgroundColor,
+    borderRadius
   } = useNode((node) => ({
     height: node.data.props.height,
     width: node.data.props.width,
@@ -22,6 +25,10 @@ export const ContainerSettings = () => {
     marginRight: node.data.props.marginRight,
     marginBottom: node.data.props.marginBottom,
     marginLeft: node.data.props.marginLeft,
+
+    backgroundColor: node.data.props.backgroundColor,
+
+    borderRadius: node.data.props.borderRadius,
   }));
 
   return (
@@ -96,6 +103,18 @@ export const ContainerSettings = () => {
             }} />
           </FormGroup>
         </Flex>
+      </SettingSection>
+      <SettingSection text="Appearance">
+        <FormGroup label="Background Color">
+          <ColorPicker value={backgroundColor} onChange={(color) => {
+            setProp(props => props.backgroundColor = color.hex);
+          }} />
+        </FormGroup>
+        <FormGroup label="Border Radius">
+          <InputGroup value={borderRadius || ""} onChange={(e) => {
+            setProp(props => props.borderRadius = e.target.value);
+          }} />
+        </FormGroup>
       </SettingSection>
     </>
   )

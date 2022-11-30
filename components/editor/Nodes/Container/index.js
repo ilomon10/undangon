@@ -1,5 +1,5 @@
 import { useEditor, useNode } from "@craftjs/core"
-import { Box } from "components/Grid";
+import { Box, Flex } from "components/Grid";
 import { useEffect, useMemo } from "react";
 import { ContainerSettings } from "./ContainerSettings";
 
@@ -16,16 +16,20 @@ export const Container = ({
   marginRight,
   marginLeft,
   marginBottom,
+
+  backgroundColor,
+  borderRadius,
 }) => {
-  const { isActive, connectors: { connect, drag } } = useNode((node) => ({
-    isActive: node.events.selected,
-  }));
+  const { connectors: { connect, drag } } = useNode();
   return (
-    <Box
+    <Flex
       ref={ref => connect(drag(ref))}
       sx={{
         position: "relative",
         minHeight: 25,
+        flexDirection: "column"
+      }}
+      style={{
         height: height,
         width: width,
 
@@ -38,18 +42,13 @@ export const Container = ({
         marginRight,
         marginLeft,
         marginBottom,
+
+        backgroundColor,
+        borderRadius
       }}
     >
-      {(isActive) &&
-        <Box sx={{
-          pointerEvent: "none",
-          position: "absolute",
-          inset: 1,
-          border: "1px dashed white",
-          borderColor: "red.2"
-        }} />}
       {children}
-    </Box>
+    </Flex>
   )
 }
 
@@ -67,6 +66,9 @@ Container.craft = {
     marginRight: 0,
     marginLeft: 0,
     marginBottom: 0,
+
+    backgroundColor: undefined,
+    borderRadius: undefined
   },
   related: {
     settings: ContainerSettings

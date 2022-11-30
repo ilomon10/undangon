@@ -33,8 +33,8 @@ export const SettingSection = ({
 
   return (
     <Box sx={{
-      borderBottom: "1px solid white",
-      borderBottomColor: "gray.2"
+      borderTop: "1px solid white",
+      borderTopColor: "gray.2"
     }}>
       <Flex
         type="button"

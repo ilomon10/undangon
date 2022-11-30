@@ -2,22 +2,14 @@ import { Menu, Icon, Classes } from "@blueprintjs/core";
 import { Element, useEditor } from "@craftjs/core"
 import { Box } from "components/Grid"
 import { useEffect, useRef } from "react";
-import { Button, Container, Text } from "../Nodes";
+import { Button, Container, Text } from "../../Nodes";
+import { PanelSection } from "../PanelSection";
 
 export const Toolbox = () => {
   const { connectors, query } = useEditor();
-  const testRef1 = useRef();
-  const testRef2 = useRef();
-  useEffect(() => {
-    console.log(testRef1);
-    console.log(testRef2);
-  }, []);
   return (
-    <Box sx={{
-      width: 280
-    }}>
+    <PanelSection text="Toolbox">
       <Menu>
-        <div ref={testRef1}></div>
         {[{
           icon: "widget-button",
           label: "Button",
@@ -38,6 +30,6 @@ export const Toolbox = () => {
             </button>
           </li>)}
       </Menu>
-    </Box>
+    </PanelSection>
   )
 }

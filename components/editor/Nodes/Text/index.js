@@ -2,9 +2,16 @@ import { EditableText } from "@blueprintjs/core";
 import { useNode } from "@craftjs/core"
 import { Box } from "components/Grid";
 import { useState } from "react";
+import ContentEditable from "react-contenteditable";
 import { TextSettings } from "./TextSettings";
 
-export const Text = ({ text, fontSize }) => {
+export const Text = ({
+  text,
+  textAlign,
+  fontWeight,
+  fontSize,
+  color,
+}) => {
   const { connectors: { connect, drag }, actions: { setProp } } = useNode((node) => ({
     isActive: node.events.selected
   }));
@@ -12,8 +19,11 @@ export const Text = ({ text, fontSize }) => {
   return (
     <Box
       ref={ref => connect(drag(ref))}
-      sx={{
-        fontSize: fontSize
+      style={{
+        textAlign: textAlign,
+        fontWeight: fontWeight,
+        fontSize: fontSize,
+        color: color
       }}
       onDoubleClick={() => {
         setIsEditable(true);
@@ -23,10 +33,14 @@ export const Text = ({ text, fontSize }) => {
         setIsEditable(false);
       }}
     >
-      {!isEditable ? text :
-        <EditableText isEditing={false} value={text} onChange={(e) => {
-          setProp(prop => prop.text = e.replace(/<\/?[^>]+(>|$)/g, ""))
-        }} />}
+      {!isEditable ? <div dangerouslySetInnerHTML={{ __html: text }} /> :
+        <ContentEditable
+          disabled={false}
+          html={text}
+          onChange={(e) => {
+            setProp(prop => prop.text = e.target.value, 500)
+          }}
+        />}
     </Box>
   )
 }
@@ -34,7 +48,10 @@ export const Text = ({ text, fontSize }) => {
 Text.craft = {
   props: {
     text: "Text Area",
-    fontSize: 6
+    textAlign: "left",
+    fontSize: "12px",
+    fontWeight: "normal",
+    color: "inherit",
   },
   related: {
     settings: TextSettings
