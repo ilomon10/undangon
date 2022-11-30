@@ -19,6 +19,8 @@ export const Container = ({
 
   backgroundColor,
   borderRadius,
+
+  flexDirection
 }) => {
   const { connectors: { connect, drag } } = useNode();
   return (
@@ -27,7 +29,6 @@ export const Container = ({
       sx={{
         position: "relative",
         minHeight: 25,
-        flexDirection: "column"
       }}
       style={{
         height: height,
@@ -44,7 +45,9 @@ export const Container = ({
         marginBottom,
 
         backgroundColor,
-        borderRadius
+        borderRadius,
+
+        flexDirection,
       }}
     >
       {children}
@@ -68,7 +71,9 @@ Container.craft = {
     marginBottom: 0,
 
     backgroundColor: undefined,
-    borderRadius: undefined
+    borderRadius: undefined,
+    
+    flexDirection: "column"
   },
   related: {
     settings: ContainerSettings

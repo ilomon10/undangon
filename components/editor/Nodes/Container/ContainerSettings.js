@@ -1,4 +1,4 @@
-import { FormGroup, InputGroup } from "@blueprintjs/core";
+import { Button, FormGroup, InputGroup } from "@blueprintjs/core";
 import { useNode } from "@craftjs/core";
 import { ColorPicker } from "components/ColorPicker";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
@@ -11,7 +11,8 @@ export const ContainerSettings = () => {
     paddingTop, paddingRight, paddingLeft, paddingBottom,
     marginTop, marginRight, marginLeft, marginBottom,
     backgroundColor,
-    borderRadius
+    borderRadius,
+    flexDirection
   } = useNode((node) => ({
     height: node.data.props.height,
     width: node.data.props.width,
@@ -29,6 +30,8 @@ export const ContainerSettings = () => {
     backgroundColor: node.data.props.backgroundColor,
 
     borderRadius: node.data.props.borderRadius,
+
+    flexDirection: node.data.props.flexDirection,
   }));
 
   return (
@@ -109,6 +112,32 @@ export const ContainerSettings = () => {
           <ColorPicker value={backgroundColor} onChange={(color) => {
             setProp(props => props.backgroundColor = color.hex);
           }} />
+        </FormGroup>
+        <FormGroup label="Border Radius">
+          <InputGroup value={borderRadius || ""} onChange={(e) => {
+            setProp(props => props.borderRadius = e.target.value);
+          }} />
+        </FormGroup>
+      </SettingSection>
+
+      <SettingSection text="Layout">
+        <FormGroup label="Direction">
+          {[{
+            icon: "arrow-down",
+            value: "column"
+          }, {
+            icon: "arrow-right",
+            value: "row"
+          }].map(({ icon, value }) =>
+            <Button
+              key={value}
+              minimal
+              icon={icon}
+              active={flexDirection === value}
+              onClick={() => {
+                setProp(props => props.flexDirection = value);
+              }} />
+          )}
         </FormGroup>
         <FormGroup label="Border Radius">
           <InputGroup value={borderRadius || ""} onChange={(e) => {
