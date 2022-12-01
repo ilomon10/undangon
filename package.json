@@ -11,9 +11,11 @@
   "dependencies": {
     "@blueprintjs/core": "^4.12.0",
     "@blueprintjs/popover2": "^1.10.1",
+    "@blueprintjs/select": "^4.8.11",
     "@craftjs/core": "^0.2.0-beta.8",
     "@craftjs/layers": "^0.2.0-beta.8",
     "@styled-system/should-forward-prop": "^5.1.5",
+    "@tanstack/react-query": "^4.18.0",
     "axios": "^0.21.1",
     "formik": "^2.2.9",
     "lodash.get": "^4.4.2",

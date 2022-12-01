@@ -1,29 +1,28 @@
 import { Card, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { Box } from "components";
+import { Box, Flex } from "components";
 import Layout from "components/manager/Layout";
+import { TemplatesHeader } from "components/manager/Templates/Header";
+import { TemplateList } from "components/manager/Templates/List";
 import Link from "next/link";
 
 export default function Templates() {
   return (
     <Layout>
-      <Box sx={{
-        flexGrow: 1,
-        py: 4
-      }}>
+      <Flex flexGrow={1} flexDirection="column">
+        <TemplatesHeader />
         <Box sx={{
-          maxWidth: 512,
-          margin: "0 auto"
+          py: 4
         }}>
-          <Card>
-            <Menu>
-              <MenuDivider title="Templates" />
-              <Link href="template/editor/1" passHref>
-                <MenuItem text="Coba" label="Lagi" />
-              </Link>
-            </Menu>
-          </Card>
+          <Box sx={{
+            maxWidth: 512,
+            margin: "0 auto"
+          }}>
+            <Card>
+              <TemplateList />
+            </Card>
+          </Box>
         </Box>
-      </Box>
+      </Flex>
     </Layout>
   )
 }
