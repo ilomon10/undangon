@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useState } from "react"
 
 const ViewportContext = createContext();
 
-export const ViewportProvider = ({ children }) => {
+export const ViewportProvider = ({ children, onClose, onPublish }) => {
   let availableMedia = {
     "desktop": {
       name: "desktop",
@@ -21,15 +21,21 @@ export const ViewportProvider = ({ children }) => {
     setCurrentMedia(availableMedia[name]);
   }, []);
 
-  let media = {
+  const media = {
     setMedia,
     currentMedia,
     availableMedia
   }
 
+  const handler = {
+    onClose,
+    onPublish
+  }
+
   return (
     <ViewportContext.Provider value={{
-      media
+      media,
+      handler
     }}>
       {children}
     </ViewportContext.Provider>

@@ -1,21 +1,23 @@
+import React, { useCallback } from 'react';
 import { Button, ButtonGroup, Menu, MenuItem } from '@blueprintjs/core';
 import { Popover2 } from '@blueprintjs/popover2';
 import { useEditor } from '@craftjs/core';
 import { Box, Flex } from 'components/Grid';
-import React from 'react';
 import { useViewport } from '../Viewport/useViewport';
+import client from "components/client";
 
 export const Toolbar = () => {
-  const { media: { setMedia, currentMedia } } = useViewport();
-  const { enabled, canUndo, canRedo, actions } = useEditor((state, query) => ({
+  const { media: { setMedia, currentMedia }, handler } = useViewport();
+  const { enabled, canUndo, canRedo, actions, query } = useEditor((state, query) => ({
     enabled: state.options.enabled,
     canUndo: query.history.canUndo(),
     canRedo: query.history.canRedo(),
   }));
+
   return (
     <Flex px={2} py={2}>
       <Box mr={2}>
-        <Button text="Close" />
+        <Button text="Close" onClick={handler.onClose} />
       </Box>
       <Box>
         <ButtonGroup>
@@ -46,6 +48,7 @@ export const Toolbar = () => {
           <Button
             text="Publish"
             intent="success"
+            onClick={() => handler.onPublish(query)}
           />
           <Popover2
             content={

@@ -11,7 +11,9 @@ export const client = axios.create({
 export default {
   content: {
     item: {
-      async template(options) {
+      async template(options, id) {
+        if (id)
+          return await requestHandler(options, "content", "item", "template", id);
         return await requestHandler(options, "content", "item", "template");
       },
       async category(options) {
@@ -44,6 +46,6 @@ async function requestHandler(options, ...path) {
     method: options.method || "GET",
     params: options.params,
     data: options.data,
-  })
+  });
   return response.data;
 }

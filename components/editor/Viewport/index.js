@@ -97,9 +97,9 @@ export const ViewportWrapper = ({ children }) => {
   )
 }
 
-export const Viewport = ({ children }) => {
+export const Viewport = ({ children, ...props }) => {
   return (
-    <ViewportProvider>
+    <ViewportProvider {...props}>
       <ViewportWrapper>
         {children}
       </ViewportWrapper>
