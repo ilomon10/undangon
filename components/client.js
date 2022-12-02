@@ -9,42 +9,41 @@ export const client = axios.create({
 });
 
 export default {
-  async templates({
-    method = "GET",
-    params,
-    data,
-  }) {
-    const response = await client.request({
-      url: "/content/items/template",
-      method,
-      params,
-      data,
-    });
-    return response.data;
+  content: {
+    item: {
+      async template(options) {
+        return await requestHandler(options, "content", "item", "template");
+      },
+      async category(options) {
+        return await requestHandler(options, "content", "item", "category");
+      },
+      async content(options) {
+        return await requestHandler(options, "content", "item", "content");
+      },
+    },
+    items: {
+      async template(options = {}) {
+        return await requestHandler(options, "content", "items", "template");
+      },
+      async category(options) {
+        return await requestHandler(options, "content", "items", "category");
+      },
+      async content(options) {
+        return await requestHandler(options, "content", "items", "content");
+      },
+    }
   },
-  async category({
-    method = "GET",
-    params,
-    data,
-  }) {
-    const response = client.request({
-      url: "/content/items/category",
-      method,
-      params,
-      data,
-    })
-    return response.data;
-  },
-  content({
-    method = "GET",
-    params,
-    data,
-  }) {
-    return client.request({
-      url: "/content/items/content",
-      method,
-      params,
-      data,
-    })
-  }
 };
+
+async function requestHandler(options, ...path) {
+  const url = path.reduce((p, c) => {
+    return `${p}/${c}`;
+  }, "");
+  const response = await client.request({
+    url: url,
+    method: options.method || "GET",
+    params: options.params,
+    data: options.data,
+  })
+  return response.data;
+}

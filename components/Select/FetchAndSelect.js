@@ -23,7 +23,7 @@ export const FetchAndSelect = ({
         const res = await fetchCallback();
         setItems(onFetched(res));
       } catch (err) {
-        console.error(err.message);
+        console.error(err);
       }
       setLoading(() => false);
     },

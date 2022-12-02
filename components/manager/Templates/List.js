@@ -2,11 +2,12 @@ import { Box } from "components/Grid"
 import client from "components/client";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Card, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import Link from "next/link";
 
 export const TemplateList = () => {
   const { data, isLoading, isError, isSuccess } = useQuery(["templates"], async () => {
     let res = [];
-    res = await client.templates("GET");
+    res = await client.content.items.template();
     console.log(res);
     return res;
   });
@@ -16,9 +17,9 @@ export const TemplateList = () => {
 
   return (
     <Menu>
-      {data.map(({ id }) =>
-        <Link key={id} href="/manager/template/editor/1" passHref>
-          <MenuItem text="Coba" label="Lagi" />
+      {data.map(({ _id, name }) =>
+        <Link key={_id} href={`/manager/template/editor/${_id}`} passHref>
+          <MenuItem text={name} label="Lagi" />
         </Link>
       )}
     </Menu>

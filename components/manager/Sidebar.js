@@ -28,6 +28,8 @@ export const Sidebar = (props) => {
         backgroundColor: "white",
         flexDirection: "column",
         justifyContent: "center",
+        borderRight: "1px solid white",
+        borderRightColor: "gray.3",
       }}
     >
       <Box
