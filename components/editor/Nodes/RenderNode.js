@@ -1,10 +1,11 @@
 import { useEditor, useNode } from "@craftjs/core";
-import { Button, Icon } from "@blueprintjs/core";
+import { Button, Icon, Menu, MenuDivider, Text } from "@blueprintjs/core";
 import { ROOT_NODE } from '@craftjs/utils';
 import { Box, Flex } from "components/Grid";
 import { useCallback, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
+import { MenuItem2, Popover2 } from "@blueprintjs/popover2";
 
 export const RenderNode = ({ render }) => {
   const { id } = useNode();
@@ -86,7 +87,7 @@ export const RenderNode = ({ render }) => {
           >
             <Box>{name}</Box>
 
-            {id !== ROOT_NODE && (
+            {isActive && id !== ROOT_NODE && (
               <Box
                 ref={drag}
                 sx={{ ml: 2 }}
@@ -101,7 +102,7 @@ export const RenderNode = ({ render }) => {
                 />
               </Box>
             )}
-            {moveable ? (
+            {isActive && moveable ? (
               <Box
                 ref={drag}
                 sx={{
@@ -113,6 +114,35 @@ export const RenderNode = ({ render }) => {
                   icon="drag-handle-vertical"
                   color="white"
                 />
+              </Box>
+            ) : null}
+
+            {isActive && deletable ? (
+              <Box
+                ml={3}
+              >
+                <Popover2 content={(
+                  <Menu>
+                    <MenuDivider title="Are you sure?" />
+                    <MenuItem2
+                      intent="danger"
+                      text="Yes"
+                      onMouseDown={(e) => {
+                        e.stopPropagation();
+                        actions.delete(id);
+                      }}
+                    />
+                    <MenuItem2 text="Cancel" />
+                  </Menu>
+                )}>
+                  <Box>
+                    <Icon
+                      size={10}
+                      icon="trash"
+                      color="white"
+                    />
+                  </Box>
+                </Popover2>
               </Box>
             ) : null}
           </IndicatorDiv>,
@@ -131,6 +161,7 @@ const IndicatorDiv = styled(Flex)({
   fontSize: "10px",
   lineHeight: '10px',
   color: "white",
+  height: "20px",
 
   "svg": {
     fill: "#fff",

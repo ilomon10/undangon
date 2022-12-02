@@ -139,6 +139,7 @@ export const ContainerSettings = () => {
                 setProp(props => props.alignItems = e.target.value);
               }}
               options={[
+                { label: "Unset", value: "" },
                 { label: "Start", value: "start" },
                 { label: "Center", value: "center" },
                 { label: "End", value: "end " },
@@ -153,6 +154,7 @@ export const ContainerSettings = () => {
                 setProp(props => props.justifyContent = e.target.value);
               }}
               options={[
+                { label: "Unset", value: "" },
                 { label: "Start", value: "start" },
                 { label: "Center", value: "center" },
                 { label: "End", value: "end " },
