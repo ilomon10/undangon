@@ -13,19 +13,24 @@ import { useRouter } from "next/router";
 export default function TemplateEditor({ content, ...props }) {
   const router = useRouter();
 
-  const onPublish = useCallback(async (query) => {
+  const onPublish = useCallback(async (query, { setLoading }) => {
+    setLoading(true);
     const json = query.serialize();
     const content = lz.encodeBase64(lz.compress(json));
-    const response = await client.content.item.template({
-      method: "POST",
-      data: {
+    try {
+      await client.content.item.template({
+        method: "POST",
         data: {
-          _id: props._id,
-          content
+          data: {
+            _id: props._id,
+            content
+          }
         }
-      }
-    });
-    console.log(response);
+      });
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
   }, [props]);
 
   const onClose = useCallback(() => {

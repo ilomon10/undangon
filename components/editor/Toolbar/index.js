@@ -5,6 +5,7 @@ import { useEditor } from '@craftjs/core';
 import { Box, Flex } from 'components/Grid';
 import { useViewport } from '../Viewport/useViewport';
 import client from "components/client";
+import { State } from 'components/State';
 
 export const Toolbar = () => {
   const { media: { setMedia, currentMedia }, handler } = useViewport();
@@ -45,11 +46,16 @@ export const Toolbar = () => {
       </Flex>
       <Box>
         <ButtonGroup>
-          <Button
-            text="Publish"
-            intent="success"
-            onClick={() => handler.onPublish(query)}
-          />
+          <State defaultValue={false}>
+            {({ state: isLoading, setState: setLoading }) => (
+              <Button
+                text="Publish"
+                intent="success"
+                loading={isLoading}
+                onClick={() => handler.onPublish(query, { isLoading, setLoading })}
+              />
+            )}
+          </State>
           <Popover2
             content={
               <Menu>
