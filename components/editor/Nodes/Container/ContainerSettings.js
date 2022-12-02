@@ -1,37 +1,28 @@
-import { Button, FormGroup, InputGroup } from "@blueprintjs/core";
+import { Button, FormGroup, InputGroup, RadioGroup } from "@blueprintjs/core";
 import { useNode } from "@craftjs/core";
 import { ColorPicker } from "components/ColorPicker";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
-import { Flex } from "components/Grid";
+import { Box, Flex } from "components/Grid";
+import _pick from "lodash/pick";
 
 export const ContainerSettings = () => {
   const {
     actions: { setProp },
-    height, width,
-    paddingTop, paddingRight, paddingLeft, paddingBottom,
-    marginTop, marginRight, marginLeft, marginBottom,
-    backgroundColor,
-    borderRadius,
-    flexDirection
+    values,
   } = useNode((node) => ({
-    height: node.data.props.height,
-    width: node.data.props.width,
-
-    paddingTop: node.data.props.paddingTop,
-    paddingRight: node.data.props.paddingRight,
-    paddingBottom: node.data.props.paddingBottom,
-    paddingLeft: node.data.props.paddingLeft,
-
-    marginTop: node.data.props.marginTop,
-    marginRight: node.data.props.marginRight,
-    marginBottom: node.data.props.marginBottom,
-    marginLeft: node.data.props.marginLeft,
-
-    backgroundColor: node.data.props.backgroundColor,
-
-    borderRadius: node.data.props.borderRadius,
-
-    flexDirection: node.data.props.flexDirection,
+    values: _pick(
+      node.data.props,
+      [
+        "height", "width",
+        "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
+        "marginTop", "marginRight", "marginBottom", "marginLeft",
+        "backgroundColor",
+        "borderRadius",
+        "flexDirection",
+        "justifyContent",
+        "alignItems",
+      ],
+    ),
   }));
 
   return (
@@ -42,12 +33,12 @@ export const ContainerSettings = () => {
         props={["height", "width"]}>
         <Flex>
           <FormGroup label="Height">
-            <InputGroup value={height || ""} onChange={(e) => {
+            <InputGroup value={values.height || ""} onChange={(e) => {
               setProp(props => props.height = e.target.value);
             }} />
           </FormGroup>
           <FormGroup label="Width">
-            <InputGroup value={width || ""} onChange={(e) => {
+            <InputGroup value={values.width || ""} onChange={(e) => {
               setProp(props => props.width = e.target.value);
             }} />
           </FormGroup>
@@ -59,22 +50,22 @@ export const ContainerSettings = () => {
         props={["paddingTop", "paddingRight", "paddingBottom", "paddingLeft"]}>
         <Flex>
           <FormGroup label="Top">
-            <InputGroup value={paddingTop || ""} onChange={(e) => {
+            <InputGroup value={values.paddingTop || ""} onChange={(e) => {
               setProp(props => props.paddingTop = e.target.value);
             }} />
           </FormGroup>
           <FormGroup label="Right">
-            <InputGroup value={paddingRight || ""} onChange={(e) => {
+            <InputGroup value={values.paddingRight || ""} onChange={(e) => {
               setProp(props => props.paddingRight = e.target.value);
             }} />
           </FormGroup>
           <FormGroup label="Left">
-            <InputGroup value={paddingLeft || ""} onChange={(e) => {
+            <InputGroup value={values.paddingLeft || ""} onChange={(e) => {
               setProp(props => props.paddingLeft = e.target.value);
             }} />
           </FormGroup>
           <FormGroup label="Bottom">
-            <InputGroup value={paddingBottom || ""} onChange={(e) => {
+            <InputGroup value={values.paddingBottom || ""} onChange={(e) => {
               setProp(props => props.paddingBottom = e.target.value);
             }} />
           </FormGroup>
@@ -86,22 +77,22 @@ export const ContainerSettings = () => {
         props={["marginTop", "marginRight", "marginBottom", "marginLeft"]}>
         <Flex>
           <FormGroup label="Top">
-            <InputGroup value={marginTop || ""} onChange={(e) => {
+            <InputGroup value={values.marginTop || ""} onChange={(e) => {
               setProp(props => props.marginTop = e.target.value);
             }} />
           </FormGroup>
           <FormGroup label="Right">
-            <InputGroup value={marginRight || ""} onChange={(e) => {
+            <InputGroup value={values.marginRight || ""} onChange={(e) => {
               setProp(props => props.marginRight = e.target.value);
             }} />
           </FormGroup>
           <FormGroup label="Left">
-            <InputGroup value={marginLeft || ""} onChange={(e) => {
+            <InputGroup value={values.marginLeft || ""} onChange={(e) => {
               setProp(props => props.marginLeft = e.target.value);
             }} />
           </FormGroup>
           <FormGroup label="Bottom">
-            <InputGroup value={marginBottom || ""} onChange={(e) => {
+            <InputGroup value={values.marginBottom || ""} onChange={(e) => {
               setProp(props => props.marginBottom = e.target.value);
             }} />
           </FormGroup>
@@ -109,41 +100,54 @@ export const ContainerSettings = () => {
       </SettingSection>
       <SettingSection text="Appearance">
         <FormGroup label="Background Color">
-          <ColorPicker value={backgroundColor} onChange={(color) => {
+          <ColorPicker value={values.backgroundColor} onChange={(color) => {
             setProp(props => props.backgroundColor = color.hex);
           }} />
         </FormGroup>
         <FormGroup label="Border Radius">
-          <InputGroup value={borderRadius || ""} onChange={(e) => {
+          <InputGroup value={values.borderRadius || ""} onChange={(e) => {
             setProp(props => props.borderRadius = e.target.value);
           }} />
         </FormGroup>
       </SettingSection>
 
       <SettingSection text="Layout">
-        <FormGroup label="Direction">
-          {[{
-            icon: "arrow-down",
-            value: "column"
-          }, {
-            icon: "arrow-right",
-            value: "row"
-          }].map(({ icon, value }) =>
-            <Button
-              key={value}
-              minimal
-              icon={icon}
-              active={flexDirection === value}
-              onClick={() => {
-                setProp(props => props.flexDirection = value);
-              }} />
-          )}
-        </FormGroup>
-        <FormGroup label="Border Radius">
-          <InputGroup value={borderRadius || ""} onChange={(e) => {
-            setProp(props => props.borderRadius = e.target.value);
-          }} />
-        </FormGroup>
+        <Flex>
+          <Box width={"50%"}>
+            <FormGroup label="Direction">
+              {[{
+                icon: "arrow-down",
+                value: "column"
+              }, {
+                icon: "arrow-right",
+                value: "row"
+              }].map(({ icon, value }) =>
+                <Button
+                  key={value}
+                  minimal
+                  icon={icon}
+                  active={values.flexDirection === value}
+                  onClick={() => {
+                    setProp(props => props.flexDirection = value);
+                  }} />
+              )}
+            </FormGroup>
+          </Box>
+          <Box>
+            <RadioGroup
+              label="Align"
+              selectedValue={values.alignItems || ""}
+              onChange={(e) => {
+                setProp(props => props.alignItems = e.target.value);
+              }}
+              options={[
+                { label: "Start", value: "start" },
+                { label: "Center", value: "center" },
+                { label: "End", value: "end " },
+              ]}
+            />
+          </Box>
+        </Flex>
       </SettingSection>
     </>
   )

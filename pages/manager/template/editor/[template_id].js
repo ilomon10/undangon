@@ -1,5 +1,5 @@
 import { Editor, Frame, Element } from '@craftjs/core';
-import { Button, Container, Text } from "components/editor/Nodes";
+import { Button, Container, Text, Image } from "components/editor/Nodes";
 
 import { Box } from "components";
 import { Viewport } from 'components/editor';
@@ -13,7 +13,8 @@ export default function TemplateEditor() {
         resolver={{
           Button,
           Container,
-          Text
+          Text,
+          Image
         }}
         onRender={RenderNode}
       >

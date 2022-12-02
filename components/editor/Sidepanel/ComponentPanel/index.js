@@ -1,24 +1,19 @@
 import { Menu, Icon, Classes } from "@blueprintjs/core";
 import { Element, useEditor } from "@craftjs/core"
-import { Image } from "components/editor/Nodes/Image";
 import { Box } from "components/Grid"
 import { useEffect, useRef } from "react";
 import { Button, Container, Text } from "../../Nodes";
 import { PanelSection } from "../PanelSection";
 
-export const Toolbox = () => {
+export const ComponentPanel = () => {
   const { connectors, query } = useEditor();
   return (
-    <PanelSection text="Toolbox">
+    <PanelSection text="Components">
       <Menu>
         {[{
           icon: "widget-button",
           label: "Button",
           ref: ref => connectors.create(ref, <Button text="New Button" />)
-        }, {
-          icon: "media",
-          label: "Image",
-          ref: ref => connectors.create(ref, <Image />)
         }, {
           icon: "rectangle",
           label: "Container",

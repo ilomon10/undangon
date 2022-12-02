@@ -5,6 +5,7 @@ import { Toolbar } from "../Toolbar"
 import { Toolbox } from "../Sidepanel/Toolbox"
 import { useEditor } from '@craftjs/core';
 import { useViewport, ViewportProvider } from "./useViewport";
+import { ComponentPanel } from "../Sidepanel/ComponentPanel";
 
 export const ViewportWrapper = ({ children }) => {
   const {
@@ -36,6 +37,7 @@ export const ViewportWrapper = ({ children }) => {
           borderRightColor: "gray.3",
         }}>
           <Toolbox />
+          <ComponentPanel />
         </Box>
         <Box
           className="page-container"

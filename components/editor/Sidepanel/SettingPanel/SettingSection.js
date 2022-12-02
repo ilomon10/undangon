@@ -1,5 +1,6 @@
 import { Collapse, Icon } from "@blueprintjs/core"
 import { useNode } from "@craftjs/core";
+import { importProps } from "components/editor/utils/importProps";
 import { Box, Flex } from "components/Grid"
 import { useMemo, useState } from "react"
 
@@ -12,11 +13,7 @@ export const SettingSection = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { nodeProps } = useNode((node) => ({
-    nodeProps: props &&
-      props.reduce((res, key) => {
-        res[key] = node.data.props[key] || null;
-        return res;
-      }, {}),
+    nodeProps: props && importProps(node, props)
   }))
   const summary = useMemo(() => {
     let ret;
