@@ -112,33 +112,45 @@ export const ContainerSettings = () => {
       </SettingSection>
 
       <SettingSection text="Layout">
+        <FormGroup label="Direction">
+          {[{
+            icon: "arrow-down",
+            value: "column"
+          }, {
+            icon: "arrow-right",
+            value: "row"
+          }].map(({ icon, value }) =>
+            <Button
+              key={value}
+              minimal
+              icon={icon}
+              active={values.flexDirection === value}
+              onClick={() => {
+                setProp(props => props.flexDirection = value);
+              }} />
+          )}
+        </FormGroup>
         <Flex>
           <Box width={"50%"}>
-            <FormGroup label="Direction">
-              {[{
-                icon: "arrow-down",
-                value: "column"
-              }, {
-                icon: "arrow-right",
-                value: "row"
-              }].map(({ icon, value }) =>
-                <Button
-                  key={value}
-                  minimal
-                  icon={icon}
-                  active={values.flexDirection === value}
-                  onClick={() => {
-                    setProp(props => props.flexDirection = value);
-                  }} />
-              )}
-            </FormGroup>
-          </Box>
-          <Box>
             <RadioGroup
-              label="Align"
+              label="Horizontal"
               selectedValue={values.alignItems || ""}
               onChange={(e) => {
                 setProp(props => props.alignItems = e.target.value);
+              }}
+              options={[
+                { label: "Start", value: "start" },
+                { label: "Center", value: "center" },
+                { label: "End", value: "end " },
+              ]}
+            />
+          </Box>
+          <Box>
+            <RadioGroup
+              label="Vertical"
+              selectedValue={values.justifyContent || ""}
+              onChange={(e) => {
+                setProp(props => props.justifyContent = e.target.value);
               }}
               options={[
                 { label: "Start", value: "start" },

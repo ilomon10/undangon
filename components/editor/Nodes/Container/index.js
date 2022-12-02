@@ -5,23 +5,7 @@ import { ContainerSettings } from "./ContainerSettings";
 
 export const Container = ({
   children,
-  height, width,
-
-  paddingTop,
-  paddingRight,
-  paddingLeft,
-  paddingBottom,
-
-  marginTop,
-  marginRight,
-  marginLeft,
-  marginBottom,
-
-  backgroundColor,
-  borderRadius,
-
-  flexDirection,
-  alignItems
+  ...style
 }) => {
   const { connectors: { connect, drag } } = useNode();
   return (
@@ -31,26 +15,7 @@ export const Container = ({
         position: "relative",
         minHeight: 25,
       }}
-      style={{
-        height: height,
-        width: width,
-
-        paddingTop,
-        paddingRight,
-        paddingLeft,
-        paddingBottom,
-
-        marginTop,
-        marginRight,
-        marginLeft,
-        marginBottom,
-
-        backgroundColor,
-        borderRadius,
-
-        flexDirection,
-        alignItems
-      }}
+      style={style}
     >
       {children}
     </Flex>
