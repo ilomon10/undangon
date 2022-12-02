@@ -30,7 +30,7 @@ export const TemplatesAddDialog = () => {
         <form onSubmit={handleSubmit}>
           <div className={Classes.DIALOG_BODY}>
             <FormGroup label="Name">
-              <InputGroup name="name" onChange={handleChange} />
+              <InputGroup name="name" value={values["name"]} onChange={handleChange} />
             </FormGroup>
             <FormGroup label="Category">
               <FetchAndSelect
