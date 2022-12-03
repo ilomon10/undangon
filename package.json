@@ -23,6 +23,7 @@
     "lzutf8": "^0.6.3",
     "moment": "^2.29.1",
     "next": "^12.1.0",
+    "node-fetch": "^3.3.0",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "prop-types": "^15.7.2",

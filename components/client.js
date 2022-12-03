@@ -1,51 +1,51 @@
 import axios from "axios";
-import { SERVER_URL } from "./Constants";
+import { CONSTANTS } from "./Constants";
 
 export const client = axios.create({
-  baseURL: `${SERVER_URL.toString()}/api`,
-  headers: {
-    "api-key": "API-f3b13c4dfddbed3934a19cb2489f6f094b3d87f6"
-  }
+  baseURL: `${CONSTANTS.CURRENT_HOSTNAME}/api`,
 });
 
 export default {
-  content: {
-    item: {
-      async template(options, id) {
-        if (id)
-          return await requestHandler(options, "content", "item", "template", id);
-        return await requestHandler(options, "content", "item", "template");
-      },
-      async category(options) {
-        return await requestHandler(options, "content", "item", "category");
-      },
-      async content(options) {
-        return await requestHandler(options, "content", "item", "content");
-      },
-    },
-    items: {
-      async template(options = {}) {
-        return await requestHandler(options, "content", "items", "template");
-      },
-      async category(options) {
-        return await requestHandler(options, "content", "items", "category");
-      },
-      async content(options) {
-        return await requestHandler(options, "content", "items", "content");
-      },
-    }
+  async getTemplate(id) {
+    let res = await client.request({
+      url: `/getTemplate/${id}/`,
+      method: "GET",
+    });
+    return res.data;
   },
+  async getTemplates() {
+    const res = await client.request({
+      url: "/getTemplates",
+      method: "GET",
+    });
+    return res.data;
+  },
+  async postTemplate(data) {
+    if (data.category) {
+      data = {
+        ...data,
+        category: {
+          _id: data.category,
+          _model: "categories",
+        },
+      };
+    }
+    const res = await client.request({
+      url: "/postTemplate",
+      method: "POST",
+      data,
+    });
+    return res.data;
+  },
+  async getCategories() {
+    const res = await client.request({
+      url: "/getCategories",
+      method: "GET",
+    });
+    return res.data;
+  },
+  // async contents(options, id) {
+  //   if (id) return await requestHandler(options, "categories", id);
+  //   return await requestHandler(options, "contents");
+  // },
 };
-
-async function requestHandler(options, ...path) {
-  const url = path.reduce((p, c) => {
-    return `${p}/${c}`;
-  }, "");
-  const response = await client.request({
-    url: url,
-    method: options.method || "GET",
-    params: options.params,
-    data: options.data,
-  });
-  return response.data;
-}

@@ -4,16 +4,18 @@ module.exports = {
     minimumCacheTTL: 60,
   },
   env: {
+    serverApiKey: process.env.SERVER_API_KEY,
     serverUrl: process.env.SERVER,
     appName: process.env.APP_NAME,
-    appDomain: process.env.APP_DOMAIN
+    appDomain: process.env.APP_DOMAIN,
+    currentHostName: process.env.CURRENT_HOSTNAME,
   },
   compiler: {
     styledComponents: true,
   },
   trailingSlash: true,
   i18n: {
-    locales: ['id-ID'],
-    defaultLocale: 'id-ID'
-  }
-}
+    locales: ["id-ID"],
+    defaultLocale: "id-ID",
+  },
+};

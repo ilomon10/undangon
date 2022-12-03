@@ -1,37 +1,36 @@
 import lz from "lzutf8";
-import { Editor, Frame, Element } from '@craftjs/core';
+import { Editor, Frame, Element } from "@craftjs/core";
 import { Button, Container, Text, Image } from "components/editor/Nodes";
 
 import { Box } from "components";
-import { Viewport } from 'components/editor';
-import { BlueprintWrapper } from 'components/BlueprintWrapper';
-import { RenderNode } from 'components/editor/Nodes/RenderNode';
-import { useCallback, useEffect } from 'react';
-import client from 'components/client';
+import { Viewport } from "components/editor";
+import { BlueprintWrapper } from "components/BlueprintWrapper";
+import { RenderNode } from "components/editor/Nodes/RenderNode";
+import { useCallback, useEffect } from "react";
+import client from "components/client";
 import { useRouter } from "next/router";
 
 export default function TemplateEditor({ content, ...props }) {
   const router = useRouter();
 
-  const onPublish = useCallback(async (query, { setLoading }) => {
-    setLoading(true);
-    const json = query.serialize();
-    const content = lz.encodeBase64(lz.compress(json));
-    try {
-      await client.content.item.template({
-        method: "POST",
-        data: {
-          data: {
-            _id: props._id,
-            content
-          }
-        }
-      });
-    } catch (err) {
-      console.error(err);
-    }
-    setLoading(false);
-  }, [props]);
+  const onPublish = useCallback(
+    async (query, { setLoading }) => {
+      console.log(props);
+      setLoading(true);
+      const json = query.serialize();
+      const content = lz.encodeBase64(lz.compress(json));
+      try {
+        await client.postTemplate({
+          _id: props._id,
+          content,
+        });
+      } catch (err) {
+        console.error(err);
+      }
+      setLoading(false);
+    },
+    [props]
+  );
 
   const onClose = useCallback(() => {
     router.back();
@@ -44,23 +43,21 @@ export default function TemplateEditor({ content, ...props }) {
           Button,
           Container,
           Text,
-          Image
+          Image,
         }}
         onRender={RenderNode}
       >
-        <Viewport
-          onClose={onClose}
-          onPublish={onPublish}
-        >
+        <Viewport onClose={onClose} onPublish={onPublish}>
           <Frame data={content}>
             <Element
               is={Container}
               height="auto"
               width="auto"
-              custom={{ displayName: 'App' }}
+              custom={{ displayName: "App" }}
               canvas
             >
-              <Element is={Container}
+              <Element
+                is={Container}
                 height="1500px"
                 width="100%"
                 marginRight="auto"
@@ -78,23 +75,18 @@ export default function TemplateEditor({ content, ...props }) {
         </Viewport>
       </Editor>
     </BlueprintWrapper>
-  )
+  );
 }
 
 export const getServerSideProps = async (context) => {
   const { template_id } = context.params;
-  let data = await client.content.item.template(
-    {
-      method: "GET"
-    },
-    template_id
-  );
+  let data = await client.getTemplate(template_id);
   const content = lz.decompress(lz.decodeBase64(data.content));
 
   return {
     props: {
       ...data,
-      content
-    }
-  }
-}
+      content,
+    },
+  };
+};
