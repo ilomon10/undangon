@@ -1,8 +1,7 @@
 import lz from "lzutf8";
 import { Editor, Frame, Element } from "@craftjs/core";
 import { Button, Container, Text, Image } from "components/editor/Nodes";
-
-import { Box } from "components";
+import { UrlParameter } from "components/editor/Components";
 import { Viewport } from "components/editor";
 import { BlueprintWrapper } from "components/BlueprintWrapper";
 import { RenderNode } from "components/editor/Nodes/RenderNode";
@@ -44,6 +43,7 @@ export default function TemplateEditor({ content, ...props }) {
           Container,
           Text,
           Image,
+          UrlParameter,
         }}
         onRender={RenderNode}
       >

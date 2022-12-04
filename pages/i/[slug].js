@@ -1,16 +1,16 @@
 import lz from "lzutf8";
 import { Editor, Frame } from "@craftjs/core";
 import { Box } from "components";
-import client from "components/client";
 import { CONSTANTS } from "components/Constants";
 import { ParseImageUrl } from "components/utils/parseImageUrl";
 import { Button, Container, Text, Image } from "components/editor/Nodes";
+import { UrlParameter } from "components/editor/Components";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { getInvitations } from "pages/api/getInvitations";
 import { getInvitationBySlug } from "pages/api/getInvitation/by/[slug]";
 
-const Invitation = ({ content, meta }) => {
+export const Invitation = ({ content, meta }) => {
   const router = useRouter();
   return (
     <>
@@ -72,6 +72,7 @@ const Invitation = ({ content, meta }) => {
             Container,
             Text,
             Image,
+            UrlParameter
           }}
         >
           <Frame data={content}>

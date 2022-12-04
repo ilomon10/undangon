@@ -1,20 +1,25 @@
-import { createContext, useCallback, useContext, useState } from "react"
+import { createContext, useCallback, useContext, useState } from "react";
 
 const ViewportContext = createContext();
 
-export const ViewportProvider = ({ children, onClose, onPublish }) => {
+export const ViewportProvider = ({
+  children,
+  onClose,
+  onPublish,
+  constructPreviewUrl,
+}) => {
   let availableMedia = {
-    "desktop": {
+    desktop: {
       name: "desktop",
       height: 720,
-      width: 1024
+      width: 1024,
     },
-    "mobile": {
+    mobile: {
       name: "mobile",
       height: 667,
-      width: 375
+      width: 375,
     },
-  }
+  };
   let [currentMedia, setCurrentMedia] = useState(availableMedia["mobile"]);
 
   const setMedia = useCallback((name) => {
@@ -24,25 +29,28 @@ export const ViewportProvider = ({ children, onClose, onPublish }) => {
   const media = {
     setMedia,
     currentMedia,
-    availableMedia
-  }
+    availableMedia,
+  };
 
   const handler = {
     onClose,
-    onPublish
-  }
+    onPublish,
+    constructPreviewUrl,
+  };
 
   return (
-    <ViewportContext.Provider value={{
-      media,
-      handler
-    }}>
+    <ViewportContext.Provider
+      value={{
+        media,
+        handler,
+      }}
+    >
       {children}
     </ViewportContext.Provider>
-  )
-}
+  );
+};
 
 export const useViewport = () => {
   const viewport = useContext(ViewportContext);
   return viewport;
-}
+};

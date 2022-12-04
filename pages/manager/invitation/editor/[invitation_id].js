@@ -9,6 +9,7 @@ import { RenderNode } from "components/editor/Nodes/RenderNode";
 import { useCallback, useEffect } from "react";
 import client from "components/client";
 import { useRouter } from "next/router";
+import { UrlParameter } from "components/editor/Components/UrlParameter";
 
 export default function InvitationEditor({ content, ...props }) {
   const router = useRouter();
@@ -36,6 +37,10 @@ export default function InvitationEditor({ content, ...props }) {
     router.back();
   }, []);
 
+  const constructPreviewUrl = useCallback(() => {
+    return `/i/p/${props.slug}`;
+  }, []);
+
   return (
     <BlueprintWrapper>
       <Editor
@@ -44,10 +49,15 @@ export default function InvitationEditor({ content, ...props }) {
           Container,
           Text,
           Image,
+          UrlParameter
         }}
         onRender={RenderNode}
       >
-        <Viewport onClose={onClose} onPublish={onPublish}>
+        <Viewport
+          onClose={onClose}
+          onPublish={onPublish}
+          constructPreviewUrl={constructPreviewUrl}
+        >
           <Frame data={content}>
             <Element
               is={Container}

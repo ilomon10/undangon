@@ -23,6 +23,7 @@ export const Container = ({
 }
 
 Container.craft = {
+  name: "Container",
   props: {
     height: 100,
     width: 100,

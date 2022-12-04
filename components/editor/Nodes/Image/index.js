@@ -28,6 +28,7 @@ export const Image = ({
 }
 
 Image.craft = {
+  name: "Image",
   props: {
     url: "https://via.placeholder.com/150",
     height: "auto",

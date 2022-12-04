@@ -1,5 +1,5 @@
 import { EditableText } from "@blueprintjs/core";
-import { useNode } from "@craftjs/core"
+import { useNode } from "@craftjs/core";
 import { Box } from "components/Grid";
 import { useState } from "react";
 import ContentEditable from "react-contenteditable";
@@ -11,20 +11,34 @@ export const Text = ({
   fontWeight,
   fontSize,
   color,
+  children,
 }) => {
-  const { connectors: { connect, drag }, actions: { setProp } } = useNode((node) => ({
-    isActive: node.events.selected
+  const {
+    connectors: { connect, drag },
+    actions: { setProp },
+  } = useNode((node) => ({
+    isActive: node.events.selected,
   }));
   const [isEditable, setIsEditable] = useState();
+  const style = {
+    textAlign: textAlign,
+    fontWeight: fontWeight,
+    fontSize: fontSize,
+    color: color,
+  };
+
+  if (children) {
+    return (
+      <Box ref={(ref) => connect(drag(ref))} style={style}>
+        {children}
+      </Box>
+    );
+  }
+
   return (
     <Box
-      ref={ref => connect(drag(ref))}
-      style={{
-        textAlign: textAlign,
-        fontWeight: fontWeight,
-        fontSize: fontSize,
-        color: color
-      }}
+      ref={(ref) => connect(drag(ref))}
+      style={style}
       onDoubleClick={() => {
         setIsEditable(true);
       }}
@@ -33,19 +47,24 @@ export const Text = ({
         setIsEditable(false);
       }}
     >
-      {!isEditable ? <div dangerouslySetInnerHTML={{ __html: text }} /> :
+      {children}
+      {!isEditable ? (
+        <div dangerouslySetInnerHTML={{ __html: text }} />
+      ) : (
         <ContentEditable
           disabled={false}
           html={text}
           onChange={(e) => {
-            setProp(prop => prop.text = e.target.value, 500)
+            setProp((prop) => (prop.text = e.target.value), 500);
           }}
-        />}
+        />
+      )}
     </Box>
-  )
-}
+  );
+};
 
 Text.craft = {
+  name: "Text",
   props: {
     text: "Text Area",
     textAlign: "left",
@@ -54,6 +73,6 @@ Text.craft = {
     color: "inherit",
   },
   related: {
-    settings: TextSettings
-  }
-}
+    settings: TextSettings,
+  },
+};
