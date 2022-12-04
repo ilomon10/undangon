@@ -1,16 +1,18 @@
-import { Box, Flex } from "components/Grid"
-import { LayerPanel } from '../Sidepanel/LayerPanel';
-import { SettingPanel } from "../Sidepanel/SettingPanel"
-import { Toolbar } from "../Toolbar"
-import { Toolbox } from "../Sidepanel/Toolbox"
-import { useEditor } from '@craftjs/core';
+import { Box, Flex } from "components/Grid";
+import { LayerPanel } from "../Sidepanel/LayerPanel";
+import { SettingPanel } from "../Sidepanel/SettingPanel";
+import { Toolbar } from "../Toolbar";
+import { Toolbox } from "../Sidepanel/Toolbox";
+import { Editor, useEditor } from "@craftjs/core";
 import { useViewport, ViewportProvider } from "./useViewport";
 import { ComponentPanel } from "../Sidepanel/ComponentPanel";
+import { RenderNode } from "../Nodes/RenderNode";
+
+import * as ResolverNodes from "../Nodes";
+import * as ResolverComponents from "../Components";
 
 export const ViewportWrapper = ({ children }) => {
-  const {
-    connectors,
-  } = useEditor();
+  const { connectors } = useEditor();
   const { media } = useViewport();
 
   return (
@@ -19,23 +21,29 @@ export const ViewportWrapper = ({ children }) => {
       sx={{
         position: "fixed",
         inset: 0,
-        flexDirection: "column"
+        flexDirection: "column",
       }}
     >
-      <Box sx={{
-        borderBottom: "1px solid white",
-        borderBottomColor: "gray.3",
-      }}>
+      <Box
+        sx={{
+          borderBottom: "1px solid white",
+          borderBottomColor: "gray.3",
+        }}
+      >
         <Toolbar />
       </Box>
-      <Flex sx={{
-        flexGrow: 1
-      }}>
-        <Box sx={{
-          width: 280,
-          borderRight: "1px solid white",
-          borderRightColor: "gray.3",
-        }}>
+      <Flex
+        sx={{
+          flexGrow: 1,
+        }}
+      >
+        <Box
+          sx={{
+            width: 280,
+            borderRight: "1px solid white",
+            borderRightColor: "gray.3",
+          }}
+        >
           <Toolbox />
           <ComponentPanel />
         </Box>
@@ -51,7 +59,7 @@ export const ViewportWrapper = ({ children }) => {
               backgroundColor: "gray.2",
               overflowY: "auto",
               height: "1px",
-              minHeight: "100%"
+              minHeight: "100%",
             }}
             ref={(ref) => connectors.select(connectors.hover(ref, null), null)}
             position="absolute"
@@ -59,7 +67,7 @@ export const ViewportWrapper = ({ children }) => {
             <Box
               style={{
                 maxWidth: media.currentMedia.width,
-                transition: "max-width 500ms ease"
+                transition: "max-width 500ms ease",
               }}
               sx={{
                 position: "relative",
@@ -74,8 +82,8 @@ export const ViewportWrapper = ({ children }) => {
                   position: "absolute",
                   width: "100%",
                   top: media.currentMedia.height,
-                  transition: "top 500ms ease"
-                }
+                  transition: "top 500ms ease",
+                },
               }}
             >
               {children}
@@ -94,15 +102,21 @@ export const ViewportWrapper = ({ children }) => {
         </Box>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
 
 export const Viewport = ({ children, ...props }) => {
   return (
-    <ViewportProvider {...props}>
-      <ViewportWrapper>
-        {children}
-      </ViewportWrapper>
-    </ViewportProvider>
-  )
-}
+    <Editor
+      resolver={{
+        ...ResolverNodes,
+        ...ResolverComponents,
+      }}
+      onRender={RenderNode}
+    >
+      <ViewportProvider {...props}>
+        <ViewportWrapper>{children}</ViewportWrapper>
+      </ViewportProvider>
+    </Editor>
+  );
+};

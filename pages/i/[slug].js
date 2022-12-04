@@ -64,15 +64,20 @@ export const Invitation = ({ content, meta }) => {
           key="ogurl"
         />
       </Head>
-      <Box>
-        <Editor
-          enabled={false}
-          resolver={{
-            Button,
-            Container,
-            Text,
-            Image,
-            UrlParameter
+      <Editor
+        enabled={false}
+        resolver={{
+          Button,
+          Container,
+          Text,
+          Image,
+          UrlParameter,
+        }}
+      >
+        <Box
+          sx={{
+            position: "fixed",
+            inset: 0,
           }}
         >
           <Frame data={content}>
@@ -80,8 +85,8 @@ export const Invitation = ({ content, meta }) => {
               <Text>Coba</Text>
             </Container>
           </Frame>
-        </Editor>
-      </Box>
+        </Box>
+      </Editor>
     </>
   );
 };

@@ -39,7 +39,6 @@ export const ImageSettings = () => {
         <Flex>
           <FormGroup label="Height">
             <InputGroup value={values.height || ""} onChange={(e) => {
-              console.log(values, e.target.value);
               setProp(props => props.height = e.target.value);
             }} />
           </FormGroup>

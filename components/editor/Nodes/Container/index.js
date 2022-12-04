@@ -25,8 +25,8 @@ export const Container = ({
 Container.craft = {
   name: "Container",
   props: {
-    height: 100,
-    width: 100,
+    height: "100px",
+    width: "auto",
 
     paddingTop: 0,
     paddingRight: 0,

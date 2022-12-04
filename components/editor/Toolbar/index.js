@@ -22,7 +22,11 @@ export const Toolbar = () => {
   );
 
   const previewUrl = useMemo(() => {
-    return handler.constructPreviewUrl();
+    try {
+      return handler.constructPreviewUrl();
+    } catch (err) {
+      return null;
+    }
   }, [handler.constructPreviewUrl]);
 
   return (
@@ -79,13 +83,15 @@ export const Toolbar = () => {
           <Popover2
             content={
               <Menu>
-                <Link href={previewUrl} passHref>
-                  <MenuItem
-                    target="_blank"
-                    labelElement={<Icon icon="share" />}
-                    text="Preview"
-                  />
-                </Link>
+                {previewUrl && (
+                  <Link href={previewUrl} passHref>
+                    <MenuItem
+                      target="_blank"
+                      labelElement={<Icon icon="share" />}
+                      text="Preview"
+                    />
+                  </Link>
+                )}
                 <MenuItem text="Export" />
               </Menu>
             }
