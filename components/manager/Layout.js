@@ -8,7 +8,7 @@ const navList = [{
   path: "/manager"
 }, {
   text: "Invitations",
-  icon: "projects",
+  icon: "envelope",
   path: "/manager/invitations"
 }, {
   text: "Templates",

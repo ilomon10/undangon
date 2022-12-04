@@ -22,11 +22,28 @@ export default {
           );
         return await requestHandler(options, "content", "item", "templates");
       },
-      async categories(options) {
+      async categories(options, id) {
+        if (id)
+          return await requestHandler(
+            options,
+            "content",
+            "item",
+            "categories",
+            id
+          );
+
         return await requestHandler(options, "content", "item", "categories");
       },
-      async contents(options) {
-        return await requestHandler(options, "content", "item", "contents");
+      async invitations(options, id) {
+        if (id)
+          return await requestHandler(
+            options,
+            "content",
+            "item",
+            "invitations",
+            id
+          );
+        return await requestHandler(options, "content", "item", "invitations");
       },
     },
     items: {
@@ -36,9 +53,19 @@ export default {
       async categories(options) {
         return await requestHandler(options, "content", "items", "categories");
       },
-      async contents(options) {
-        return await requestHandler(options, "content", "items", "contents");
+      async invitations(options) {
+        return await requestHandler(options, "content", "items", "invitations");
       },
+    },
+  },
+  assets: {
+    image: {
+      async get(id, options) {
+        return await requestHandler(options, "assets", "image", id);
+      },
+    },
+    async get(id) {
+      return await requestHandler(options, "assets", id);
     },
   },
 };

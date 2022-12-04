@@ -4,18 +4,17 @@ import { useQuery } from "@tanstack/react-query";
 import { Button, Card, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import Link from "next/link";
 
-export const TemplateList = () => {
+export const InvitationList = () => {
   const { data, isLoading, isError, isSuccess } = useQuery(
-    ["templates"],
+    ["invitations"],
     async () => {
       let res = [];
       try {
-        res = await client.getTemplates({
-          populate: 1,
+        res = await client.getInvitations({
           fields: {
-            name: 1,
-            category: 1,
+            content: 0,
           },
+          populate: 1
         });
       } catch (err) {
         console.error(err);
@@ -31,7 +30,7 @@ export const TemplateList = () => {
   return (
     <Menu>
       {data.map(({ _id, name, category }) => (
-        <Link key={_id} href={`/manager/template/editor/${_id}`} passHref>
+        <Link key={_id} href={`/manager/invitation/editor/${_id}`} passHref>
           <MenuItem text={name} label={category.name} />
         </Link>
       ))}

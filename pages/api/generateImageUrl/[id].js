@@ -7,13 +7,16 @@ export default async function handler(req, res) {
       message: "Bad Request",
     });
   }
-
+  const { id, ...query } = req.query;
   try {
-    let response = await internal.content.items.templates({
-      params: req.query
+    let response = await internal.assets.image.get(id, {
+      params: {
+        ...query,
+        o: 0,
+      },
     });
     res.status(response.status).json(response.data);
   } catch (err) {
-    res.status(500).json(err.response.data);
+    res.status(500).json(err.message);
   }
 }

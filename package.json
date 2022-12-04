@@ -42,7 +42,8 @@
     "sass": "^1.32.8",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.2.1",
-    "styled-system": "^5.1.5"
+    "styled-system": "^5.1.5",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "babel-plugin-styled-components": "^1.12.0"

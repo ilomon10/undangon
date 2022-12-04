@@ -13,10 +13,11 @@ export default {
     });
     return res.data;
   },
-  async getTemplates() {
+  async getTemplates(params) {
     const res = await client.request({
       url: "/getTemplates",
       method: "GET",
+      params
     });
     return res.data;
   },
@@ -37,6 +38,7 @@ export default {
     });
     return res.data;
   },
+
   async getCategories() {
     const res = await client.request({
       url: "/getCategories",
@@ -44,8 +46,47 @@ export default {
     });
     return res.data;
   },
-  // async contents(options, id) {
-  //   if (id) return await requestHandler(options, "categories", id);
-  //   return await requestHandler(options, "contents");
-  // },
+
+  async getInvitation(id, params) {
+    const res = await client.request({
+      url: `/getInvitation/${id}`,
+      method: "GET",
+      params,
+    });
+    return res.data;
+  },
+  async getInvitationBySlug(slug, params) {
+    const res = await client.request({
+      url: `/getInvitation/by/${slug}`,
+      method: "GET",
+      params,
+    });
+    return res.data;
+  },
+  async getInvitations(params) {
+    const res = await client.request({
+      url: "/getInvitations",
+      method: "GET",
+      params,
+    });
+    return res.data;
+  },
+
+  async postInvitation(data) {
+    if (data.category) {
+      data = {
+        ...data,
+        category: {
+          _id: data.category,
+          _model: "categories",
+        },
+      };
+    }
+    const res = await client.request({
+      url: "/postInvitation",
+      method: "POST",
+      data,
+    });
+    return res.data;
+  },
 };
