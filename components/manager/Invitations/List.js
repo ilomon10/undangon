@@ -19,7 +19,6 @@ export const InvitationList = () => {
       } catch (err) {
         console.error(err);
       }
-      console.log(res);
       return res;
     }
   );

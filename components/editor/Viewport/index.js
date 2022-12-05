@@ -64,29 +64,30 @@ export const ViewportWrapper = ({ children }) => {
             ref={(ref) => connectors.select(connectors.hover(ref, null), null)}
             position="absolute"
           >
-            <Box
-              style={{
-                maxWidth: media.currentMedia.width,
-                transition: "max-width 500ms ease",
-              }}
-              sx={{
-                position: "relative",
-                my: 4,
-                mx: "auto",
-                backgroundColor: "white",
+            <Box py={4} px={2}>
+              <Box
+                style={{
+                  maxWidth: media.currentMedia.width,
+                  transition: "max-width 500ms ease",
+                }}
+                sx={{
+                  position: "relative",
+                  mx: "auto",
+                  backgroundColor: "white",
 
-                "&:after": {
-                  content: `" "`,
-                  borderBottom: "1px dashed white",
-                  borderBottomColor: "red.4",
-                  position: "absolute",
-                  width: "100%",
-                  top: media.currentMedia.height,
-                  transition: "top 500ms ease",
-                },
-              }}
-            >
-              {children}
+                  "&:after": {
+                    content: `" "`,
+                    borderBottom: "1px dashed white",
+                    borderBottomColor: "red.4",
+                    position: "absolute",
+                    width: "100%",
+                    top: media.currentMedia.height,
+                    transition: "top 500ms ease",
+                  },
+                }}
+              >
+                {children}
+              </Box>
             </Box>
           </Box>
         </Box>

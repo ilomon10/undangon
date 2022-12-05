@@ -1,6 +1,6 @@
 import { Menu, Icon, Classes } from "@blueprintjs/core";
 import { Element, useEditor } from "@craftjs/core";
-import { Fade } from "components/editor/Components";
+import { Reveal } from "components/editor/Components";
 import { UrlParameter } from "components/editor/Components/UrlParameter";
 import { Box } from "components/Grid";
 import { useEffect, useRef } from "react";
@@ -26,15 +26,13 @@ export const ComponentPanel = () => {
           },
           {
             icon: "paragraph",
-            label: "Fade",
+            label: "Reveal",
             ref: (ref) =>
               connectors.create(
                 ref,
-                <Container>
-                  <Fade>
-                    <Element is={Container} canvas />
-                  </Fade>
-                </Container>
+                <Reveal name="Reveal">
+                  <Element is={Container} canvas />
+                </Reveal>
               ),
           },
         ].map(({ ref, label, icon }) => (

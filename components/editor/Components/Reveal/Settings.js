@@ -13,7 +13,7 @@ import { SettingSection } from "components/editor/Sidepanel/SettingPanel/Setting
 import { Box, Flex } from "components/Grid";
 import _pick from "lodash/pick";
 
-export const FadeSettings = () => {
+export const RevealSettings = () => {
   const {
     actions: { setProp },
     values,

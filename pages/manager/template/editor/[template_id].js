@@ -18,11 +18,13 @@ export default function TemplateEditor({ content, ...props }) {
       setLoading(true);
       const json = query.serialize();
       const content = lz.encodeBase64(lz.compress(json));
+      const data = {
+        _id: props._id,
+        content,
+      };
+      console.log(data);
       try {
-        await client.postTemplate({
-          _id: props._id,
-          content,
-        });
+        await client.postTemplate(data);
       } catch (err) {
         console.error(err);
       }
@@ -35,9 +37,17 @@ export default function TemplateEditor({ content, ...props }) {
     router.back();
   }, []);
 
+  const constructPreviewUrl = useCallback(() => {
+    return `/t/p/${props._id}`;
+  }, [props._id]);
+
   return (
     <BlueprintWrapper>
-      <Viewport onClose={onClose} onPublish={onPublish}>
+      <Viewport
+        onClose={onClose}
+        onPublish={onPublish}
+        constructPreviewUrl={constructPreviewUrl}
+      >
         <Frame data={content}>
           <Element
             is={Container}

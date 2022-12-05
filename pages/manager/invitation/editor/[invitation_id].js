@@ -39,7 +39,7 @@ export default function InvitationEditor({ content, ...props }) {
 
   const constructPreviewUrl = useCallback(() => {
     return `/i/p/${props.slug}`;
-  }, []);
+  }, [props.slug]);
 
   return (
     <BlueprintWrapper>

@@ -1,10 +1,12 @@
-import { useNode } from "@craftjs/core";
-import { Box } from "components/Grid";
-import { FadeSettings } from "./Settings";
+import { useEditor, useNode } from "@craftjs/core";
+import { RevealSettings } from "./Settings";
 import _get from "lodash.get";
-import RRFade from "react-reveal";
+import Fade from "react-reveal";
 
-export const Fade = ({ children, when, direction }) => {
+export const Reveal = ({ children, when, direction }) => {
+  const { isEditing } = useEditor((state) => ({
+    isEditing: state.options.enabled,
+  }));
   const {
     connectors: { connect, drag },
     actions: { setProp },
@@ -12,27 +14,30 @@ export const Fade = ({ children, when, direction }) => {
     isActive: node.events.selected,
   }));
 
+  console.log(isEditing);
+
   return (
-    <RRFade
+    <Fade
       innerRef={connect}
-      when={when}
+      when={isEditing ? when : undefined}
       top={direction === "top"}
       right={direction === "right"}
       bottom={direction === "bottom"}
       left={direction === "left"}
+      ssrReveal={true}
     >
       {children}
-    </RRFade>
+    </Fade>
   );
 };
 
-Fade.craft = {
-  name: "Fade",
+Reveal.craft = {
+  name: "Reveal",
   props: {
     when: undefined,
     direction: "bottom",
   },
   related: {
-    settings: FadeSettings,
+    settings: RevealSettings,
   },
 };

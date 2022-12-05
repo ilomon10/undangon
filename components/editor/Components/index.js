@@ -1,2 +1,2 @@
 export * from "./UrlParameter";
-export * from "./Fade";
+export * from "./Reveal";

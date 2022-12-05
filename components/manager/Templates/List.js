@@ -5,25 +5,21 @@ import { Button, Card, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import Link from "next/link";
 
 export const TemplateList = () => {
-  const { data, isLoading, isError, isSuccess } = useQuery(
-    ["templates"],
-    async () => {
-      let res = [];
-      try {
-        res = await client.getTemplates({
-          populate: 1,
-          fields: {
-            name: 1,
-            category: 1,
-          },
-        });
-      } catch (err) {
-        console.error(err);
-      }
-      console.log(res);
-      return res;
+  const { data, isLoading, isError } = useQuery(["templates"], async () => {
+    let res = [];
+    try {
+      res = await client.getTemplates({
+        populate: 1,
+        fields: {
+          name: 1,
+          category: 1,
+        },
+      });
+    } catch (err) {
+      console.error(err);
     }
-  );
+    return res;
+  });
   if (isError) return <Box>Went Wrong</Box>;
   if (isLoading) return <Button loading />;
   if (!data) return null;
