@@ -32,7 +32,6 @@ export const InvitationAddDialog = ({ onClose }) => {
   const onSubmit = useCallback(async (values, { setSubmitting }) => {
     let { template, ...data } = values;
     try {
-      console.log(data);
       let res = await client.postInvitation(data);
       onClose();
     } catch (err) {

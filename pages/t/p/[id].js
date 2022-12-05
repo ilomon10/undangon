@@ -6,7 +6,6 @@ export const getServerSideProps = async (context) => {
   const { id } = context.params;
   let { data } = await getTemplate({}, id);
   const content = lz.decompress(lz.decodeBase64(data.content));
-  console.log(id);
   return {
     props: {
       ...data,

@@ -13,10 +13,8 @@ import { useCallback } from "react";
 export const TemplatesAddDialog = ({ onClose }) => {
   const onSubmit = useCallback(async (values, { setSubmitting }) => {
     let data = values;
-    console.log(data);
     try {
       let res = await client.postTemplate(data);
-      console.log(res);
       onClose();
     } catch (err) {
       console.error(err);

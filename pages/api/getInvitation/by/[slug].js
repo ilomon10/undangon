@@ -20,7 +20,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    console.log(req.query);
     let response = await getInvitationBySlug(req.query.slug);
     res.status(response.status).json(response.data);
   } catch (err) {

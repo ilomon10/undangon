@@ -16,7 +16,6 @@ export default function InvitationEditor({ content, ...props }) {
 
   const onPublish = useCallback(
     async (query, { setLoading }) => {
-      console.log(props);
       setLoading(true);
       const json = query.serialize();
       const content = lz.encodeBase64(lz.compress(json));

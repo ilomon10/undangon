@@ -43,7 +43,6 @@ export const Text = ({
         setIsEditable(true);
       }}
       onBlur={() => {
-        console.log("blur");
         setIsEditable(false);
       }}
     >

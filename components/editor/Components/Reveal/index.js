@@ -14,8 +14,6 @@ export const Reveal = ({ children, when, direction }) => {
     isActive: node.events.selected,
   }));
 
-  console.log(isEditing);
-
   return (
     <Fade
       innerRef={connect}

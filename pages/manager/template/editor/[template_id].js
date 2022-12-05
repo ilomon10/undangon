@@ -14,7 +14,6 @@ export default function TemplateEditor({ content, ...props }) {
 
   const onPublish = useCallback(
     async (query, { setLoading }) => {
-      console.log(props);
       setLoading(true);
       const json = query.serialize();
       const content = lz.encodeBase64(lz.compress(json));
@@ -22,7 +21,6 @@ export default function TemplateEditor({ content, ...props }) {
         _id: props._id,
         content,
       };
-      console.log(data);
       try {
         await client.postTemplate(data);
       } catch (err) {
