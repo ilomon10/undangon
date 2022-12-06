@@ -1,9 +1,9 @@
 import { Menu, Icon, Classes } from "@blueprintjs/core";
-import { Element, useEditor } from "@craftjs/core"
+import { Element, useEditor } from "@craftjs/core";
 import { Image } from "components/editor/Nodes/Image";
-import { Box } from "components/Grid"
+import { Box, Flex } from "components/Grid";
 import { useEffect, useRef } from "react";
-import { Button, Container, Text } from "../../Nodes";
+import { Button, Container, Positioned, Text } from "../../Nodes";
 import { PanelSection } from "../PanelSection";
 
 export const Toolbox = () => {
@@ -11,30 +11,52 @@ export const Toolbox = () => {
   return (
     <PanelSection text="Toolbox">
       <Menu>
-        {[{
-          icon: "widget-button",
-          label: "Button",
-          ref: ref => connectors.create(ref, <Button text="New Button" />)
-        }, {
-          icon: "media",
-          label: "Image",
-          ref: ref => connectors.create(ref, <Image />)
-        }, {
-          icon: "rectangle",
-          label: "Container",
-          ref: ref => connectors.create(ref, <Element is={Container} canvas />)
-        }, {
-          icon: "paragraph",
-          label: "Text",
-          ref: ref => connectors.create(ref, <Text text="New Button" />)
-        }].map(({ ref, label, icon }) =>
+        {[
+          {
+            icon: "widget-button",
+            label: "Button",
+            ref: (ref) => connectors.create(ref, <Button text="New Button" />),
+          },
+          {
+            icon: "media",
+            label: "Image",
+            ref: (ref) => connectors.create(ref, <Image />),
+          },
+          {
+            icon: "rectangle",
+            label: "Container",
+            ref: (ref) =>
+              connectors.create(ref, <Element is={Container} canvas />),
+          },
+          {
+            icon: "clip",
+            label: "Positioned",
+            ref: (ref) =>
+              connectors.create(
+                ref,
+                <Element is={Positioned} canvas>
+                  <Element is={Container} canvas width="100px" height="100px" />
+                </Element>
+              ),
+          },
+          {
+            icon: "paragraph",
+            label: "Text",
+            ref: (ref) => connectors.create(ref, <Text text="New Button" />),
+          },
+        ].map(({ ref, label, icon }) => (
           <li key={label}>
             <button type="button" className={`${Classes.MENU_ITEM}`} ref={ref}>
               <Icon className={Classes.MENU_ITEM_ICON} icon={icon} />
-              <span className={`${Classes.FILL} ${Classes.TEXT_OVERFLOW_ELLIPSIS}`}>{label}</span>
+              <span
+                className={`${Classes.FILL} ${Classes.TEXT_OVERFLOW_ELLIPSIS}`}
+              >
+                {label}
+              </span>
             </button>
-          </li>)}
+          </li>
+        ))}
       </Menu>
     </PanelSection>
-  )
-}
+  );
+};

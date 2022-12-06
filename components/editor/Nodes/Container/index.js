@@ -39,6 +39,7 @@ Container.craft = {
     marginBottom: 0,
 
     backgroundColor: undefined,
+    backgroundImage: undefined,
     borderRadius: undefined,
 
     flexDirection: "column"

@@ -96,10 +96,19 @@ export const ViewportWrapper = ({ children }) => {
             width: 280,
             borderLeft: "1px solid white",
             borderLeftColor: "gray.3",
+            position: "relative",
           }}
         >
-          <SettingPanel />
-          <LayerPanel />
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              overflow: "auto",
+            }}
+          >
+            <SettingPanel />
+            <LayerPanel />
+          </Box>
         </Box>
       </Flex>
     </Flex>
