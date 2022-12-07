@@ -30,9 +30,10 @@ export const TextSettings = () => {
       >
         <FormGroup label="Font Size">
           <InputGroup
+            type="number"
             value={values.fontSize || ""}
             onChange={(e) => {
-              setProp((props) => (props.fontSize = e.target.value));
+              setProp((props) => (props.fontSize = Number(e.target.value)));
             }}
           />
         </FormGroup>

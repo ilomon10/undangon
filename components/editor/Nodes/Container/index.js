@@ -22,7 +22,17 @@ export const Container = ({
       "margin",
     ]),
   }));
-  console.log(modes);
+
+  let heightLookup = {
+    fixed: height,
+    hug: undefined,
+    fill: "100%",
+  };
+  let widthLookup = {
+    fixed: width,
+    hug: undefined,
+    fill: "100%",
+  };
 
   return (
     <Flex
@@ -33,8 +43,8 @@ export const Container = ({
       }}
       style={{
         ...style,
-        width: modes.width === "fixed" ? width : undefined,
-        height: modes.height === "fixed" ? height : undefined,
+        width: widthLookup[modes.width],
+        height: heightLookup[modes.height],
         padding: `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`,
         margin: `${margin.join("px ")}`,
       }}

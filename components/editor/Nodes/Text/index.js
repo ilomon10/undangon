@@ -67,7 +67,7 @@ Text.craft = {
   props: {
     text: "Text Area",
     textAlign: "left",
-    fontSize: "12px",
+    fontSize: 12,
     fontWeight: "normal",
     color: "inherit",
   },
