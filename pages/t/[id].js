@@ -7,6 +7,7 @@ import { getTemplates } from "pages/api/getTemplates";
 import { getTemplate } from "pages/api/getTemplate/[id]";
 import * as ResolverNodes from "components/editor/Nodes";
 import * as ResolverComponents from "components/editor/Components";
+import { Viewport } from "components/editor";
 
 export const Template = ({ content, name }) => {
   const router = useRouter();
@@ -15,13 +16,7 @@ export const Template = ({ content, name }) => {
       <Head>
         <title>Template: {name}</title>
       </Head>
-      <Editor
-        enabled={false}
-        resolver={{
-          ...ResolverNodes,
-          ...ResolverComponents,
-        }}
-      >
+      <Viewport isProduction={true}>
         <Box
           sx={{
             position: "fixed",
@@ -35,7 +30,7 @@ export const Template = ({ content, name }) => {
             </ResolverNodes.Container>
           </Frame>
         </Box>
-      </Editor>
+      </Viewport>
     </>
   );
 };

@@ -9,6 +9,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { getInvitations } from "pages/api/getInvitations";
 import { getInvitationBySlug } from "pages/api/getInvitation/by/[slug]";
+import { Viewport } from "components/editor";
 
 export const Invitation = ({ content, meta }) => {
   const router = useRouter();
@@ -64,16 +65,7 @@ export const Invitation = ({ content, meta }) => {
           key="ogurl"
         />
       </Head>
-      <Editor
-        enabled={false}
-        resolver={{
-          Button,
-          Container,
-          Text,
-          Image,
-          UrlParameter,
-        }}
-      >
+      <Viewport isProduction={true}>
         <Box
           sx={{
             position: "fixed",
@@ -86,7 +78,7 @@ export const Invitation = ({ content, meta }) => {
             </Container>
           </Frame>
         </Box>
-      </Editor>
+      </Viewport>
     </>
   );
 };

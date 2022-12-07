@@ -9,6 +9,7 @@ module.exports = {
     appName: process.env.APP_NAME,
     appDomain: process.env.APP_DOMAIN,
     currentHostName: process.env.CURRENT_HOSTNAME,
+    googleApiKey: process.env.GOOGLE_API_KEY,
   },
   compiler: {
     styledComponents: true,

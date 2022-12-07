@@ -2,8 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Required
 
-- Wordpress
-- Advanced Custom Fields
+- Cockpit by Cockpit-HQ
 
 ## Getting Started
 
@@ -12,6 +11,16 @@ First, make environment file:
 ```ini
 # .env.local
 SERVER = http://localhost:3000/api
+```
+
+## Last Development on Environment
+
+```bash
+$ npm -v
+6.14.17
+
+$ node -v
+v14.21.1
 ```
 
 Then, run the development server:

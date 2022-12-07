@@ -1,9 +1,19 @@
-import { FormGroup, InputGroup, Radio, RadioGroup } from "@blueprintjs/core";
+import {
+  FormGroup,
+  HTMLSelect,
+  InputGroup,
+  Radio,
+  RadioGroup,
+} from "@blueprintjs/core";
 import { useNode } from "@craftjs/core";
 import { ColorPicker } from "components/ColorPicker";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import { Box, Flex } from "components/Grid";
 import _pick from "lodash/pick";
+import dynamic from "next/dynamic";
+import { CONSTANTS } from "components/Constants";
+
+const FontPicker = dynamic(() => import("font-picker-react"), { ssr: false });
 
 export const TextSettings = () => {
   const {
@@ -13,7 +23,7 @@ export const TextSettings = () => {
     values: _pick(node.data.props, [
       "textAlign",
       "textWeight",
-      "fontWeight",
+      "fontSize",
       "fontFamily",
       "color",
     ]),
@@ -23,11 +33,21 @@ export const TextSettings = () => {
     <>
       <SettingSection
         text="Typography"
-        label={({ fontSize, textAlign, fontWeight }) =>
-          `${fontSize}, ${textAlign}, ${fontWeight}`
+        label={({ fontSize, fontFamily, textAlign, fontWeight }) =>
+          `${fontFamily}, ${fontSize}, ${textAlign}, ${fontWeight}`
         }
-        props={["fontSize", "textAlign", "fontWeight"]}
+        props={["fontSize", "fontFamily", "textAlign", "fontWeight"]}
       >
+        <FormGroup label="Font Family">
+          <FontPicker
+            apiKey={CONSTANTS.GOOGLE_API_KEY}
+            activeFontFamily={values.fontFamily}
+            limit="150"
+            onChange={(nextFamily) =>
+              setProp((props) => (props.fontFamily = nextFamily.family))
+            }
+          />
+        </FormGroup>
         <FormGroup label="Font Size">
           <InputGroup
             type="number"

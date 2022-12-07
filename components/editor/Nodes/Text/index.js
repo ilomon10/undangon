@@ -1,15 +1,17 @@
 import { EditableText } from "@blueprintjs/core";
 import { useNode } from "@craftjs/core";
 import { Box } from "components/Grid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { TextSettings } from "./TextSettings";
+import FontFaceObserver from "fontfaceobserver";
 
 export const Text = ({
   text,
   textAlign,
   fontWeight,
   fontSize,
+  fontFamily,
   color,
   children,
 }) => {
@@ -20,12 +22,30 @@ export const Text = ({
     isActive: node.events.selected,
   }));
   const [isEditable, setIsEditable] = useState();
+
   const style = {
     textAlign: textAlign,
     fontWeight: fontWeight,
     fontSize: fontSize,
+    fontFamily: fontFamily,
     color: color,
   };
+
+  useEffect(async () => {
+    if (!fontFamily) return;
+    const font = new FontFaceObserver(fontFamily);
+    try {
+      const res = await font.load();
+    } catch (err) {
+      const WebFont = await import("webfontloader");
+      WebFont.load({
+        google: {
+          families: [fontFamily],
+        },
+      });
+      console.error(err.message);
+    }
+  }, [fontFamily]);
 
   if (children) {
     return (
@@ -69,6 +89,7 @@ Text.craft = {
     textAlign: "left",
     fontSize: 12,
     fontWeight: "normal",
+    fontFamily: "Roboto",
     color: "inherit",
   },
   related: {

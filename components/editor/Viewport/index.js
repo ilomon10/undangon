@@ -115,7 +115,20 @@ export const ViewportWrapper = ({ children }) => {
   );
 };
 
-export const Viewport = ({ children, ...props }) => {
+export const Viewport = ({ isProduction = false, children, ...props }) => {
+  if (isProduction) {
+    return (
+      <Editor
+        enabled={false}
+        resolver={{
+          ...ResolverNodes,
+          ...ResolverComponents,
+        }}
+      >
+        {children}
+      </Editor>
+    );
+  }
   return (
     <Editor
       resolver={{
