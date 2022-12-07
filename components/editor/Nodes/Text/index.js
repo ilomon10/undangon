@@ -29,7 +29,7 @@ export const Text = ({
 
   if (children) {
     return (
-      <Box ref={(ref) => connect(drag(ref))} style={style}>
+      <Box ref={connect} style={style}>
         {children}
       </Box>
     );
@@ -37,7 +37,7 @@ export const Text = ({
 
   return (
     <Box
-      ref={(ref) => connect(drag(ref))}
+      ref={connect}
       style={style}
       onDoubleClick={() => {
         setIsEditable(true);

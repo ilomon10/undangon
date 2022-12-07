@@ -35,7 +35,15 @@ export const Toolbox = () => {
               connectors.create(
                 ref,
                 <Element is={Positioned} canvas>
-                  <Element is={Container} canvas width="100px" height="100px" />
+                  <Element
+                    is={Container}
+                    canvas
+                    width={100}
+                    height={100}
+                    custom={{
+                      settingMode: { height: "fixed", width: "fixed" },
+                    }}
+                  />
                 </Element>
               ),
           },

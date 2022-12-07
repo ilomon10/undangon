@@ -10,4 +10,4 @@ export const BlueprintWrapper = (props) => {
       <div {...props} />
     </ThemeProvider>
   );
-}
+};

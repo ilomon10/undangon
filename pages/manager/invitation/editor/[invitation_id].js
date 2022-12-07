@@ -57,8 +57,8 @@ export default function InvitationEditor({ content, ...props }) {
           >
             <Element
               is={Container}
-              height="1500px"
-              width="100%"
+              height={1500}
+              width={0}
               marginRight="auto"
               marginLeft="auto"
               canvas

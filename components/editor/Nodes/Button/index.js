@@ -1,10 +1,8 @@
-import { useNode } from "@craftjs/core"
+import { useNode } from "@craftjs/core";
 
 export const Button = () => {
-  const { connectors: { connect, drag } } = useNode();
-  return (
-    <div ref={ref => connect(drag(ref))}>
-      Button
-    </div>
-  )
-}
+  const {
+    connectors: { connect },
+  } = useNode();
+  return <div ref={(ref) => connect(ref)}>Button</div>;
+};

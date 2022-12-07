@@ -4,11 +4,11 @@ import { PositionedSettings } from "./PositionedSettings";
 
 export const Positioned = ({ children, ...style }) => {
   const {
-    connectors: { connect, drag },
+    connectors: { connect },
   } = useNode();
   return (
     <Flex
-      ref={(ref) => connect(drag(ref))}
+      ref={connect}
       sx={{
         position: "absolute",
         minHeight: 10,
