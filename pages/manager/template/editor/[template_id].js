@@ -32,7 +32,7 @@ export default function TemplateEditor({ content, ...props }) {
   );
 
   const onClose = useCallback(() => {
-    router.back();
+    router.replace("/manager/templates");
   }, []);
 
   const constructPreviewUrl = useCallback(() => {
