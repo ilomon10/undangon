@@ -6,6 +6,7 @@ import NProgress from "nprogress";
 import Router from "next/router";
 import config from "react-reveal/globals";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 config({ ssrFadeout: true });
 
@@ -23,9 +24,11 @@ const queryClient = new QueryClient({
 
 function MyApp({ Component, pageProps }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} />
-    </QueryClientProvider>
+    <UserProvider>
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+      </QueryClientProvider>
+    </UserProvider>
   );
 }
 

@@ -1,15 +1,13 @@
 import lz from "lzutf8";
-import { Editor, Frame, Element } from "@craftjs/core";
-import { Button, Container, Text, Image } from "components/editor/Nodes";
+import { Frame, Element } from "@craftjs/core";
+import { Button, Container, Text } from "components/editor/Nodes";
 
-import { Box } from "components";
 import { Viewport } from "components/editor";
 import { BlueprintWrapper } from "components/BlueprintWrapper";
-import { RenderNode } from "components/editor/Nodes/RenderNode";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import client from "components/client";
 import { useRouter } from "next/router";
-import { UrlParameter } from "components/editor/Components/UrlParameter";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 export default function InvitationEditor({ content, ...props }) {
   const router = useRouter();
@@ -76,14 +74,16 @@ export default function InvitationEditor({ content, ...props }) {
   );
 }
 
-export const getServerSideProps = async (context) => {
-  const { invitation_id } = context.params;
-  let data = await client.getInvitation(invitation_id);
-  const content = lz.decompress(lz.decodeBase64(data.content));
-  return {
-    props: {
-      ...data,
-      content,
-    },
-  };
-};
+export const getServerSideProps = withPageAuthRequired({
+  async getServerSideProps(context) {
+    const { invitation_id } = context.params;
+    let data = await client.getInvitation(invitation_id);
+    const content = lz.decompress(lz.decodeBase64(data.content));
+    return {
+      props: {
+        ...data,
+        content,
+      },
+    };
+  },
+});

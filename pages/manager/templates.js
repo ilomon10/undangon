@@ -1,3 +1,4 @@
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { Card, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Box, Flex } from "components";
 import Layout from "components/manager/Layout";
@@ -10,13 +11,17 @@ export default function Templates() {
     <Layout>
       <Flex flexGrow={1} flexDirection="column">
         <TemplatesHeader />
-        <Box sx={{
-          py: 4
-        }}>
-          <Box sx={{
-            maxWidth: 512,
-            margin: "0 auto"
-          }}>
+        <Box
+          sx={{
+            py: 4,
+          }}
+        >
+          <Box
+            sx={{
+              maxWidth: 512,
+              margin: "0 auto",
+            }}
+          >
             <Card>
               <TemplateList />
             </Card>
@@ -24,5 +29,7 @@ export default function Templates() {
         </Box>
       </Flex>
     </Layout>
-  )
+  );
 }
+
+export const getServerSideProps = withPageAuthRequired();

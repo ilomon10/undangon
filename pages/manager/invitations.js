@@ -1,3 +1,4 @@
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { Card } from "@blueprintjs/core";
 import { Box, Flex } from "components";
 import { InvitationsHeader } from "components/manager/Invitations/Header";
@@ -29,3 +30,5 @@ export default function Invitations() {
     </Layout>
   );
 }
+
+export const getServerSideProps = withPageAuthRequired();

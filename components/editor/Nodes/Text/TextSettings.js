@@ -21,6 +21,7 @@ export const TextSettings = () => {
     values,
   } = useNode((node) => ({
     values: _pick(node.data.props, [
+      "lineHeight",
       "textAlign",
       "textWeight",
       "fontSize",
@@ -33,10 +34,16 @@ export const TextSettings = () => {
     <>
       <SettingSection
         text="Typography"
-        label={({ fontSize, fontFamily, textAlign, fontWeight }) =>
-          `${fontFamily}, ${fontSize}, ${textAlign}, ${fontWeight}`
+        label={({ fontSize, fontFamily, textAlign, fontWeight, lineHeight }) =>
+          `${fontFamily}, ${fontSize}, ${textAlign}, ${fontWeight}, ${lineHeight}`
         }
-        props={["fontSize", "fontFamily", "textAlign", "fontWeight"]}
+        props={[
+          "fontSize",
+          "fontFamily",
+          "textAlign",
+          "fontWeight",
+          "lineHeight",
+        ]}
       >
         <FormGroup label="Font Family">
           <FontPicker
@@ -48,15 +55,30 @@ export const TextSettings = () => {
             }
           />
         </FormGroup>
-        <FormGroup label="Font Size">
-          <InputGroup
-            type="number"
-            value={values.fontSize || ""}
-            onChange={(e) => {
-              setProp((props) => (props.fontSize = Number(e.target.value)));
-            }}
-          />
-        </FormGroup>
+        <Flex mx={-2}>
+          <Box w="50%" px={2}>
+            <FormGroup label="Font Size">
+              <InputGroup
+                type="number"
+                value={values.fontSize || ""}
+                onChange={(e) => {
+                  setProp((props) => (props.fontSize = Number(e.target.value)));
+                }}
+              />
+            </FormGroup>
+          </Box>
+          <Box px={2}>
+            <FormGroup label="Line Height">
+              <InputGroup
+                type="number"
+                value={values.lineHeight || ""}
+                onChange={(e) => {
+                  setProp((props) => (props.lineHeight = Number(e.target.value)));
+                }}
+              />
+            </FormGroup>
+          </Box>
+        </Flex>
         <Flex>
           <Box sx={{ width: "50%" }}>
             <RadioGroup

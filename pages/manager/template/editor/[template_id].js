@@ -8,6 +8,7 @@ import { RenderNode } from "components/editor/Nodes/RenderNode";
 import { useCallback, useEffect } from "react";
 import client from "components/client";
 import { useRouter } from "next/router";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 export default function TemplateEditor({ content, ...props }) {
   const router = useRouter();
@@ -69,15 +70,17 @@ export default function TemplateEditor({ content, ...props }) {
   );
 }
 
-export const getServerSideProps = async (context) => {
-  const { template_id } = context.params;
-  let data = await client.getTemplate(template_id);
-  const content = lz.decompress(lz.decodeBase64(data.content));
+export const getServerSideProps = withPageAuthRequired({
+  async getServerSideProps(context) {
+    const { template_id } = context.params;
+    let data = await client.getTemplate(template_id);
+    const content = lz.decompress(lz.decodeBase64(data.content));
 
-  return {
-    props: {
-      ...data,
-      content,
-    },
-  };
-};
+    return {
+      props: {
+        ...data,
+        content,
+      },
+    };
+  },
+});

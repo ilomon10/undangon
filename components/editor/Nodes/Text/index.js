@@ -1,5 +1,5 @@
 import { EditableText } from "@blueprintjs/core";
-import { useNode } from "@craftjs/core";
+import { useEditor, useNode } from "@craftjs/core";
 import { Box } from "components/Grid";
 import { useEffect, useState } from "react";
 import ContentEditable from "react-contenteditable";
@@ -7,6 +7,7 @@ import { TextSettings } from "./TextSettings";
 import FontFaceObserver from "fontfaceobserver";
 
 export const Text = ({
+  lineHeight,
   text,
   textAlign,
   fontWeight,
@@ -21,9 +22,13 @@ export const Text = ({
   } = useNode((node) => ({
     isActive: node.events.selected,
   }));
+  const { editorEnabled } = useEditor((state) => ({
+    editorEnabled: state.options.enabled,
+  }));
   const [isEditable, setIsEditable] = useState();
 
   const style = {
+    lineHeight: `${lineHeight}px`,
     textAlign: textAlign,
     fontWeight: fontWeight,
     fontSize: fontSize,
@@ -51,6 +56,14 @@ export const Text = ({
     return (
       <Box ref={connect} style={style}>
         {children}
+      </Box>
+    );
+  }
+
+  if (!editorEnabled) {
+    return (
+      <Box ref={connect} style={style}>
+        <div dangerouslySetInnerHTML={{ __html: text }} />
       </Box>
     );
   }
