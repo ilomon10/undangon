@@ -1,3 +1,4 @@
+import { generateId } from "components/utils/generateId";
 import { createContext, useCallback, useContext, useState } from "react";
 
 const ViewportContext = createContext();
@@ -7,6 +8,8 @@ export const ViewportProvider = ({
   onClose,
   onPublish,
   constructPreviewUrl,
+
+  id = generateId(),
 }) => {
   let availableMedia = {
     desktop: {
@@ -43,6 +46,7 @@ export const ViewportProvider = ({
       value={{
         media,
         handler,
+        id,
       }}
     >
       {children}

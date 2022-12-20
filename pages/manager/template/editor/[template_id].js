@@ -43,6 +43,7 @@ export default function TemplateEditor({ content, ...props }) {
   return (
     <BlueprintWrapper>
       <Viewport
+        id={`templates/${props._id}`}
         onClose={onClose}
         onPublish={onPublish}
         constructPreviewUrl={constructPreviewUrl}
@@ -75,7 +76,6 @@ export const getServerSideProps = withPageAuthRequired({
     const { template_id } = context.params;
     let data = await client.getTemplate(template_id);
     const content = lz.decompress(lz.decodeBase64(data.content));
-
     return {
       props: {
         ...data,

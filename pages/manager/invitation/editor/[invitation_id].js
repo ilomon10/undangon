@@ -41,6 +41,7 @@ export default function InvitationEditor({ content, ...props }) {
   return (
     <BlueprintWrapper>
       <Viewport
+        id={`invitations/${props._id}.${props.slug}`}
         onClose={onClose}
         onPublish={onPublish}
         constructPreviewUrl={constructPreviewUrl}

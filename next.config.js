@@ -10,6 +10,9 @@ module.exports = {
     appDomain: process.env.APP_DOMAIN,
     currentHostName: process.env.CURRENT_HOSTNAME,
     googleApiKey: process.env.GOOGLE_API_KEY,
+    imagekitUrl: process.env.IMAGEKIT_URL,
+    imagekitPublicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+    imagekitPrivateKey: process.env.IMAGEKIT_PRIVATE_KEY,
   },
   compiler: {
     styledComponents: true,
