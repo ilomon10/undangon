@@ -3,9 +3,11 @@ import { useNode } from "@craftjs/core";
 import { importProps } from "components/editor/utils/importProps";
 import { Box, Flex } from "components/Grid";
 import { useMemo, useState } from "react";
+import useCollapse from "react-collapsed";
 
 export const SettingSection = ({ icon, label, text, props, children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const { nodeProps } = useNode((node) => ({
     nodeProps: props && importProps(node, props),
   }));
@@ -23,6 +25,16 @@ export const SettingSection = ({ icon, label, text, props, children }) => {
     }
     return ret;
   }, [label, props, nodeProps]);
+
+  const { getCollapseProps, getToggleProps } = useCollapse({
+    isExpanded: isOpen,
+    onCollapseEnd: () => {
+      setIsExpanded(false);
+    },
+    onExpandStart: () => {
+      setIsExpanded(true);
+    },
+  });
 
   return (
     <Box
@@ -56,16 +68,16 @@ export const SettingSection = ({ icon, label, text, props, children }) => {
           </Box>
         )}
       </Flex>
-      <Collapse isOpen={isOpen}>
+      <Box {...getCollapseProps()}>
         <Box
           sx={{
             px: 2,
             my: 2,
           }}
         >
-          {children}
+          {isExpanded && children}
         </Box>
-      </Collapse>
+      </Box>
     </Box>
   );
 };

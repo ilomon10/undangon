@@ -2,9 +2,14 @@ import { Button, Collapse, Icon } from "@blueprintjs/core";
 import { useNode } from "@craftjs/core";
 import { Box, Flex } from "components/Grid";
 import { useMemo, useState } from "react";
+import useCollapse from "react-collapsed";
 
 export const PanelSection = ({ icon, text, children, defaultOpen = true }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  const { getCollapseProps, getToggleProps } = useCollapse({
+    isExpanded: isOpen,
+  });
 
   return (
     <Box
@@ -35,18 +40,7 @@ export const PanelSection = ({ icon, text, children, defaultOpen = true }) => {
           <Icon icon={isOpen ? "chevron-up" : "chevron-down"} />
         </span>
       </Flex>
-      <Collapse isOpen={isOpen}>
-        <Box
-          sx={
-            {
-              // px: 2,
-              // my: 2,
-            }
-          }
-        >
-          {children}
-        </Box>
-      </Collapse>
+      <Box {...getCollapseProps()}>{children}</Box>
     </Box>
   );
 };

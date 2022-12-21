@@ -32,6 +32,10 @@ export const ContainerSettings = () => {
     values: _pick(node.data.props, [
       "height",
       "width",
+      "minHeight",
+      "minWidth",
+      "maxHeight",
+      "maxWidth",
       "padding",
       "margin",
       "backgroundColor",
@@ -88,6 +92,18 @@ export const ContainerSettings = () => {
                       </DragValue>
                     }
                     value={_get(values, property) || ""}
+                    rightElement={
+                      _get(values, property) && (
+                        <Button
+                          disabled={modes[property] !== "fixed"}
+                          minimal={true}
+                          icon="cross"
+                          onClick={() => {
+                            setProp((props) => (props[property] = undefined));
+                          }}
+                        />
+                      )
+                    }
                     onChange={(e) => {
                       setProp(
                         (props) => (props[property] = Number(e.target.value))
@@ -123,6 +139,128 @@ export const ContainerSettings = () => {
               </Box>
             ))}
           </Flex>
+          <SettingSection text="Advance Options">
+            <Flex mx={-1}>
+              {[
+                {
+                  property: "minHeight",
+                  icon: "H",
+                },
+                {
+                  property: "minWidth",
+                  icon: "W",
+                },
+              ].map(({ icon, property }, idx) => (
+                <Box key={idx} width="50%" px={1}>
+                  <FormGroup label={property}>
+                    <InputGroup
+                      type="number"
+                      leftIcon={
+                        <DragValue
+                          min={0}
+                          max={999999}
+                          friction={5}
+                          value={_get(values, property) || 0}
+                          onChange={(value) =>
+                            setProp((props) => (props[property] = value), 100)
+                          }
+                        >
+                          {({ handleMouseDown }) => (
+                            <Button
+                              style={{
+                                zIndex: 1,
+                                cursor: "w-resize",
+                              }}
+                              onMouseDown={handleMouseDown}
+                              text={icon}
+                              title={property}
+                            />
+                          )}
+                        </DragValue>
+                      }
+                      rightElement={
+                        _get(values, property) && (
+                          <Button
+                            minimal={true}
+                            icon="cross"
+                            onClick={() => {
+                              setProp((props) => (props[property] = undefined));
+                            }}
+                          />
+                        )
+                      }
+                      value={_get(values, property) || ""}
+                      onChange={(e) => {
+                        setProp(
+                          (props) => (props[property] = Number(e.target.value))
+                        );
+                      }}
+                    />
+                  </FormGroup>
+                </Box>
+              ))}
+            </Flex>
+            <Flex mx={-1}>
+              {[
+                {
+                  property: "maxHeight",
+                  icon: "H",
+                },
+                {
+                  property: "maxWidth",
+                  icon: "W",
+                },
+              ].map(({ icon, property }, idx) => (
+                <Box key={idx} width="50%" px={1}>
+                  <FormGroup label={property}>
+                    <InputGroup
+                      type="number"
+                      leftIcon={
+                        <DragValue
+                          min={0}
+                          max={999999}
+                          friction={5}
+                          value={_get(values, property) || 0}
+                          onChange={(value) =>
+                            setProp((props) => (props[property] = value), 100)
+                          }
+                        >
+                          {({ handleMouseDown }) => (
+                            <Button
+                              style={{
+                                zIndex: 1,
+                                cursor: "w-resize",
+                              }}
+                              onMouseDown={handleMouseDown}
+                              text={icon}
+                              title={property}
+                            />
+                          )}
+                        </DragValue>
+                      }
+                      value={_get(values, property) || ""}
+                      onChange={(e) => {
+                        setProp(
+                          (props) => (props[property] = Number(e.target.value))
+                        );
+                      }}
+                      rightElement={
+                        _get(values, property) && (
+                          <Button
+                            minimal={true}
+                            icon="cross"
+                            onClick={() => {
+                              setProp((props) => (props[property] = undefined));
+                            }}
+                          />
+                        )
+                      }
+                    />
+                  </FormGroup>
+                </Box>
+              ))}
+            </Flex>
+          </SettingSection>
         </SettingSection>
       )}
 
@@ -236,7 +374,7 @@ export const ContainerSettings = () => {
                     type="number"
                     leftElement={
                       <DragValue
-                        min={0}
+                        min={-1000}
                         max={1000}
                         friction={5}
                         value={_get(values, `margin[${idx}]`) || 0}
@@ -265,7 +403,21 @@ export const ContainerSettings = () => {
         </SettingSection>
       )}
       <SettingSection text="Appearance">
-        <FormGroup label="Background Color">
+        <FormGroup
+          label="Background Color"
+          labelInfo={
+            values.backgroundColor && (
+              <Button
+                small={true}
+                icon="cross"
+                minimal={true}
+                onClick={() => {
+                  setProp((props) => (props.backgroundColor = undefined));
+                }}
+              />
+            )
+          }
+        >
           <ColorPicker
             value={values.backgroundColor}
             onChange={(color) => {

@@ -59,6 +59,10 @@ Container.craft = {
   props: {
     height: 100,
     width: 100,
+    minHeight: undefined,
+    minWidth: undefined,
+    maxHeight: undefined,
+    maxWidth: undefined,
 
     padding: [0, 0, 0, 0],
 
