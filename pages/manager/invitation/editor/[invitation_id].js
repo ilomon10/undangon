@@ -31,7 +31,7 @@ export default function InvitationEditor({ content, ...props }) {
   );
 
   const onClose = useCallback(() => {
-    router.replace("/manager/invitation");
+    router.replace("/manager/invitations");
   }, []);
 
   const constructPreviewUrl = useCallback(() => {
