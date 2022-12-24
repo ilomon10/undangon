@@ -3,7 +3,14 @@ import { Element, useEditor } from "@craftjs/core";
 import { Image } from "components/editor/Nodes/Image";
 import { Box, Flex } from "components/Grid";
 import { useEffect, useRef } from "react";
-import { Button, Container, Positioned, StaticMapbox, Text } from "../../Nodes";
+import {
+  Button,
+  Carousel,
+  Container,
+  Positioned,
+  StaticMapbox,
+  Text,
+} from "../../Nodes";
 import { PanelSection } from "../PanelSection";
 
 export const Toolbox = () => {
@@ -50,12 +57,17 @@ export const Toolbox = () => {
           {
             icon: "paragraph",
             label: "Text",
-            ref: (ref) => connectors.create(ref, <Text text="New Button" />),
+            ref: (ref) => connectors.create(ref, <Text text="New Text" />),
           },
           {
             icon: "map",
             label: "Static Mapbox",
             ref: (ref) => connectors.create(ref, <StaticMapbox />),
+          },
+          {
+            icon: "media",
+            label: "Carousel",
+            ref: (ref) => connectors.create(ref, <Carousel />),
           },
         ].map(({ ref, label, icon }) => (
           <li key={label}>

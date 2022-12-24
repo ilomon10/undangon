@@ -7,6 +7,8 @@ import { Editor, useEditor } from "@craftjs/core";
 import { useViewport, ViewportProvider } from "./useViewport";
 import { ComponentPanel } from "../Sidepanel/ComponentPanel";
 import { RenderNode } from "../Nodes/RenderNode";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import * as ResolverNodes from "../Nodes";
 import * as ResolverComponents from "../Components";
@@ -87,6 +89,9 @@ export const ViewportWrapper = ({ children }) => {
                 }}
               >
                 {children}
+                <Box sx={{ position: "absolute", bottom: "100%", left: 0 }}>
+                  {media.currentMedia.width} x {media.currentMedia.height}
+                </Box>
               </Box>
             </Box>
           </Box>

@@ -26,7 +26,7 @@ export const SettingSection = ({ icon, label, text, props, children }) => {
     return ret;
   }, [label, props, nodeProps]);
 
-  const { getCollapseProps, getToggleProps } = useCollapse({
+  const { getCollapseProps } = useCollapse({
     isExpanded: isOpen,
     onCollapseEnd: () => {
       setIsExpanded(false);

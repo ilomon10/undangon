@@ -11,6 +11,7 @@ import { DragValue } from "components/DragValue";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import { Box, Flex } from "components/Grid";
 import _pick from "lodash/pick";
+import _get from "lodash/get";
 
 export const PositionedSettings = () => {
   const {
