@@ -7,7 +7,7 @@ export const Carousel = ({ images, settings, height, width }) => {
   const {
     connectors: { connect },
   } = useNode();
-  console.log(settings);
+
   return (
     <div
       ref={connect}

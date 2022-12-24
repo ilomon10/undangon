@@ -2,15 +2,20 @@ import { useNode } from "@craftjs/core";
 import { Box, Flex } from "components/Grid";
 import { ContainerSettings } from "./ContainerSettings";
 import _pick from "lodash/pick";
+import { useViewport } from "components/editor/Viewport/useViewport";
+import unitsCss from "units-css";
 
-export const Container = ({
-  children,
-  padding,
-  margin,
-  height,
-  width,
-  ...style
-}) => {
+const ProcessUnitForViewport = (raw, viewport) => {
+  if (!raw) return raw;
+  const { value, unit } = unitsCss.parse(raw);
+  if (unit === "vh") {
+    return (value / 100) * viewport;
+  }
+  return raw;
+};
+
+export const Container = ({ children, padding, margin, ...style }) => {
+  const { media, isProduction } = useViewport();
   const {
     connectors: { connect },
     modes,
@@ -22,6 +27,23 @@ export const Container = ({
       "margin",
     ]),
   }));
+
+  ["height", "maxHeight", "minHeight"].map((property) => {
+    if(isProduction) return;
+    style[property] = ProcessUnitForViewport(
+      style[property],
+      media.currentMedia.height
+    );
+  });
+  ["width", "maxWidth", "minWidth"].map((property) => {
+    if(isProduction) return;
+    style[property] = ProcessUnitForViewport(
+      style[property],
+      media.currentMedia.width
+    );
+  });
+
+  const { height, width } = style;
 
   let heightLookup = {
     fixed: height,

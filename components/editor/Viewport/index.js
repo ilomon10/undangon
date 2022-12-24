@@ -130,7 +130,7 @@ export const Viewport = ({ isProduction = false, children, ...props }) => {
           ...ResolverComponents,
         }}
       >
-        {children}
+        <ViewportProvider isProduction={true}>{children}</ViewportProvider>
       </Editor>
     );
   }

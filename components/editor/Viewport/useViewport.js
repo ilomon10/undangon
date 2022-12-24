@@ -4,6 +4,8 @@ import { createContext, useCallback, useContext, useState } from "react";
 const ViewportContext = createContext();
 
 export const ViewportProvider = ({
+  isProduction = false,
+
   children,
   onClose,
   onPublish,
@@ -44,6 +46,7 @@ export const ViewportProvider = ({
   return (
     <ViewportContext.Provider
       value={{
+        isProduction,
         media,
         handler,
         id,

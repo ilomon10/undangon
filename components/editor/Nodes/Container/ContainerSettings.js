@@ -1,5 +1,6 @@
 import {
   Button,
+  ControlGroup,
   FormGroup,
   HTMLSelect,
   Icon,
@@ -12,8 +13,10 @@ import { SettingSection } from "components/editor/Sidepanel/SettingPanel/Setting
 import { Box, Flex } from "components/Grid";
 import _pick from "lodash/pick";
 import _get from "lodash.get";
+import _set from "lodash/set";
 import { DragValue } from "components/DragValue";
 import unitsCss from "units-css";
+import { CSSUnitInput } from "./CSSUnitInput";
 
 export const ContainerSettings = () => {
   const {
@@ -66,48 +69,16 @@ export const ContainerSettings = () => {
               },
             ].map(({ icon, property }, idx) => (
               <Box key={idx} width="50%" px={1}>
-                <FormGroup>
-                  <InputGroup
-                    type="number"
+                <FormGroup label={property}>
+                  <CSSUnitInput
                     disabled={modes[property] !== "fixed"}
-                    leftElement={
-                      <DragValue
-                        min={0}
-                        max={999999}
-                        friction={5}
-                        disabled={modes[property] !== "fixed"}
-                        value={_get(values, property) || 0}
-                        onChange={(value) =>
-                          setProp((props) => (props[property] = value), 100)
-                        }
-                      >
-                        {({ isDisabled, handleMouseDown }) => (
-                          <Button
-                            disabled={isDisabled}
-                            style={{ cursor: !isDisabled ? "w-resize" : null }}
-                            onMouseDown={handleMouseDown}
-                            text={icon}
-                          />
-                        )}
-                      </DragValue>
-                    }
-                    value={_get(values, property) || ""}
-                    rightElement={
-                      _get(values, property) && (
-                        <Button
-                          disabled={modes[property] !== "fixed"}
-                          minimal={true}
-                          icon="cross"
-                          onClick={() => {
-                            setProp((props) => (props[property] = undefined));
-                          }}
-                        />
-                      )
-                    }
-                    onChange={(e) => {
-                      setProp(
-                        (props) => (props[property] = Number(e.target.value))
-                      );
+                    iconProps={{
+                      text: icon,
+                    }}
+                    label={property}
+                    initialValue={unitsCss.parse(_get(values, property) || "")}
+                    onChange={(value) => {
+                      setProp((props) => _set(props, property, value));
                     }}
                   />
                 </FormGroup>
@@ -153,47 +124,16 @@ export const ContainerSettings = () => {
               ].map(({ icon, property }, idx) => (
                 <Box key={idx} width="50%" px={1}>
                   <FormGroup label={property}>
-                    <InputGroup
-                      type="number"
-                      leftIcon={
-                        <DragValue
-                          min={0}
-                          max={999999}
-                          friction={5}
-                          value={_get(values, property) || 0}
-                          onChange={(value) =>
-                            setProp((props) => (props[property] = value), 100)
-                          }
-                        >
-                          {({ handleMouseDown }) => (
-                            <Button
-                              style={{
-                                zIndex: 1,
-                                cursor: "w-resize",
-                              }}
-                              onMouseDown={handleMouseDown}
-                              text={icon}
-                              title={property}
-                            />
-                          )}
-                        </DragValue>
-                      }
-                      rightElement={
-                        _get(values, property) && (
-                          <Button
-                            minimal={true}
-                            icon="cross"
-                            onClick={() => {
-                              setProp((props) => (props[property] = undefined));
-                            }}
-                          />
-                        )
-                      }
-                      value={_get(values, property) || ""}
-                      onChange={(e) => {
-                        setProp(
-                          (props) => (props[property] = Number(e.target.value))
-                        );
+                    <CSSUnitInput
+                      iconProps={{
+                        text: icon,
+                      }}
+                      label={property}
+                      initialValue={unitsCss.parse(
+                        _get(values, property) || ""
+                      )}
+                      onChange={(value) => {
+                        setProp((props) => _set(props, property, value));
                       }}
                     />
                   </FormGroup>
@@ -213,48 +153,17 @@ export const ContainerSettings = () => {
               ].map(({ icon, property }, idx) => (
                 <Box key={idx} width="50%" px={1}>
                   <FormGroup label={property}>
-                    <InputGroup
-                      type="number"
-                      leftIcon={
-                        <DragValue
-                          min={0}
-                          max={999999}
-                          friction={5}
-                          value={_get(values, property) || 0}
-                          onChange={(value) =>
-                            setProp((props) => (props[property] = value), 100)
-                          }
-                        >
-                          {({ handleMouseDown }) => (
-                            <Button
-                              style={{
-                                zIndex: 1,
-                                cursor: "w-resize",
-                              }}
-                              onMouseDown={handleMouseDown}
-                              text={icon}
-                              title={property}
-                            />
-                          )}
-                        </DragValue>
-                      }
-                      value={_get(values, property) || ""}
-                      onChange={(e) => {
-                        setProp(
-                          (props) => (props[property] = Number(e.target.value))
-                        );
+                    <CSSUnitInput
+                      iconProps={{
+                        text: icon,
                       }}
-                      rightElement={
-                        _get(values, property) && (
-                          <Button
-                            minimal={true}
-                            icon="cross"
-                            onClick={() => {
-                              setProp((props) => (props[property] = undefined));
-                            }}
-                          />
-                        )
-                      }
+                      label={property}
+                      initialValue={unitsCss.parse(
+                        _get(values, property) || ""
+                      )}
+                      onChange={(value) => {
+                        setProp((props) => _set(props, property, value));
+                      }}
                     />
                   </FormGroup>
                 </Box>
