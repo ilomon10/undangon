@@ -68,7 +68,7 @@ export const Container = ({ children, padding, margin, ...style }) => {
         width: widthLookup[modes.width],
         height: heightLookup[modes.height],
         padding: `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`,
-        margin: `${margin.join("px ")}`,
+        margin: `${margin.join(" ")}`,
       }}
     >
       {children}

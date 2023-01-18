@@ -1,31 +1,37 @@
-import { useNode } from "@craftjs/core"
+import { useNode } from "@craftjs/core";
 import { ImageSettings } from "./ImageSettings";
 
 export const Image = ({
+  connect = true,
   url,
-  height, width,
+  height,
+  width,
   objectFit,
   borderRadius,
 }) => {
-  const { connectors: { connect, drag } } = useNode();
+  const { connectors } = useNode();
+
   return (
     <div
-      ref={ref => connect(drag(ref))}
+      ref={(ref) => connect && connectors.connect(ref)}
       style={{
         height,
         width,
       }}
     >
-      <img style={{
-        display: "block",
-        width: "100%",
-        height: "100%",
-        objectFit,
-        borderRadius,
-      }} src={url} />
+      <img
+        style={{
+          display: "block",
+          width: "100%",
+          height: "100%",
+          objectFit,
+          borderRadius,
+        }}
+        src={url}
+      />
     </div>
-  )
-}
+  );
+};
 
 Image.craft = {
   name: "Image",
@@ -34,9 +40,9 @@ Image.craft = {
     height: "auto",
     width: "auto",
     borderRadius: "",
-    objectFit: "fill"
+    objectFit: "fill",
   },
   related: {
-    settings: ImageSettings
-  }
-}
+    settings: ImageSettings,
+  },
+};

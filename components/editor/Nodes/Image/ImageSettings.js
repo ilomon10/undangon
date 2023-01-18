@@ -50,7 +50,7 @@ export const ImageSettings = () => {
             <InputGroup
               value={values.height || ""}
               onChange={(e) => {
-                setProp((props) => (props.height = e.target.value));
+                setProp((props) => (props.height = e.target.value), 500);
               }}
             />
           </FormGroup>
@@ -58,7 +58,7 @@ export const ImageSettings = () => {
             <InputGroup
               value={values.width || ""}
               onChange={(e) => {
-                setProp((props) => (props.width = e.target.value));
+                setProp((props) => (props.width = e.target.value), 500);
               }}
             />
           </FormGroup>

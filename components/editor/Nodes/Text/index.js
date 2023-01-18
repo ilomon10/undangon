@@ -14,6 +14,7 @@ export const Text = ({
   fontSize,
   fontFamily,
   color,
+  margin,
   children,
 }) => {
   const {
@@ -34,6 +35,7 @@ export const Text = ({
     fontSize: fontSize,
     fontFamily: fontFamily,
     color: color,
+    margin: margin.join(" ")
   };
 
   useEffect(async () => {
@@ -104,6 +106,7 @@ Text.craft = {
     fontWeight: "normal",
     fontFamily: "Roboto",
     color: "inherit",
+    margin: [0, 0, 0, 0],
   },
   related: {
     settings: TextSettings,

@@ -5,9 +5,9 @@ import { Box, Flex } from "components/Grid";
 import { useMemo, useState } from "react";
 import useCollapse from "react-collapsed";
 
-export const SettingSection = ({ icon, label, text, props, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+export const SettingSection = ({ icon, label, text, props, children, defaultOpen = false }) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen || false);
+  const [isExpanded, setIsExpanded] = useState(defaultOpen || false);
   const { nodeProps } = useNode((node) => ({
     nodeProps: props && importProps(node, props),
   }));

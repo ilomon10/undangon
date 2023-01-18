@@ -76,7 +76,7 @@ export const PositionedSettings = () => {
                       friction={5}
                       value={_get(values, property) || 0}
                       onChange={(value) =>
-                        setProp((props) => _set(props, property, Number(value)), 100)
+                        setProp((props) => _set(props, property, Number(value)), 500)
                       }
                     >
                       {({ handleMouseDown }) => (
@@ -87,7 +87,7 @@ export const PositionedSettings = () => {
                   value={_get(values, property) || ""}
                   onChange={(e) => {
                     setProp((props) =>
-                      _set(props, property, Number(e.target.value), 100)
+                      _set(props, property, Number(e.target.value), 500)
                     );
                   }}
                 />

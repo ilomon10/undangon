@@ -69,6 +69,20 @@ export const CarouselSettings = () => {
                 folderTarget={`/manjo/assets/${id}`}
               />
             </FormGroup>
+            <RadioGroup
+              label="Object Fit"
+              selectedValue={_get(values, `images[${i}].objectFit`) || ""}
+              onChange={(e) => {
+                setProp((props) =>
+                  _set(props, `images[${i}].objectFit`, e.target.value)
+                );
+              }}
+              options={[
+                { label: "Fill", value: "fill" },
+                { label: "Cover", value: "cover" },
+                { label: "Contain", value: "Contain" },
+              ]}
+            />
             <ButtonGroup>
               <Button
                 onClick={() => {
@@ -141,7 +155,7 @@ export const CarouselSettings = () => {
             <InputGroup
               value={values.height || ""}
               onChange={(e) => {
-                setProp((props) => (props.height = e.target.value));
+                setProp((props) => (props.height = e.target.value), 500);
               }}
             />
           </FormGroup>
@@ -149,33 +163,11 @@ export const CarouselSettings = () => {
             <InputGroup
               value={values.width || ""}
               onChange={(e) => {
-                setProp((props) => (props.width = e.target.value));
+                setProp((props) => (props.width = e.target.value), 500);
               }}
             />
           </FormGroup>
         </Flex>
-      </SettingSection>
-      <SettingSection text="Appearance">
-        <RadioGroup
-          label="Object Fit"
-          selectedValue={values.objectFit || ""}
-          onChange={(e) => {
-            setProp((props) => (props.objectFit = e.target.value));
-          }}
-          options={[
-            { label: "Fill", value: "fill" },
-            { label: "Cover", value: "cover" },
-            { label: "Contain", value: "Contain" },
-          ]}
-        />
-        <FormGroup label="Border Radius">
-          <InputGroup
-            value={values.borderRadius || ""}
-            onChange={(e) => {
-              setProp((props) => (props.borderRadius = e.target.value));
-            }}
-          />
-        </FormGroup>
       </SettingSection>
     </>
   );

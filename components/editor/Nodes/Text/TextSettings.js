@@ -1,6 +1,6 @@
 import {
   FormGroup,
-  HTMLSelect,
+  Icon,
   InputGroup,
   Radio,
   RadioGroup,
@@ -10,8 +10,12 @@ import { ColorPicker } from "components/ColorPicker";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import { Box, Flex } from "components/Grid";
 import _pick from "lodash/pick";
+import _get from "lodash/get";
+import _set from "lodash/set";
 import dynamic from "next/dynamic";
 import { CONSTANTS } from "components/Constants";
+import { CSSUnitInput } from "../Container/CSSUnitInput";
+import unitsCss from "units-css";
 
 const FontPicker = dynamic(() => import("font-picker-react"), { ssr: false });
 
@@ -27,12 +31,15 @@ export const TextSettings = () => {
       "fontSize",
       "fontFamily",
       "color",
+      "margin",
+      "padding",
     ]),
   }));
 
   return (
     <>
       <SettingSection
+        defaultOpen={true}
         text="Typography"
         label={({ fontSize, fontFamily, textAlign, fontWeight, lineHeight }) =>
           `${fontFamily}, ${fontSize}, ${textAlign}, ${fontWeight}, ${lineHeight}`
@@ -73,7 +80,9 @@ export const TextSettings = () => {
                 type="number"
                 value={values.lineHeight || ""}
                 onChange={(e) => {
-                  setProp((props) => (props.lineHeight = Number(e.target.value)));
+                  setProp(
+                    (props) => (props.lineHeight = Number(e.target.value))
+                  );
                 }}
               />
             </FormGroup>
@@ -107,6 +116,62 @@ export const TextSettings = () => {
               <Radio label="Bold" value="700" />
             </RadioGroup>
           </Box>
+        </Flex>
+      </SettingSection>
+      <SettingSection
+        text="Margin"
+        label={({ margin }) =>
+          `${margin[0]}, ${margin[1]}, ${margin[2]}, ${margin[3]}`
+        }
+        props={["margin"]}
+      >
+        <Flex flexWrap="wrap" mx={-1}>
+          {[
+            {
+              label: "marginTop",
+              icon: {
+                as: Icon,
+                icon: "chevron-backward",
+                sx: { transform: "rotate(90deg)" },
+              },
+            },
+            {
+              label: "marginRight",
+              icon: { as: Icon, icon: "chevron-forward" },
+            },
+            {
+              label: "marginBottom",
+              icon: {
+                as: Icon,
+                icon: "chevron-forward",
+                sx: { transform: "rotate(90deg)" },
+              },
+            },
+            {
+              label: "marginLeft",
+              icon: {
+                as: Icon,
+                icon: "chevron-backward",
+              },
+            },
+          ].map(({ icon, label }, idx) => (
+            <Box key={idx} width="50%" px={1}>
+              <FormGroup>
+                <CSSUnitInput
+                  iconProps={{
+                    icon: <Box {...icon} />,
+                  }}
+                  label={label}
+                  initialValue={unitsCss.parse(
+                    _get(values, `margin[${idx}]`) || ""
+                  )}
+                  onChange={(value) => {
+                    setProp((props) => _set(props, `margin[${idx}]`, value));
+                  }}
+                />
+              </FormGroup>
+            </Box>
+          ))}
         </Flex>
       </SettingSection>
       <SettingSection text="Appearance">

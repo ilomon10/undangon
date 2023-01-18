@@ -254,6 +254,7 @@ export const ContainerSettings = () => {
           <Flex flexWrap="wrap" mx={-1}>
             {[
               {
+                label: "marginTop",
                 icon: {
                   as: Icon,
                   icon: "chevron-backward",
@@ -261,9 +262,11 @@ export const ContainerSettings = () => {
                 },
               },
               {
+                label: "marginRight",
                 icon: { as: Icon, icon: "chevron-forward" },
               },
               {
+                label: "marginBottom",
                 icon: {
                   as: Icon,
                   icon: "chevron-forward",
@@ -271,38 +274,25 @@ export const ContainerSettings = () => {
                 },
               },
               {
+                label: "marginLeft",
                 icon: {
                   as: Icon,
                   icon: "chevron-backward",
                 },
               },
-            ].map(({ icon }, idx) => (
+            ].map(({ icon, label }, idx) => (
               <Box key={idx} width="50%" px={1}>
                 <FormGroup>
-                  <InputGroup
-                    type="number"
-                    leftElement={
-                      <DragValue
-                        min={-1000}
-                        max={1000}
-                        friction={5}
-                        value={_get(values, `margin[${idx}]`) || 0}
-                        onChange={(value) =>
-                          setProp((props) => (props.margin[idx] = value))
-                        }
-                      >
-                        {({ handleMouseDown }) => (
-                          <Box
-                            {...icon}
-                            style={{ cursor: "w-resize" }}
-                            onMouseDown={handleMouseDown}
-                          />
-                        )}
-                      </DragValue>
-                    }
-                    value={_get(values, `margin[${idx}]`) || 0}
-                    onChange={(e) => {
-                      setProp((props) => (props.margin[idx] = e.target.value));
+                  <CSSUnitInput
+                    iconProps={{
+                      icon: <Box {...icon} />,
+                    }}
+                    label={label}
+                    initialValue={unitsCss.parse(
+                      _get(values, `margin[${idx}]`) || ""
+                    )}
+                    onChange={(value) => {
+                      setProp((props) => _set(props, `margin[${idx}]`, value));
                     }}
                   />
                 </FormGroup>

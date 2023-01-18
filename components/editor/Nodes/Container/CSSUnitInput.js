@@ -65,6 +65,14 @@ export const CSSUnitInput = ({
         small={true}
         // type="number"
         value={value || ""}
+        onKeyDown={(e) => {
+          if (e.code === "ArrowUp") {
+            ChangeHandler({ value: value + 1, unit });
+          }
+          if (e.code === "ArrowDown") {
+            ChangeHandler({ value: value - 1, unit });
+          }
+        }}
         onChange={(e) => {
           ChangeHandler({ value: Number(e.target.value), unit });
         }}

@@ -2,6 +2,7 @@ import { Element, useNode } from "@craftjs/core";
 import { CarouselSettings } from "./Settings";
 import { Image } from "../Image";
 import Slider from "react-slick";
+import { Box } from "components/Grid";
 
 export const Carousel = ({ images, settings, height, width }) => {
   const {
@@ -9,11 +10,32 @@ export const Carousel = ({ images, settings, height, width }) => {
   } = useNode();
 
   return (
-    <div
+    <Box
       ref={connect}
       style={{
         height,
         width,
+      }}
+      sx={{
+        ".slick-slider": {
+          height: "100%",
+        },
+        ".slick-list": {
+          height: "100%",
+        },
+        ".slick-slide": {
+          height: "auto",
+          "*": {
+            height: "100% !important",
+          },
+        },
+        ".slick-track": {
+          height: "100%",
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "nowrap",
+          alignItems: "stretch",
+        },
       }}
     >
       <Slider {...settings}>
@@ -23,7 +45,7 @@ export const Carousel = ({ images, settings, height, width }) => {
           </div>
         ))}
       </Slider>
-    </div>
+    </Box>
   );
 };
 
