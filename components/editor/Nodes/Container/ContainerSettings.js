@@ -5,6 +5,7 @@ import {
   Icon,
   InputGroup,
   RadioGroup,
+  Switch,
 } from "@blueprintjs/core";
 import { ROOT_NODE, useNode } from "@craftjs/core";
 import { ColorPicker } from "components/ColorPicker";
@@ -43,9 +44,11 @@ export const ContainerSettings = () => {
       "margin",
       "backgroundColor",
       "borderRadius",
+      "flexWrap",
       "flexDirection",
       "justifyContent",
       "alignItems",
+      "overflow",
     ]),
   }));
 
@@ -426,6 +429,22 @@ export const ContainerSettings = () => {
             />
           </FormGroup>
         )}
+
+        <FormGroup>
+          <Switch
+            label="Clip content"
+            checked={_get(values, "overflow") === "hidden"}
+            onChange={(e) => {
+              setProp((props) => {
+                _set(
+                  props,
+                  "overflow",
+                  e.target.checked ? "hidden" : undefined
+                );
+              });
+            }}
+          />
+        </FormGroup>
       </SettingSection>
 
       <SettingSection text="Layout" defaultOpen={true}>
@@ -450,6 +469,17 @@ export const ContainerSettings = () => {
               }}
             />
           ))}
+        </FormGroup>
+        <FormGroup>
+          <Switch
+            label="Wrap Item"
+            checked={_get(values, "flexWrap") === "wrap"}
+            onChange={(e) => {
+              setProp((props) => {
+                _set(props, "flexWrap", e.target.checked ? "wrap" : "nowrap");
+              });
+            }}
+          />
         </FormGroup>
         <Flex>
           <Box width={"50%"}>

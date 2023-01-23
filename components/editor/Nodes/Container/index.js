@@ -102,6 +102,7 @@ Container.craft = {
     borderRadius: [0, 0, 0, 0],
     overflow: undefined,
 
+    flexWrap: "nowrap", // nowrap, wrap
     flexDirection: "column",
   },
   custom: {
