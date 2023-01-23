@@ -106,6 +106,7 @@ export const RenderNode = ({ render }) => {
                       onClick={() => {
                         actions.selectNode(parent);
                       }}
+                      title="Select parent"
                     >
                       <Icon size={10} icon="arrow-up" color="white" />
                     </Box>
@@ -116,6 +117,7 @@ export const RenderNode = ({ render }) => {
                       sx={{
                         ml: 2,
                       }}
+                      title="Drag"
                     >
                       <Icon
                         size={10}
@@ -129,6 +131,7 @@ export const RenderNode = ({ render }) => {
                       sx={{
                         ml: 2,
                       }}
+                      title="Duplicate node"
                     >
                       <Popover2
                         content={
@@ -151,7 +154,7 @@ export const RenderNode = ({ render }) => {
                     </Box>
                   ) : null}
                   {deletable ? (
-                    <Box ml={3}>
+                    <Box ml={3} title="Delete node">
                       <Popover2
                         content={
                           <Menu>
