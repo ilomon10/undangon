@@ -104,7 +104,6 @@ export const ContainerSettings = () => {
                     ]}
                     value={_get(modes, property) || ""}
                     onChange={(e) => {
-                      console.log(_get(modes, property));
                       setCustom(
                         (p) => (p.settingMode[property] = e.target.value)
                       );

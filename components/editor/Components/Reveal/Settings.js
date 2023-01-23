@@ -43,7 +43,7 @@ export const RevealSettings = () => {
             { label: "Top", value: "top" },
             { label: "Right", value: "right" },
             { label: "Bottom", value: "bottom" },
-            { label: "Left", value: "left " },
+            { label: "Left", value: "left" },
           ]}
         />
       </SettingSection>
