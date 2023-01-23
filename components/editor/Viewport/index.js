@@ -12,13 +12,81 @@ import "slick-carousel/slick/slick-theme.css";
 
 import * as ResolverNodes from "../Nodes";
 import * as ResolverComponents from "../Components";
+import { HotkeysTarget2, useHotkeys } from "@blueprintjs/core";
+import { useCallback, useMemo } from "react";
+import { getCloneTree } from "../utils/getCloneTree";
 
 export const ViewportWrapper = ({ children }) => {
-  const { connectors } = useEditor();
+  const {
+    connectors,
+    actions,
+    selected,
+    getNodeById,
+    getParentNodeById,
+    getCloneNodeById,
+  } = useEditor((state, query) => ({
+    selected: state.events.selected,
+    getNodeById: (nodeId) => query.node(nodeId),
+    getParentNodeById: (nodeId) => query.node(nodeId).get().data.parent,
+    getCloneNodeById: (nodeId) => getCloneTree(query, nodeId),
+  }));
   const { media } = useViewport();
+
+  const duplicateNode = useCallback(() => {
+    const [selectedNodeId] = selected;
+    if (!selectedNodeId) return;
+    const freshNode = getCloneNodeById(selectedNodeId);
+    const parent = getParentNodeById(selectedNodeId);
+    actions.addNodeTree(freshNode, parent);
+  }, [selected]);
+
+  const editorHotkeys = useMemo(
+    () => [
+      {
+        combo: "del",
+        label: "Delete",
+        group: "Editor",
+        onKeyDown: (e) => {
+          const [selectedNodeId] = selected;
+          if (!selectedNodeId) return;
+          const node = getNodeById(selectedNodeId);
+          if (node.isDeletable()) {
+            actions.delete(selectedNodeId);
+          }
+        },
+      },
+      {
+        combo: "ctrl+d",
+        label: "Duplicate",
+        group: "Editor",
+        onKeyDown: (e) => {
+          e.preventDefault();
+          duplicateNode();
+        },
+      },
+      {
+        combo: "ctrl+shift+z",
+        label: "Redo",
+        group: "Editor",
+        onKeyDown: () => actions.history.redo(),
+      },
+      {
+        combo: "ctrl+z",
+        label: "Undo",
+        group: "Editor",
+        onKeyDown: () => actions.history.undo(),
+      },
+    ],
+    [duplicateNode, actions.history.undo, actions.history.redo]
+  );
+
+  const { handleKeyDown, handleKeyUp } = useHotkeys(editorHotkeys);
 
   return (
     <Flex
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
       className="prevent-select"
       sx={{
         position: "fixed",
@@ -44,7 +112,7 @@ export const ViewportWrapper = ({ children }) => {
             width: 280,
             borderRight: "1px solid white",
             borderRightColor: "gray.3",
-            position: "relative"
+            position: "relative",
           }}
         >
           <Box

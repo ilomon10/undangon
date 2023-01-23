@@ -1,5 +1,12 @@
 import React, { useCallback, useMemo } from "react";
-import { Button, ButtonGroup, Icon, Menu, MenuItem } from "@blueprintjs/core";
+import {
+  Button,
+  ButtonGroup,
+  Icon,
+  KeyCombo,
+  Menu,
+  MenuItem,
+} from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
 import { useEditor } from "@craftjs/core";
 import { Box, Flex } from "components/Grid";
@@ -30,7 +37,7 @@ export const Toolbar = () => {
   }, [handler.constructPreviewUrl]);
 
   return (
-    <Flex px={2} py={2}>
+    <Flex px={2} py={2} alignItems="center">
       <Box mr={2}>
         <Button text="Close" onClick={handler.onClose} />
       </Box>
@@ -47,6 +54,9 @@ export const Toolbar = () => {
             onClick={() => actions.history.redo()}
           />
         </ButtonGroup>
+      </Box>
+      <Box ml={2}>
+        <KeyCombo combo="shift+/" />
       </Box>
       <Flex sx={{ flexGrow: 1, justifyContent: "center" }}>
         <ButtonGroup>

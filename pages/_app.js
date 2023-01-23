@@ -7,6 +7,7 @@ import Router from "next/router";
 import config from "react-reveal/globals";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
+import { HotkeysProvider } from "@blueprintjs/core";
 
 config({ ssrFadeout: true });
 
@@ -24,11 +25,13 @@ const queryClient = new QueryClient({
 
 function MyApp({ Component, pageProps }) {
   return (
-    <UserProvider>
-      <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
-      </QueryClientProvider>
-    </UserProvider>
+    <HotkeysProvider>
+      <UserProvider>
+        <QueryClientProvider client={queryClient}>
+          <Component {...pageProps} />
+        </QueryClientProvider>
+      </UserProvider>
+    </HotkeysProvider>
   );
 }
 
