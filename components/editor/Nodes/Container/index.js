@@ -14,7 +14,13 @@ const ProcessUnitForViewport = (raw, viewport) => {
   return raw;
 };
 
-export const Container = ({ children, padding, margin, ...style }) => {
+export const Container = ({
+  children,
+  padding,
+  margin,
+  borderRadius,
+  ...style
+}) => {
   const { media, isProduction } = useViewport();
   const {
     connectors: { connect },
@@ -29,14 +35,14 @@ export const Container = ({ children, padding, margin, ...style }) => {
   }));
 
   ["height", "maxHeight", "minHeight"].map((property) => {
-    if(isProduction) return;
+    if (isProduction) return;
     style[property] = ProcessUnitForViewport(
       style[property],
       media.currentMedia.height
     );
   });
   ["width", "maxWidth", "minWidth"].map((property) => {
-    if(isProduction) return;
+    if (isProduction) return;
     style[property] = ProcessUnitForViewport(
       style[property],
       media.currentMedia.width
@@ -69,6 +75,7 @@ export const Container = ({ children, padding, margin, ...style }) => {
         height: heightLookup[modes.height],
         padding: `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`,
         margin: `${margin.join(" ")}`,
+        borderRadius: `${borderRadius ? borderRadius.join(" ") : undefined}`,
       }}
     >
       {children}
@@ -92,7 +99,8 @@ Container.craft = {
 
     backgroundColor: undefined,
     backgroundImage: undefined,
-    borderRadius: undefined,
+    borderRadius: [0, 0, 0, 0],
+    overflow: undefined,
 
     flexDirection: "column",
   },
@@ -102,6 +110,7 @@ Container.craft = {
       width: "hug", // fill, fixed, hug
       padding: "link", // single, link
       margin: "link", // single, link
+      borderRadius: "link", // single, link
     },
   },
   related: {

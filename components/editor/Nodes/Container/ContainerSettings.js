@@ -1,6 +1,5 @@
 import {
   Button,
-  ControlGroup,
   FormGroup,
   HTMLSelect,
   Icon,
@@ -31,6 +30,7 @@ export const ContainerSettings = () => {
       "width",
       "padding",
       "margin",
+      "borderRadius",
     ]),
     values: _pick(node.data.props, [
       "height",
@@ -56,6 +56,7 @@ export const ContainerSettings = () => {
           text="Dimensions"
           label={({ height, width }) => `${height || 0} x ${width || 0}`}
           props={["height", "width"]}
+          defaultOpen={true}
         >
           <Flex mx={-1}>
             {[
@@ -179,6 +180,7 @@ export const ContainerSettings = () => {
           `${padding[0]}, ${padding[1]}, ${padding[2]}, ${padding[3]}`
         }
         props={["padding"]}
+        defaultOpen={true}
       >
         <Flex flexWrap="wrap" mx={-1}>
           {[
@@ -324,17 +326,109 @@ export const ContainerSettings = () => {
             }}
           />
         </FormGroup>
-        <FormGroup label="Border Radius">
-          <InputGroup
-            value={values.borderRadius || ""}
-            onChange={(e) => {
-              setProp((props) => (props.borderRadius = e.target.value));
+        <Flex alignItems="center" mb={2}>
+          <Box>Border Radius</Box>
+          <Box flexGrow={1} />
+          <Button
+            minimal={true}
+            small={true}
+            icon={modes.borderRadius === "link" ? "lock" : "unlock"}
+            onClick={() => {
+              setCustom(
+                (p) =>
+                  (p.settingMode.borderRadius =
+                    p.settingMode.borderRadius !== "link" ? "link" : "single")
+              );
             }}
           />
-        </FormGroup>
+        </Flex>
+        {modes.borderRadius === "single" ? (
+          <Flex flexWrap="wrap" mx={-1}>
+            {[
+              {
+                label: "borderTopLeft",
+                icon: {
+                  as: Icon,
+                  icon: "chevron-left",
+                  sx: { transform: "rotate(45deg)" },
+                },
+              },
+              {
+                label: "borderTopRight",
+                icon: {
+                  as: Icon,
+                  icon: "chevron-right",
+                  sx: { transform: "rotate(-45deg)" },
+                },
+              },
+              {
+                label: "borderBottomLeft",
+                icon: {
+                  as: Icon,
+                  icon: "chevron-right",
+                  sx: { transform: "rotate(45deg)" },
+                },
+              },
+              {
+                label: "borderBottomRight",
+                icon: {
+                  as: Icon,
+                  icon: "chevron-left",
+                  sx: { transform: "rotate(-45deg)" },
+                },
+              },
+            ].map(({ icon, label }, idx) => {
+              return (
+                <Box key={idx} width="50%" px={1} title={label}>
+                  <FormGroup>
+                    <CSSUnitInput
+                      iconProps={{
+                        icon: <Box {...icon} />,
+                      }}
+                      label={label}
+                      initialValue={unitsCss.parse(
+                        _get(values, `borderRadius[${idx}]`) || ""
+                      )}
+                      onChange={(value) => {
+                        setProp((props) =>
+                          _set(props, `borderRadius[${idx}]`, value)
+                        );
+                      }}
+                    />
+                  </FormGroup>
+                </Box>
+              );
+            })}
+          </Flex>
+        ) : (
+          <FormGroup>
+            <CSSUnitInput
+              iconProps={{
+                icon: (
+                  <Box
+                    as={Icon}
+                    icon="chevron-left"
+                    sx={{ transform: "rotate(45deg)" }}
+                  />
+                ),
+              }}
+              label={"borderRadius"}
+              initialValue={unitsCss.parse(
+                _get(values, `borderRadius[0]`) || ""
+              )}
+              onChange={(value) => {
+                setProp((props) => {
+                  props.borderRadius.forEach((v, i) => {
+                    _set(props, `borderRadius[${i}]`, value);
+                  });
+                });
+              }}
+            />
+          </FormGroup>
+        )}
       </SettingSection>
 
-      <SettingSection text="Layout">
+      <SettingSection text="Layout" defaultOpen={true}>
         <FormGroup label="Direction">
           {[
             {

@@ -3,6 +3,7 @@ import { DragValue } from "components/DragValue";
 import { useCallback, useEffect, useState } from "react";
 import _get from "lodash/get";
 import { MenuItem2, Popover2 } from "@blueprintjs/popover2";
+import { Box } from "components/Grid";
 
 const unitOptions = ["px", "vh", "%"];
 
@@ -57,50 +58,52 @@ export const CSSUnitInput = ({
           />
         )}
       </DragValue>
-      <InputGroup
-        disabled={disabled}
-        style={{
-          paddingLeft: 0,
-        }}
-        small={true}
-        // type="number"
-        value={value || ""}
-        onKeyDown={(e) => {
-          if (e.code === "ArrowUp") {
-            ChangeHandler({ value: value + 1, unit });
-          }
-          if (e.code === "ArrowDown") {
-            ChangeHandler({ value: value - 1, unit });
-          }
-        }}
-        onChange={(e) => {
-          ChangeHandler({ value: Number(e.target.value), unit });
-        }}
-        rightElement={
-          <Popover2
-            content={
-              <Menu>
-                {unitOptions.map((u) => (
-                  <MenuItem2
-                    key={u}
-                    text={u}
-                    onClick={() => {
-                      ChangeHandler({ value, unit: u });
-                    }}
-                  />
-                ))}
-              </Menu>
+      <Box flexGrow={1}>
+        <InputGroup
+          disabled={disabled}
+          style={{
+            paddingLeft: 0,
+          }}
+          small={true}
+          // type="number"
+          value={value || ""}
+          onKeyDown={(e) => {
+            if (e.code === "ArrowUp") {
+              ChangeHandler({ value: value + 1, unit });
             }
-          >
-            <Button
-              disabled={disabled}
-              minimal={true}
-              small={true}
-              text={unit}
-            />
-          </Popover2>
-        }
-      />
+            if (e.code === "ArrowDown") {
+              ChangeHandler({ value: value - 1, unit });
+            }
+          }}
+          onChange={(e) => {
+            ChangeHandler({ value: Number(e.target.value), unit });
+          }}
+          rightElement={
+            <Popover2
+              content={
+                <Menu>
+                  {unitOptions.map((u) => (
+                    <MenuItem2
+                      key={u}
+                      text={u}
+                      onClick={() => {
+                        ChangeHandler({ value, unit: u });
+                      }}
+                    />
+                  ))}
+                </Menu>
+              }
+            >
+              <Button
+                disabled={disabled}
+                minimal={true}
+                small={true}
+                text={unit}
+              />
+            </Popover2>
+          }
+        />
+      </Box>
       {!!value && (
         <Button
           disabled={disabled}

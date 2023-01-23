@@ -44,10 +44,20 @@ export const ViewportWrapper = ({ children }) => {
             width: 280,
             borderRight: "1px solid white",
             borderRightColor: "gray.3",
+            position: "relative"
           }}
         >
-          <Toolbox />
-          <ComponentPanel />
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              overflow: "auto",
+            }}
+          >
+            <Toolbox />
+            <ComponentPanel />
+            <LayerPanel />
+          </Box>
         </Box>
         <Box
           className="page-container"
@@ -112,7 +122,6 @@ export const ViewportWrapper = ({ children }) => {
             }}
           >
             <SettingPanel />
-            <LayerPanel />
           </Box>
         </Box>
       </Flex>
