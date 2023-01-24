@@ -67,7 +67,6 @@ export const Container = ({
       ref={(ref) => connect(ref)}
       sx={{
         position: "relative",
-        minHeight: 25,
       }}
       style={{
         ...style,
@@ -86,8 +85,8 @@ export const Container = ({
 Container.craft = {
   name: "Container",
   props: {
-    height: 100,
-    width: 100,
+    height: "100px",
+    width: "100px",
     minHeight: undefined,
     minWidth: undefined,
     maxHeight: undefined,

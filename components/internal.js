@@ -45,6 +45,17 @@ export default {
           );
         return await requestHandler(options, "content", "item", "invitations");
       },
+      async comments(options, id) {
+        if (id)
+          return await requestHandler(
+            options,
+            "content",
+            "item",
+            "comments",
+            id
+          );
+        return await requestHandler(options, "content", "item", "comments");
+      },
     },
     items: {
       async templates(options = {}) {
@@ -55,6 +66,9 @@ export default {
       },
       async invitations(options) {
         return await requestHandler(options, "content", "items", "invitations");
+      },
+      async comments(options) {
+        return await requestHandler(options, "content", "items", "comments");
       },
     },
   },

@@ -17,7 +17,7 @@ export default {
     const res = await client.request({
       url: "/getTemplates",
       method: "GET",
-      params
+      params,
     });
     return res.data;
   },
@@ -33,6 +33,24 @@ export default {
     }
     const res = await client.request({
       url: "/postTemplate",
+      method: "POST",
+      data,
+    });
+    return res.data;
+  },
+
+  async getComments(params) {
+    const res = await client.request({
+      url: "/getComments",
+      method: "GET",
+      params,
+    });
+    return res.data;
+  },
+
+  async postComments(data) {
+    const res = await client.request({
+      url: "/postComments",
       method: "POST",
       data,
     });

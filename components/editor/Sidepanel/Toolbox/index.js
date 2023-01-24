@@ -7,6 +7,7 @@ import {
   Button,
   Carousel,
   Container,
+  GuestBook,
   Positioned,
   StaticMapbox,
   Text,
@@ -68,6 +69,11 @@ export const Toolbox = () => {
             icon: "media",
             label: "Carousel",
             ref: (ref) => connectors.create(ref, <Carousel />),
+          },
+          {
+            icon: "manual",
+            label: "Guest Book",
+            ref: (ref) => connectors.create(ref, <GuestBook />),
           },
         ].map(({ ref, label, icon }) => (
           <li key={label}>
