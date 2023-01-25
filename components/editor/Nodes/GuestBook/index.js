@@ -6,12 +6,13 @@ import { Element, useNode } from "@craftjs/core";
 import { Text } from "../Text";
 import { useCallback, useEffect, useRef, useState } from "react";
 import client from "components/client";
-import { InputGroup, TextArea, Button } from "@blueprintjs/core";
+import { Button } from "components/Button";
 import moment from "moment";
 import { useDebounce } from "react-use";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import { Reveal } from "react-reveal";
+import { Input } from "components/Input";
 
 export const GuestBook = ({ children, token }) => {
   const recaptchaRef = useRef();
@@ -123,21 +124,23 @@ export const GuestBook = ({ children, token }) => {
           >
             <Box sx={{ borderBottom: "1px solid #aaa", py: 2 }}>
               <Box>
-                <InputGroup
+                <Input
                   name="title"
-                  inputRef={register({ required: true })}
+                  ref={register({ required: true })}
+                  fill
                   placeholder="Title"
                 />
               </Box>
             </Box>
             <Box sx={{ py: 2 }}>
               <Box>
-                <TextArea
+                <Input
                   name="content"
-                  inputRef={register({ required: true })}
-                  growVertically={true}
-                  placeholder="Description"
+                  ref={register({ required: true })}
+                  textarea
                   fill
+                  placeholder="Description"
+                  sx={{ resize: "vertical" }}
                 />
               </Box>
             </Box>
