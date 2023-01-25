@@ -27,6 +27,7 @@ export const Container = ({
     modes,
   } = useNode((node) => ({
     modes: _pick(node.data.custom.settingMode, [
+      "opacity",
       "height",
       "width",
       "padding",
@@ -100,6 +101,7 @@ Container.craft = {
     backgroundImage: undefined,
     borderRadius: [0, 0, 0, 0],
     overflow: undefined,
+    opacity: 1,
 
     flexWrap: "nowrap", // nowrap, wrap
     flexDirection: "column",

@@ -49,6 +49,7 @@ export const ContainerSettings = () => {
       "justifyContent",
       "alignItems",
       "overflow",
+      "opacity",
     ]),
   }));
 
@@ -423,7 +424,7 @@ export const ContainerSettings = () => {
                   props.borderRadius.forEach((v, i) => {
                     _set(props, `borderRadius[${i}]`, value);
                   });
-                });
+                }, 500);
               }}
             />
           </FormGroup>
@@ -440,7 +441,16 @@ export const ContainerSettings = () => {
                   "overflow",
                   e.target.checked ? "hidden" : undefined
                 );
-              });
+              }, 500);
+            }}
+          />
+        </FormGroup>
+
+        <FormGroup label="Opacity">
+          <InputGroup
+            initialValue={_get(values, `opacity`) || ""}
+            onChange={(e) => {
+              setProp((props) => _set(props, `opacity`, e.target.value), 500);
             }}
           />
         </FormGroup>
