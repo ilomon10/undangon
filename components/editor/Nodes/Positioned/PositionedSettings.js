@@ -13,6 +13,8 @@ import { Box, Flex } from "components/Grid";
 import _pick from "lodash/pick";
 import _get from "lodash/get";
 import _set from "lodash/set";
+import { CSSUnitInput } from "../Container/CSSUnitInput";
+import unitsCss from "units-css";
 
 export const PositionedSettings = () => {
   const {
@@ -31,7 +33,7 @@ export const PositionedSettings = () => {
         }
         props={["top", "right", "bottom", "left"]}
       >
-        <Flex>
+        <Flex flexWrap={"wrap"}>
           {[
             {
               property: "top",
@@ -68,27 +70,12 @@ export const PositionedSettings = () => {
           ].map(({ icon, property }, idx) => (
             <Box key={idx} width="50%" px={1}>
               <FormGroup>
-                <InputGroup
-                  leftIcon={
-                    <DragValue
-                      min={0}
-                      max={2048}
-                      friction={5}
-                      value={_get(values, property) || 0}
-                      onChange={(value) =>
-                        setProp((props) => _set(props, property, Number(value)), 500)
-                      }
-                    >
-                      {({ handleMouseDown }) => (
-                        <Box {...icon} onMouseDown={handleMouseDown} />
-                      )}
-                    </DragValue>
-                  }
-                  value={_get(values, property) || ""}
-                  onChange={(e) => {
-                    setProp((props) =>
-                      _set(props, property, Number(e.target.value), 500)
-                    );
+                <CSSUnitInput
+                  iconProps={icon}
+                  label={property}
+                  initialValue={unitsCss.parse(_get(values, property) || "")}
+                  onChange={(value) => {
+                    setProp((props) => _set(props, property, value));
                   }}
                 />
               </FormGroup>
