@@ -71,7 +71,7 @@ export const PositionedSettings = () => {
             <Box key={idx} width="50%" px={1}>
               <FormGroup>
                 <CSSUnitInput
-                  iconProps={icon}
+                  iconProps={{ icon: <Box {...icon} /> }}
                   label={property}
                   initialValue={unitsCss.parse(_get(values, property) || "")}
                   onChange={(value) => {

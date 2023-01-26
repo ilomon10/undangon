@@ -50,6 +50,7 @@ export const ContainerSettings = () => {
       "alignItems",
       "overflow",
       "opacity",
+      "transform",
     ]),
   }));
 
@@ -448,7 +449,7 @@ export const ContainerSettings = () => {
 
         <FormGroup label="Opacity">
           <InputGroup
-            initialValue={_get(values, `opacity`) || ""}
+            defaultValue={_get(values, `opacity`) || ""}
             onChange={(e) => {
               setProp((props) => _set(props, `opacity`, e.target.value), 500);
             }}
@@ -522,6 +523,16 @@ export const ContainerSettings = () => {
             />
           </Box>
         </Flex>
+      </SettingSection>
+      <SettingSection text="Transform" defaultOpen={true}>
+        <FormGroup label="transform">
+          <InputGroup
+            initialValue={_get(values, `transform`) || ""}
+            onChange={(e) => {
+              setProp((props) => _set(props, `transform`, e.target.value), 500);
+            }}
+          />
+        </FormGroup>
       </SettingSection>
     </>
   );
