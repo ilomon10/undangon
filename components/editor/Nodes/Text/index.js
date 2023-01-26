@@ -15,10 +15,11 @@ export const Text = ({
   fontFamily,
   color,
   margin,
+  textShadow,
   children,
 }) => {
   const {
-    connectors: { connect, drag },
+    connectors: { connect },
     actions: { setProp },
   } = useNode((node) => ({
     isActive: node.events.selected,
@@ -34,8 +35,9 @@ export const Text = ({
     fontWeight: fontWeight,
     fontSize: fontSize,
     fontFamily: fontFamily,
+    textShadow: textShadow,
     color: color,
-    margin: margin.join(" ")
+    margin: margin.join(" "),
   };
 
   useEffect(async () => {
@@ -102,6 +104,7 @@ Text.craft = {
   props: {
     text: "Text Area",
     textAlign: "left",
+    textShadow: undefined,
     fontSize: 12,
     fontWeight: "normal",
     fontFamily: "Roboto",

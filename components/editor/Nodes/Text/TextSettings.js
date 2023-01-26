@@ -28,6 +28,7 @@ export const TextSettings = () => {
       "lineHeight",
       "textAlign",
       "textWeight",
+      "textShadow",
       "fontSize",
       "fontFamily",
       "color",
@@ -180,6 +181,17 @@ export const TextSettings = () => {
             value={values.color}
             onChange={(color) => {
               setProp((props) => (props.color = color.hex));
+            }}
+          />
+        </FormGroup>
+        <FormGroup label="textShadow">
+          <InputGroup
+            initialValue={_get(values, "textShadow") || ""}
+            onChange={(e) => {
+              setProp(
+                (props) => _set(props, "textShadow", e.target.value),
+                500
+              );
             }}
           />
         </FormGroup>
