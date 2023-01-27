@@ -27,7 +27,7 @@ export const TextSettings = () => {
     values: _pick(node.data.props, [
       "lineHeight",
       "textAlign",
-      "textWeight",
+      "fontWeight",
       "textShadow",
       "fontSize",
       "fontFamily",

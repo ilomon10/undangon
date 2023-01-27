@@ -60,7 +60,9 @@ export const GuestBook = ({ children, token }) => {
         setItems(
           res.map((comment) => ({
             ...comment,
-            date: moment(comment._modified).format("MMMM DD, YYYY • HH:mm A"),
+            date: moment
+              .unix(comment._modified)
+              .format("MMMM DD, YYYY • HH:mm A"),
           }))
         );
       };

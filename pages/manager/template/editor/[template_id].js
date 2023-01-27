@@ -1,6 +1,6 @@
 import lz from "lzutf8";
 import { Editor, Frame, Element } from "@craftjs/core";
-import { Button, Container, Text, Image } from "components/editor/Nodes";
+import { Button, Container, Text, Document } from "components/editor/Nodes";
 import { UrlParameter } from "components/editor/Components";
 import { Viewport } from "components/editor";
 import { BlueprintWrapper } from "components/BlueprintWrapper";
@@ -49,19 +49,26 @@ export default function TemplateEditor({ content, ...props }) {
         constructPreviewUrl={constructPreviewUrl}
       >
         <Frame data={content}>
-          <Element
-            is={Container}
-            custom={{
-              displayName: "App",
-              settingMode: { height: "hug", width: "fill" },
-            }}
-            canvas
-          >
-            <Element is={Container} marginRight="auto" marginLeft="auto" canvas>
-              <Element is={Container} canvas>
-                <Text text="Ini Text 1" />
-                <Text text="Text 2" />
-                <Button />
+          <Element is={Document} canvas>
+            <Element
+              is={Container}
+              custom={{
+                displayName: "Body",
+                settingMode: { height: "hug", width: "fill" },
+              }}
+              canvas
+            >
+              <Element
+                is={Container}
+                marginRight="auto"
+                marginLeft="auto"
+                canvas
+              >
+                <Element is={Container} canvas>
+                  <Text text="Ini Text 1" />
+                  <Text text="Text 2" />
+                  <Button />
+                </Element>
               </Element>
             </Element>
           </Element>

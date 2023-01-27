@@ -83,29 +83,31 @@ export const Container = ({
   );
 };
 
+export const defaultProps = {
+  height: "100px",
+  width: "100px",
+  minHeight: undefined,
+  minWidth: undefined,
+  maxHeight: undefined,
+  maxWidth: undefined,
+
+  padding: [0, 0, 0, 0],
+
+  margin: [0, 0, 0, 0],
+
+  backgroundColor: undefined,
+  backgroundImage: undefined,
+  borderRadius: [0, 0, 0, 0],
+  overflow: undefined,
+  opacity: 1,
+
+  flexWrap: "nowrap", // nowrap, wrap
+  flexDirection: "column",
+};
+
 Container.craft = {
   name: "Container",
-  props: {
-    height: "100px",
-    width: "100px",
-    minHeight: undefined,
-    minWidth: undefined,
-    maxHeight: undefined,
-    maxWidth: undefined,
-
-    padding: [0, 0, 0, 0],
-
-    margin: [0, 0, 0, 0],
-
-    backgroundColor: undefined,
-    backgroundImage: undefined,
-    borderRadius: [0, 0, 0, 0],
-    overflow: undefined,
-    opacity: 1,
-
-    flexWrap: "nowrap", // nowrap, wrap
-    flexDirection: "column",
-  },
+  props: defaultProps,
   custom: {
     settingMode: {
       height: "hug", // fill, fixed, hug
