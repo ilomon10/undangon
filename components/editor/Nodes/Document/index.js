@@ -3,7 +3,7 @@ import { Box, Flex } from "components/Grid";
 import _set from "lodash/set";
 import _pick from "lodash/pick";
 import _merge from "lodash/merge";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { DocumentSettings } from "./DocumentSettings";
 import AudioPlayer from "react-audio-player";
 import { useRouter } from "next/router";
@@ -12,13 +12,30 @@ import { ProcessUnitForViewport } from "../Container/ProcessUnitForViewport";
 
 export const Document = ({ children, modalOptions, musicOptions }) => {
   const {
+    actions,
     connectors: { connect },
   } = useNode();
 
   const audioPlayerRef = useRef();
 
+  const [localModalOpen, setLocalModalOpen] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+
   const { query: searchParams } = useRouter();
   const { media, isProduction } = useViewport();
+
+  const handleOpenModal = () => {
+    if (isProduction) {
+      setLocalModalOpen(true);
+    } else {
+      actions.setProp((props) =>
+        _set(props, "modalOptions.open", !modalOptions.open)
+      );
+    }
+    if (!audioPlayerRef.current) return;
+    const audioEl = audioPlayerRef.current.audioEl.current;
+    audioEl.play();
+  };
 
   return (
     <Flex
@@ -32,29 +49,45 @@ export const Document = ({ children, modalOptions, musicOptions }) => {
     >
       <Flex sx={{ position: "absolute", bottom: 0, left: 0 }}>
         {musicOptions.url && (
-          <AudioPlayer ref={audioPlayerRef} src={musicOptions.url} />
+          <AudioPlayer
+            onCanPlay={() => {
+              console.log("CAN PLAY");
+              setIsReady(true);
+            }}
+            ref={audioPlayerRef}
+            src={musicOptions.url}
+            controls={musicOptions.showButton}
+          />
         )}
       </Flex>
       <ModalComponent
-        isOpen={modalOptions.open}
+        isOpen={isProduction ? localModalOpen : modalOptions.open}
         imageUrl={modalOptions.imageUrl}
         guests={searchParams.u}
+        onOpen={handleOpenModal}
+        loading={isProduction ? !isReady : undefined}
       />
       {children}
     </Flex>
   );
 };
 
-const ModalComponent = ({ isOpen, imageUrl, guests }) => {
-  const { actions } = useNode();
+const ModalComponent = ({
+  isOpen,
+  imageUrl,
+  guests,
+  onOpen = () => {},
+  loading = false,
+}) => {
+  const { isProduction } = useViewport();
   const handleInvitation = () => {
-    actions.setProp((props) => _set(props, "modalOptions.open", !isOpen));
+    onOpen();
   };
   return (
     <Box
       className={isOpen && "opened"}
       sx={{
-        position: "absolute",
+        position: isProduction ? "fixed" : "absolute",
         zIndex: 999,
         inset: 0,
         opacity: "1",
@@ -197,7 +230,7 @@ const ModalComponent = ({ isOpen, imageUrl, guests }) => {
               py: 2,
             }}
           >
-            Open Invitation
+            {loading ? "Please wait" : "Open Invitation"}
           </Box>
         </Box>
       </Flex>

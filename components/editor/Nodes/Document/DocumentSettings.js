@@ -22,24 +22,28 @@ export const DocumentSettings = () => {
     <>
       <SettingSection
         text="Music"
-        label={({ musicUrl }) => `${musicUrl}`}
-        props={["musicUrl"]}
+        label={({ musicOptions }) => `${_get(musicOptions, "musicUrl")}`}
+        props={["musicOptions"]}
       >
         <Flex>
           <FormGroup label="Music Url">
             <InputGroup
-              value={values.musicUrl || ""}
+              defaultValue={_get(values, "musicOptions.url") || ""}
               onChange={(e) => {
-                setProp((props) => (props.musicUrl = e.target.value));
+                setProp((props) =>
+                  _set(props, "musicOptions.url", e.target.value)
+                );
               }}
             />
           </FormGroup>
         </Flex>
         <Switch
           label="Show Play Button"
-          checked={values.showPlayButton || ""}
+          checked={_get(values, "musicOptions.showButton") || ""}
           onChange={(e) => {
-            setProp((props) => (props.showPlayButton = e.target.checked));
+            setProp((props) =>
+              _set(props, "musicOptions.showButton", e.target.checked)
+            );
           }}
         />
       </SettingSection>
