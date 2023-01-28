@@ -9,6 +9,7 @@ import { useCallback, useEffect } from "react";
 import client from "components/client";
 import { useRouter } from "next/router";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { toaster } from "components/toaster";
 
 export default function TemplateEditor({ content, ...props }) {
   const router = useRouter();
@@ -24,7 +25,15 @@ export default function TemplateEditor({ content, ...props }) {
       };
       try {
         await client.postTemplate(data);
+        toaster.show({
+          intent: "success",
+          message: "Project is saved.",
+        });
       } catch (err) {
+        toaster.show({
+          intent: "danger",
+          message: "Error while saving the project.",
+        });
         console.error(err);
       }
       setLoading(false);
