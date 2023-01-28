@@ -4,7 +4,7 @@ import { Reveal } from "components/editor/Components";
 import { UrlParameter } from "components/editor/Components/UrlParameter";
 import { Box } from "components/Grid";
 import { useEffect, useRef } from "react";
-import { Button, Container, Text } from "../../Nodes";
+import { Button, Container, Countdown, Text } from "../../Nodes";
 import { PanelSection } from "../PanelSection";
 
 export const ComponentPanel = () => {
@@ -34,6 +34,12 @@ export const ComponentPanel = () => {
                   <Element is={Container} canvas />
                 </Reveal>
               ),
+          },
+          {
+            icon: "paragraph",
+            label: "Countdown",
+            ref: (ref) =>
+              connectors.create(ref, <Countdown name="Countdown" />),
           },
         ].map(({ ref, label, icon }) => (
           <li key={label}>

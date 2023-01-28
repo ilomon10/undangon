@@ -2,6 +2,7 @@ export * from "./AspectRatio";
 export * from "./Button";
 export * from "./Carousel";
 export * from "./Container";
+export * from "./Countdown";
 export * from "./Document";
 export * from "./GuestBook";
 export * from "./Image";
