@@ -37,6 +37,14 @@ export const StaticMapboxSettings = () => {
   return (
     <>
       <SettingSection text="Map Options">
+        <FormGroup label="Style">
+          <InputGroup
+            defaultValue={_get(values, `mapOptions.style`) || ""}
+            onChange={(e) => {
+              setProp((props) => _set(props, `mapOptions.style`, e.target.value), 500);
+            }}
+          />
+        </FormGroup>
         <Box mb={3}>
           <AnchorButton
             icon="share"

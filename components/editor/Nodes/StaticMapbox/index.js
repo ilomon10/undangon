@@ -43,6 +43,7 @@ StaticMapbox.craft = {
       padding: 10,
       height: 1024,
       width: 1024,
+      style: "mapbox/light-v10"
     },
     height: "auto",
     width: "auto",
@@ -55,14 +56,14 @@ StaticMapbox.craft = {
 };
 
 export const staticMapUrl = (mapOptions) => {
-  const { pins, padding, height, width } = mapOptions;
+  const { pins, padding, height, width, style } = mapOptions;
   const pinsUrl = pins
     .map(
       ({ icon, color, longitude, latitude }) =>
         `pin-s-${icon}+${color.replace("#", "")}(${longitude},${latitude})`
     )
     .join(",");
-  return `https://api.mapbox.com/styles/v1/mapbox/light-v10/static/${pinsUrl}/auto/${
+  return `https://api.mapbox.com/styles/v1/${style}/static/${pinsUrl}/auto/${
     width || 50
   }x${height || 50}@2x?attribution=false&logo=false&padding=${
     padding || 0
