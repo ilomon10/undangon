@@ -1,4 +1,10 @@
-import { Button, FormGroup, InputGroup, RadioGroup, Switch } from "@blueprintjs/core";
+import {
+  Button,
+  FormGroup,
+  InputGroup,
+  RadioGroup,
+  Switch,
+} from "@blueprintjs/core";
 import { useNode } from "@craftjs/core";
 import { CloudinaryUploadWidgetButton } from "components/CloudinaryUploadWidget";
 import { ColorPicker } from "components/ColorPicker";
@@ -36,19 +42,28 @@ export const ImageSettings = () => {
   return (
     <>
       <SettingSection text="Source" label={({ url }) => url} props={["url"]}>
-        <Flex>
-          <FormGroup label="Url">
-            <CloudinaryUploadWidgetButton
-              onSave={(files) => {
-                setProp((props) => (props.url = files[0].url));
-              }}
-              folderTarget={`/manjo/assets/${id}`}
-            />
-            {/* <InputGroup value={values.url || ""} onChange={(e) => {
+        <FormGroup label="Url">
+          <CloudinaryUploadWidgetButton
+            onSave={(files) => {
+              setProp((props) => (props.url = files[0].url));
+            }}
+            folderTarget={`/manjo/assets/${id}`}
+          />
+          {/* <InputGroup value={values.url || ""} onChange={(e) => {
               setProp(props => props.url = e.target.value);
             }} /> */}
-          </FormGroup>
-        </Flex>
+        </FormGroup>
+        <FormGroup label="Custom Url">
+          <InputGroup
+            defaultValue={values.url || ""}
+            onChange={(e) => {
+              setProp((props) => (props.url = e.target.value), 500);
+            }}
+          />
+          {/* <InputGroup value={values.url || ""} onChange={(e) => {
+              setProp(props => props.url = e.target.value);
+            }} /> */}
+        </FormGroup>
       </SettingSection>
       <SettingSection
         text="Dimensions"
@@ -58,7 +73,7 @@ export const ImageSettings = () => {
         <Flex>
           <FormGroup label="Height">
             <InputGroup
-              value={values.height || ""}
+              defaultValue={values.height || ""}
               onChange={(e) => {
                 setProp((props) => (props.height = e.target.value), 500);
               }}
@@ -66,7 +81,7 @@ export const ImageSettings = () => {
           </FormGroup>
           <FormGroup label="Width">
             <InputGroup
-              value={values.width || ""}
+              defaultValue={values.width || ""}
               onChange={(e) => {
                 setProp((props) => (props.width = e.target.value), 500);
               }}
