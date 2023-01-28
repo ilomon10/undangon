@@ -4,6 +4,7 @@ import { Image } from "components/editor/Nodes/Image";
 import { Box, Flex } from "components/Grid";
 import { useEffect, useRef } from "react";
 import {
+  AspectRatio,
   Button,
   Carousel,
   Container,
@@ -20,6 +21,15 @@ export const Toolbox = () => {
     <PanelSection text="Toolbox">
       <Menu>
         {[
+          {
+            icon: "rectangle",
+            label: "Aspect Ratio",
+            ref: (ref) =>
+              connectors.create(
+                ref,
+                <AspectRatio ratio={"1:1"} portrait={false} />
+              ),
+          },
           {
             icon: "widget-button",
             label: "Button",
