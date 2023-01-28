@@ -1,17 +1,9 @@
-import React, { useCallback, useMemo } from "react";
-import {
-  Button,
-  ButtonGroup,
-  Icon,
-  KeyCombo,
-  Menu,
-  MenuItem,
-} from "@blueprintjs/core";
+import React, { useMemo } from "react";
+import { Button, ButtonGroup, Icon, Menu, MenuItem } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
 import { useEditor } from "@craftjs/core";
 import { Box, Flex } from "components/Grid";
 import { useViewport } from "../Viewport/useViewport";
-import client from "components/client";
 import { State } from "components/State";
 import Link from "next/link";
 
@@ -20,13 +12,11 @@ export const Toolbar = () => {
     media: { setMedia, currentMedia },
     handler,
   } = useViewport();
-  const { enabled, canUndo, canRedo, actions, query } = useEditor(
-    (state, query) => ({
-      enabled: state.options.enabled,
-      canUndo: query.history.canUndo(),
-      canRedo: query.history.canRedo(),
-    })
-  );
+  const { canUndo, canRedo, actions, query } = useEditor((state, query) => ({
+    enabled: state.options.enabled,
+    canUndo: query.history.canUndo(),
+    canRedo: query.history.canRedo(),
+  }));
 
   const previewUrl = useMemo(() => {
     try {
@@ -55,9 +45,9 @@ export const Toolbar = () => {
           />
         </ButtonGroup>
       </Box>
-      <Box ml={2}>
+      {/* <Box ml={2}>
         <KeyCombo combo="shift+/" />
-      </Box>
+      </Box> */}
       <Flex sx={{ flexGrow: 1, justifyContent: "center" }}>
         <ButtonGroup>
           <Button
