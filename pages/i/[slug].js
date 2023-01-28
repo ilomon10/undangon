@@ -70,6 +70,8 @@ export const Invitation = ({ content, meta }) => {
           sx={{
             position: "fixed",
             inset: 0,
+            overflowY: "auto",
+            overflowX: "hidden",
           }}
         >
           <Frame data={content}>

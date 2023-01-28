@@ -18,14 +18,16 @@ export const Document = ({ children, modalOptions, musicOptions }) => {
   const audioPlayerRef = useRef();
 
   const { query: searchParams } = useRouter();
-  const { media } = useViewport();
+  const { media, isProduction } = useViewport();
 
   return (
     <Flex
       ref={connect}
       sx={{
         position: "relative",
-        minHeight: ProcessUnitForViewport("100vh", media.currentMedia.height),
+        minHeight: !isProduction
+          ? ProcessUnitForViewport("100vh", media.currentMedia.height)
+          : undefined,
       }}
     >
       <Flex sx={{ position: "absolute", bottom: 0, left: 0 }}>
