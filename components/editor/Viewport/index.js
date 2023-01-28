@@ -1,9 +1,10 @@
+import lz from "lzutf8";
 import { Box, Flex } from "components/Grid";
 import { LayerPanel } from "../Sidepanel/LayerPanel";
 import { SettingPanel } from "../Sidepanel/SettingPanel";
 import { Toolbar } from "../Toolbar";
 import { Toolbox } from "../Sidepanel/Toolbox";
-import { Editor, useEditor } from "@craftjs/core";
+import { Editor, useEditor, serializeNode } from "@craftjs/core";
 import { useViewport, ViewportProvider } from "./useViewport";
 import { ComponentPanel } from "../Sidepanel/ComponentPanel";
 import { RenderNode } from "../Nodes/RenderNode";
@@ -12,20 +13,40 @@ import "slick-carousel/slick/slick-theme.css";
 
 import * as ResolverNodes from "../Nodes";
 import * as ResolverComponents from "../Components";
-import { HotkeysTarget2, useHotkeys } from "@blueprintjs/core";
+import { Tag, useHotkeys } from "@blueprintjs/core";
 import { useCallback, useMemo } from "react";
 import { getCloneTree } from "../utils/getCloneTree";
+import { toaster } from "components/toaster";
+import { deserializeNode } from "../utils/deserializeNode";
 
 export const ViewportWrapper = ({ children }) => {
   const {
     connectors,
     actions,
     selected,
+    parseSerializedNode,
+    getSerializedNodeById,
     getNodeById,
     getParentNodeById,
     getCloneNodeById,
   } = useEditor((state, query) => ({
     selected: state.events.selected,
+    parseSerializedNode: (nodeId, node) => {
+      return query
+        .parseSerializedNode(node)
+        .toNode((node) => (node.id = nodeId));
+    },
+    getSerializedNodeById: (nodeId) => {
+      const nodeTree = getCloneTree(query, nodeId);
+      const serialized = { rootNodeId: nodeTree.rootNodeId, nodes: {} };
+      for (const node in nodeTree.nodes) {
+        serialized.nodes[node] = serializeNode(
+          nodeTree.nodes[node].data,
+          state.options.resolver
+        );
+      }
+      return JSON.stringify(serialized);
+    },
     getNodeById: (nodeId) => query.node(nodeId),
     getParentNodeById: (nodeId) => query.node(nodeId).get().data.parent,
     getCloneNodeById: (nodeId) => getCloneTree(query, nodeId),
@@ -40,8 +61,81 @@ export const ViewportWrapper = ({ children }) => {
     actions.addNodeTree(freshNode, parent);
   }, [selected]);
 
+  const copyNode = useCallback(async () => {
+    const [selectedNodeId] = selected;
+    if (!selectedNodeId) return;
+    if (selectedNodeId === "ROOT") return;
+    const freshNode = getSerializedNodeById(selectedNodeId);
+    const data = [
+      new ClipboardItem({
+        ["web text/undangon"]: new Blob([freshNode], {
+          type: "web text/undangon",
+        }),
+        // ["text/plain"]: new Blob([freshNode], { type: "text/plain" }),
+      }),
+    ];
+    console.log(await (await data[0].getType("web text/undangon")).text());
+    try {
+      await navigator.clipboard.write(data);
+      toaster.show({
+        intent: "success",
+        message: (
+          <>
+            Node <Tag>{selectedNodeId}</Tag> was copied
+          </>
+        ),
+      });
+    } catch (err) {
+      console.error(err);
+      toaster.show({
+        intent: "warning",
+        message: `Node cannot copied`,
+      });
+    }
+  }, [selected]);
+
+  const pasteNode = useCallback(
+    async (e) => {
+      let [selectedNodeId] = selected;
+      if (!selectedNodeId) selectedNodeId = "ROOT";
+      const items = await navigator.clipboard.read();
+      let nodeTree = null;
+      try {
+        for (const item of items) {
+          for (const type of item.types) {
+            if (type === "web text/undangon") {
+              nodeTree = JSON.parse(await (await item.getType(type)).text());
+            }
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+      if (!nodeTree) return;
+      for (const node in nodeTree.nodes) {
+        nodeTree.nodes[node] = parseSerializedNode(node, nodeTree.nodes[node]);
+      }
+      actions.addNodeTree(nodeTree, selectedNodeId);
+    },
+    [selected]
+  );
+
   const editorHotkeys = useMemo(
     () => [
+      {
+        combo: "ctrl+c",
+        label: "Copy",
+        group: "Editor",
+        // preventDefault: true,
+        onKeyDown: copyNode,
+      },
+      {
+        combo: "ctrl+v",
+        label: "Paste",
+        group: "Editor",
+        // preventDefault: true,
+        onKeyDown: pasteNode,
+      },
       {
         combo: "del",
         label: "Delete",
@@ -59,8 +153,8 @@ export const ViewportWrapper = ({ children }) => {
         combo: "ctrl+d",
         label: "Duplicate",
         group: "Editor",
+        preventDefault: true,
         onKeyDown: (e) => {
-          e.preventDefault();
           duplicateNode();
         },
       },
@@ -77,7 +171,13 @@ export const ViewportWrapper = ({ children }) => {
         onKeyDown: () => actions.history.undo(),
       },
     ],
-    [duplicateNode, actions.history.undo, actions.history.redo]
+    [
+      copyNode,
+      pasteNode,
+      duplicateNode,
+      actions.history.undo,
+      actions.history.redo,
+    ]
   );
 
   const { handleKeyDown, handleKeyUp } = useHotkeys(editorHotkeys);

@@ -1,13 +1,14 @@
 import { useNode } from "@craftjs/core";
 import { Box, Flex } from "components/Grid";
-import { Container, defaultProps as containerDefaultProps } from "../Container";
 import _set from "lodash/set";
 import _pick from "lodash/pick";
 import _merge from "lodash/merge";
-import { useMemo, useRef } from "react";
+import { useRef } from "react";
 import { DocumentSettings } from "./DocumentSettings";
 import AudioPlayer from "react-audio-player";
 import { useRouter } from "next/router";
+import { useViewport } from "components/editor/Viewport/useViewport";
+import { ProcessUnitForViewport } from "../Container/ProcessUnitForViewport";
 
 export const Document = ({ children, modalOptions, musicOptions }) => {
   const {
@@ -17,9 +18,16 @@ export const Document = ({ children, modalOptions, musicOptions }) => {
   const audioPlayerRef = useRef();
 
   const { query: searchParams } = useRouter();
+  const { media } = useViewport();
 
   return (
-    <Flex ref={connect} sx={{ position: "relative", minHeight: "100vh" }}>
+    <Flex
+      ref={connect}
+      sx={{
+        position: "relative",
+        minHeight: ProcessUnitForViewport("100vh", media.currentMedia.height),
+      }}
+    >
       <Flex sx={{ position: "absolute", bottom: 0, left: 0 }}>
         {musicOptions.url && (
           <AudioPlayer ref={audioPlayerRef} src={musicOptions.url} />

@@ -5,7 +5,7 @@ import _get from "lodash/get";
 import { MenuItem2, Popover2 } from "@blueprintjs/popover2";
 import { Box } from "components/Grid";
 
-const unitOptions = ["px", "vh", "%"];
+const unitOptions = ["px", "vh", "vw", "%"];
 
 export const CSSUnitInput = ({
   label,

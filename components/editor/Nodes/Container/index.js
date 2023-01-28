@@ -4,15 +4,7 @@ import { ContainerSettings } from "./ContainerSettings";
 import _pick from "lodash/pick";
 import { useViewport } from "components/editor/Viewport/useViewport";
 import unitsCss from "units-css";
-
-const ProcessUnitForViewport = (raw, viewport) => {
-  if (!raw) return raw;
-  const { value, unit } = unitsCss.parse(raw);
-  if (unit === "vh") {
-    return (value / 100) * viewport;
-  }
-  return raw;
-};
+import { ProcessUnitForViewport } from "./ProcessUnitForViewport";
 
 export const Container = ({
   children,
