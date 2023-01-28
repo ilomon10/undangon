@@ -41,7 +41,10 @@ export const StaticMapboxSettings = () => {
           <InputGroup
             defaultValue={_get(values, `mapOptions.style`) || ""}
             onChange={(e) => {
-              setProp((props) => _set(props, `mapOptions.style`, e.target.value), 500);
+              setProp(
+                (props) => _set(props, `mapOptions.style`, e.target.value),
+                500
+              );
             }}
           />
         </FormGroup>
@@ -234,6 +237,18 @@ export const StaticMapboxSettings = () => {
                   </FormGroup>
                 </Box>
               </Flex>
+              <Button
+              intent="danger"
+                icon="cross"
+                onClick={() => {
+                  setProp(
+                    (props) =>
+                      (props.mapOptions.pins = props.mapOptions.pins.filter(
+                        (_, idx) => i !== idx
+                      ))
+                  );
+                }}
+              />
             </Box>
           )
         )}
