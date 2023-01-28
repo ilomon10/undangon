@@ -24,9 +24,19 @@ export const CountdownSettings = () => {
         <FormGroup label="Date">
           <InputGroup
             type="date"
-            initialValue={_get(values, "date") || ""}
+            defaultValue={
+              moment(_get(values, "date")).format("YYYY-MM-DD") || ""
+            }
             onChange={(e) => {
-              setProp((props) => (props.date = moment(e.target.value).toISOString()), 500);
+              console.log(e.target.value);
+              setProp(
+                (props) =>
+                  (props.date = moment(
+                    e.target.value,
+                    "YYYY-MM-DD"
+                  ).toISOString()),
+                500
+              );
             }}
           />
         </FormGroup>
