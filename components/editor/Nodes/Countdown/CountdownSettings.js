@@ -1,17 +1,18 @@
-import { FormGroup, InputGroup, Switch } from "@blueprintjs/core";
+import { FormGroup, InputGroup, RadioGroup, Switch } from "@blueprintjs/core";
 import { useNode } from "@craftjs/core";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import _pick from "lodash/pick";
 import _get from "lodash/get";
 import _set from "lodash/set";
 import moment from "moment";
+import { Box } from "components/Grid";
 
 export const CountdownSettings = () => {
   const {
     actions: { setProp },
     values,
   } = useNode((node) => ({
-    values: _pick(node.data.props, ["date"]),
+    values: _pick(node.data.props, ["date", "single"]),
   }));
 
   return (
@@ -40,6 +41,22 @@ export const CountdownSettings = () => {
             }}
           />
         </FormGroup>
+        <Box>
+          <RadioGroup
+            label="Single"
+            selectedValue={_get(values, "single") || ""}
+            onChange={(e) => {
+              setProp((props) => _set(props, "single", e.target.value));
+            }}
+            options={[
+              { label: "Unset", value: "" },
+              { label: "days", value: "days" },
+              { label: "hours", value: "hours" },
+              { label: "minutes", value: "minutes" },
+              { label: "seconds", value: "seconds" },
+            ]}
+          />
+        </Box>
       </SettingSection>
     </>
   );
