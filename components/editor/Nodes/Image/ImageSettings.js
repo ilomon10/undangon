@@ -29,6 +29,8 @@ export const ImageSettings = () => {
       "innerHeight",
       "innerWidth",
 
+      "zoomable",
+
       "display",
       "flexWrap",
       "flexDirection",
@@ -41,6 +43,23 @@ export const ImageSettings = () => {
 
   return (
     <>
+      <SettingSection
+        text="Settings"
+        label={({ zoomable }) => zoomable}
+        props={["zoomable"]}
+      >
+        <FormGroup>
+          <Switch
+            label="Zoomable"
+            checked={_get(values, "zoomable")}
+            onChange={(e) => {
+              setProp((props) => {
+                _set(props, "zoomable", e.target.checked);
+              });
+            }}
+          />
+        </FormGroup>
+      </SettingSection>
       <SettingSection text="Source" label={({ url }) => url} props={["url"]}>
         <FormGroup label="Url">
           <CloudinaryUploadWidgetButton
@@ -49,9 +68,6 @@ export const ImageSettings = () => {
             }}
             folderTarget={`/manjo/assets/${id}`}
           />
-          {/* <InputGroup value={values.url || ""} onChange={(e) => {
-              setProp(props => props.url = e.target.value);
-            }} /> */}
         </FormGroup>
         <FormGroup label="Custom Url">
           <InputGroup
@@ -60,9 +76,6 @@ export const ImageSettings = () => {
               setProp((props) => (props.url = e.target.value), 500);
             }}
           />
-          {/* <InputGroup value={values.url || ""} onChange={(e) => {
-              setProp(props => props.url = e.target.value);
-            }} /> */}
         </FormGroup>
       </SettingSection>
       <SettingSection

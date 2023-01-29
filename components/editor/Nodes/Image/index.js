@@ -1,5 +1,8 @@
 import { useNode } from "@craftjs/core";
 import { ImageSettings } from "./ImageSettings";
+import Zoom from "react-medium-image-zoom";
+import { getPercentage, getRatioFromDimension } from "components/AspectRatio";
+import { useViewport } from "components/editor/Viewport/useViewport";
 
 export const Image = ({
   connect = true,
@@ -11,6 +14,8 @@ export const Image = ({
   innerHeight,
   innerWidth,
 
+  zoomable,
+
   display,
   flexWrap,
   flexDirection,
@@ -18,6 +23,26 @@ export const Image = ({
   justifyContent,
 }) => {
   const { connectors } = useNode();
+  const { isProduction } = useViewport();
+
+  const imageDOM = (
+    <img
+      style={{
+        display: "block",
+        width: innerWidth,
+        height: innerHeight,
+        objectFit,
+        borderRadius,
+      }}
+      src={url}
+    />
+  );
+
+  if (zoomable && isProduction) {
+    return (
+      <Zoom wrapStyle={{ height: `100%`, width: `100%` }}>{imageDOM}</Zoom>
+    );
+  }
 
   return (
     <div
@@ -33,16 +58,7 @@ export const Image = ({
         justifyContent,
       }}
     >
-      <img
-        style={{
-          display: "block",
-          width: innerWidth,
-          height: innerHeight,
-          objectFit,
-          borderRadius,
-        }}
-        src={url}
-      />
+      {imageDOM}
     </div>
   );
 };
@@ -57,6 +73,8 @@ Image.craft = {
     innerWidth: "100%",
     borderRadius: "",
     objectFit: "fill",
+
+    zoomable: false,
 
     display: "flex",
     flexWrap: "nowrap",
