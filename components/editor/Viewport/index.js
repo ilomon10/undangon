@@ -17,7 +17,6 @@ import { Tag, useHotkeys } from "@blueprintjs/core";
 import { useCallback, useMemo } from "react";
 import { getCloneTree } from "../utils/getCloneTree";
 import { toaster } from "components/toaster";
-import { deserializeNode } from "../utils/deserializeNode";
 
 export const ViewportWrapper = ({ children }) => {
   const {

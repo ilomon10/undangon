@@ -4,6 +4,7 @@ import { Image } from "components/editor/Nodes/Image";
 import { Box, Flex } from "components/Grid";
 import { useEffect, useRef } from "react";
 import {
+  AnchorLink,
   AspectRatio,
   Button,
   Carousel,
@@ -23,13 +24,19 @@ export const Toolbox = () => {
       <Menu>
         {[
           {
+            icon: "widget-button",
+            label: "Anchor",
+            ref: (ref) =>
+              connectors.create(ref, <Element is={AnchorLink} canvas />),
+          },
+          {
             icon: "rectangle",
             label: "Aspect Ratio",
             ref: (ref) =>
               connectors.create(
                 ref,
                 <Element
-                  as={AspectRatio}
+                  is={AspectRatio}
                   ratio={"1:1"}
                   portrait={false}
                   canvas

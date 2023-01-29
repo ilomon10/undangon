@@ -1,3 +1,4 @@
+export * from "./AnchorLink";
 export * from "./AspectRatio";
 export * from "./Button";
 export * from "./Carousel";
