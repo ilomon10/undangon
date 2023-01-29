@@ -1,7 +1,6 @@
 import { useNode } from "@craftjs/core";
 import { ImageSettings } from "./ImageSettings";
 import Zoom from "react-medium-image-zoom";
-import { getPercentage, getRatioFromDimension } from "components/AspectRatio";
 import { useViewport } from "components/editor/Viewport/useViewport";
 
 export const Image = ({

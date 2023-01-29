@@ -41,7 +41,7 @@
     "react-google-recaptcha": "^2.1.0",
     "react-hook-form": "^6.15.4",
     "react-icons": "^4.2.0",
-    "react-medium-image-zoom": "^4.3.5",
+    "react-medium-image-zoom": "^5.1.2",
     "react-resize-detector": "^6.6.3",
     "react-reveal": "^1.2.2",
     "react-scroll-parallax": "^3.3.2",
