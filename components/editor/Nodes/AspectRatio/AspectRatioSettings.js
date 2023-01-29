@@ -22,7 +22,7 @@ export const AspectRatioSettings = () => {
       >
         <FormGroup label="Ratio">
           <InputGroup
-            initialValue={_get(values, "ratio") || ""}
+            defaultValue={_get(values, "ratio") || ""}
             onChange={(e) => {
               setProp((props) => (props.ratio = e.target.value), 500);
             }}

@@ -186,7 +186,7 @@ export const TextSettings = () => {
         </FormGroup>
         <FormGroup label="textShadow">
           <InputGroup
-            initialValue={_get(values, "textShadow") || ""}
+            defaultValue={_get(values, "textShadow") || ""}
             onChange={(e) => {
               setProp(
                 (props) => _set(props, "textShadow", e.target.value),

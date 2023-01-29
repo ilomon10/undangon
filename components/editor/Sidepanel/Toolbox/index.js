@@ -27,7 +27,7 @@ export const Toolbox = () => {
             ref: (ref) =>
               connectors.create(
                 ref,
-                <AspectRatio ratio={"1:1"} portrait={false} />
+                <Element as={AspectRatio} ratio={"1:1"} portrait={false} canvas />
               ),
           },
           {

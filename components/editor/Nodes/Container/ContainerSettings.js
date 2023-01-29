@@ -527,7 +527,7 @@ export const ContainerSettings = () => {
       <SettingSection text="Transform" defaultOpen={true}>
         <FormGroup label="transform">
           <InputGroup
-            initialValue={_get(values, `transform`) || ""}
+            defaultValue={_get(values, `transform`) || ""}
             onChange={(e) => {
               setProp((props) => _set(props, `transform`, e.target.value), 500);
             }}
