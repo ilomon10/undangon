@@ -9,6 +9,7 @@ import {
   Carousel,
   Container,
   GuestBook,
+  IFrame,
   Positioned,
   StaticMapbox,
   Text,
@@ -27,7 +28,12 @@ export const Toolbox = () => {
             ref: (ref) =>
               connectors.create(
                 ref,
-                <Element as={AspectRatio} ratio={"1:1"} portrait={false} canvas />
+                <Element
+                  as={AspectRatio}
+                  ratio={"1:1"}
+                  portrait={false}
+                  canvas
+                />
               ),
           },
           {
@@ -69,6 +75,11 @@ export const Toolbox = () => {
             icon: "paragraph",
             label: "Text",
             ref: (ref) => connectors.create(ref, <Text text="New Text" />),
+          },
+          {
+            icon: "rectangle",
+            label: "IFrame",
+            ref: (ref) => connectors.create(ref, <IFrame />),
           },
           {
             icon: "map",

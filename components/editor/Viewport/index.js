@@ -74,7 +74,6 @@ export const ViewportWrapper = ({ children }) => {
         // ["text/plain"]: new Blob([freshNode], { type: "text/plain" }),
       }),
     ];
-    console.log(await (await data[0].getType("web text/undangon")).text());
     try {
       await navigator.clipboard.write(data);
       toaster.show({

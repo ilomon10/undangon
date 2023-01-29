@@ -5,6 +5,7 @@ export * from "./Container";
 export * from "./Countdown";
 export * from "./Document";
 export * from "./GuestBook";
+export * from "./IFrame";
 export * from "./Image";
 export * from "./Positioned";
 export * from "./StaticMapbox";

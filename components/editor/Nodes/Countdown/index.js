@@ -82,7 +82,7 @@ export const Countdown = ({ children, date, single, ...style }) => {
 Countdown.craft = {
   name: "Countdown",
   props: {
-    date: moment().subtract(15, "day").toISOString(),
+    date: moment().add(15, "day").toISOString(),
     single: "", // days, hours, minutes, seconds
   },
   related: {
