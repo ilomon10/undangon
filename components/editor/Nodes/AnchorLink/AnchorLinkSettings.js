@@ -19,7 +19,7 @@ export const AnchorLinkSettings = () => {
     actions: { setProp },
     values,
   } = useNode((node) => ({
-    values: _pick(node.data.props, ["href"]),
+    values: _pick(node.data.props, ["href", "target"]),
   }));
 
   return (
@@ -34,6 +34,14 @@ export const AnchorLinkSettings = () => {
             defaultValue={values.href || ""}
             onChange={(e) => {
               setProp((props) => (props.href = e.target.value), 500);
+            }}
+          />
+        </FormGroup>
+        <FormGroup label="target">
+          <InputGroup
+            defaultValue={values.target || ""}
+            onChange={(e) => {
+              setProp((props) => (props.target = e.target.value), 500);
             }}
           />
         </FormGroup>
