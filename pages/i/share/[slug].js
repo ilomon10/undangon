@@ -132,7 +132,7 @@ const DariID = ({ slug, meta }) => {
                   onChange={(e) => {
                     handleChange(e);
                     const value = e.target.value;
-                    const params = new URLSearchParams(`?untuk=${value}`);
+                    const params = new URLSearchParams(`?u=${value}`);
                     setFieldValue(
                       "url",
                       value ? `${urlRaw}?${params.toString()} ` : values["url"]
