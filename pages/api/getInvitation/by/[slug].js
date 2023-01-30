@@ -1,8 +1,9 @@
 import internal from "components/internal";
 
-export const getInvitationBySlug = async (slug) => {
+export const getInvitationBySlug = async (slug, params = {}) => {
   let response = await internal.content.item.invitations({
     params: {
+      ...params,
       filter: {
         slug: slug,
       },

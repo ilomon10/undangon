@@ -74,7 +74,7 @@ export const Container = ({
   );
 };
 
-export const defaultProps = {
+export const containerDefaultProps = {
   height: "100px",
   width: "100px",
   minHeight: undefined,
@@ -100,7 +100,7 @@ export const defaultProps = {
 
 Container.craft = {
   name: "Container",
-  props: defaultProps,
+  props: containerDefaultProps,
   custom: {
     settingMode: {
       height: "hug", // fill, fixed, hug

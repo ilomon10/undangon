@@ -240,7 +240,7 @@ const ModalComponent = ({
   );
 };
 
-export const defaultProps = {
+export const documentDefaultProps = {
   modalOptions: {
     open: false,
     imageUrl: "https://via.placeholder.com/150",
@@ -253,7 +253,7 @@ export const defaultProps = {
 
 Document.craft = {
   name: "Document",
-  props: defaultProps,
+  props: documentDefaultProps,
   custom: {},
   related: {
     settings: DocumentSettings,
