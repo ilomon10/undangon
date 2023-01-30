@@ -51,7 +51,6 @@ export const Document = ({ children, modalOptions, musicOptions }) => {
         {musicOptions.url && (
           <AudioPlayer
             onCanPlay={() => {
-              console.log("CAN PLAY");
               setIsReady(true);
             }}
             ref={audioPlayerRef}

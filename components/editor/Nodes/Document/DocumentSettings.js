@@ -22,7 +22,7 @@ export const DocumentSettings = () => {
     <>
       <SettingSection
         text="Music"
-        label={({ musicOptions }) => `${_get(musicOptions, "musicUrl")}`}
+        label={({ musicOptions }) => `${_get(musicOptions, "url")}`}
         props={["musicOptions"]}
       >
         <Flex>
