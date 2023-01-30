@@ -51,6 +51,7 @@ export const ContainerSettings = () => {
       "overflow",
       "opacity",
       "transform",
+      "zIndex",
     ]),
   }));
 
@@ -309,6 +310,28 @@ export const ContainerSettings = () => {
       )}
       <SettingSection text="Appearance">
         <FormGroup
+          label="Z Index"
+          labelInfo={
+            values.zIndex && (
+              <Button
+                small={true}
+                icon="cross"
+                minimal={true}
+                onClick={() => {
+                  setProp((props) => (props.zIndex = undefined));
+                }}
+              />
+            )
+          }
+        >
+          <InputGroup
+            defaultValue={values.zIndex}
+            onChange={(e) => {
+              setProp((props) => (props.zIndex = e.target.value), 500);
+            }}
+          />
+        </FormGroup>
+        <FormGroup
           label="Background Color"
           labelInfo={
             values.backgroundColor && (
@@ -467,6 +490,14 @@ export const ContainerSettings = () => {
             {
               icon: "arrow-right",
               value: "row",
+            },
+            {
+              icon: "arrow-up",
+              value: "column-reverse",
+            },
+            {
+              icon: "arrow-left",
+              value: "row-reverse",
             },
           ].map(({ icon, value }) => (
             <Button

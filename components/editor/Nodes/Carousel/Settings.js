@@ -111,7 +111,11 @@ export const CarouselSettings = () => {
           </Box>
         ))}
       </SettingSection>
-      <SettingSection text="Settings">
+      <SettingSection
+        text="Settings"
+        label={({ settings }) => `${JSON.stringify(settings)}`}
+        props={["settings"]}
+      >
         <Switch
           label="Fade"
           checked={_get(values, "settings.fade") || false}
@@ -144,6 +148,29 @@ export const CarouselSettings = () => {
             );
           }}
         />
+        <FormGroup label="Speed">
+          <InputGroup
+            defaultValue={_get(values, "settings.speed") || ""}
+            onChange={(e) => {
+              setProp(
+                (props) => _set(props, "settings.speed", Number(e.target.value)),
+                500
+              );
+            }}
+          />
+        </FormGroup>
+        <FormGroup label="Autoplay Speed">
+          <InputGroup
+            defaultValue={_get(values, "settings.autoplaySpeed") || ""}
+            onChange={(e) => {
+              setProp(
+                (props) =>
+                  _set(props, "settings.autoplaySpeed", Number(e.target.value)),
+                500
+              );
+            }}
+          />
+        </FormGroup>
       </SettingSection>
       <SettingSection
         text="Dimensions"

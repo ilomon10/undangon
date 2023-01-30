@@ -54,9 +54,11 @@ Carousel.craft = {
   props: {
     images: [],
     settings: {
+      fade: false,
       infinite: true,
       speed: 500,
       dots: true,
+      arrows: true,
       autoplaySpeed: 500,
     },
     height: "auto",

@@ -3,7 +3,6 @@ import { Box, Flex } from "components/Grid";
 import { ContainerSettings } from "./ContainerSettings";
 import _pick from "lodash/pick";
 import { useViewport } from "components/editor/Viewport/useViewport";
-import unitsCss from "units-css";
 import { ProcessUnitForViewport } from "./ProcessUnitForViewport";
 
 export const Container = ({
@@ -93,8 +92,10 @@ export const defaultProps = {
   overflow: undefined,
   opacity: 1,
 
+  zIndex: undefined,
+
   flexWrap: "nowrap", // nowrap, wrap
-  flexDirection: "column",
+  flexDirection: "column", // column, row, column-reverse, row-reverse
 };
 
 Container.craft = {
