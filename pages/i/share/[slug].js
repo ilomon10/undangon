@@ -60,7 +60,7 @@ const transformToPreview = (raw, opt) => {
 const DariID = ({ slug, meta }) => {
   const router = useRouter();
 
-  const urlRaw = `https://${APP_DOMAIN}/i/p/${slug}`;
+  const urlRaw = `https://${APP_DOMAIN}/i/${slug}`;
 
   const share_message = `Kepada {{to}},\nDengan segala hormat, kami mengirimkan undangan elektronik ini :\n{{url}}\n\nKami mohon restu di hari pernikahan kami. Walaupun, keadaan pandemi Covid-19 dan dengan tetap menjaga protokol kesehatan, kami mengundang Anda untuk menghadiri upacara pernikahan. Anda masih bisa menjadi bagian dari Pernikahan kami dengan meninggalkan keinginan Anda.\n\n⏰ – January 01, 1999\n\nTerima kasih atas semua doa dan dukungannya. Ini akan menjadi hadiah yang luar biasa untuk kita.\n\nWith pray & love,\nJohn & Doe\n#Manjo`
 
