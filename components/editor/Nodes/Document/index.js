@@ -82,6 +82,9 @@ const ModalComponent = ({
   const { isProduction } = useViewport();
   const handleInvitation = () => {
     onOpen();
+    if (isProduction) {
+      document.documentElement.requestFullscreen();
+    }
   };
   return (
     <Box
