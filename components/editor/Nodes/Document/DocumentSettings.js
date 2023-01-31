@@ -61,9 +61,14 @@ export const DocumentSettings = () => {
             }}
             folderTarget={`/manjo/assets/${id}`}
           />
-          {/* <InputGroup value={values.url || ""} onChange={(e) => {
-              setProp(props => props.url = e.target.value);
-            }} /> */}
+          <InputGroup
+            defaultValue={_get(values, "modalOptions.imageUrl") || ""}
+            onChange={(e) => {
+              setProp((props) =>
+                _set(props, "modalOptions.imageUrl", e.target.value)
+              );
+            }}
+          />
         </FormGroup>
         <Switch
           label="Close Modal"
@@ -76,7 +81,44 @@ export const DocumentSettings = () => {
           }}
         />
       </SettingSection>
-      <SettingSection text="Appearance"></SettingSection>
+      <SettingSection text="Gradient Style">
+        <FormGroup label="Background">
+          <InputGroup
+            defaultValue={
+              _get(values, "modalOptions.gradientStyle.background") || ""
+            }
+            onChange={(e) => {
+              setProp(
+                (props) =>
+                  _set(
+                    props,
+                    "modalOptions.gradientStyle.background",
+                    e.target.value
+                  ),
+                500
+              );
+            }}
+          />
+        </FormGroup>
+        <FormGroup label="Opacity">
+          <InputGroup
+            defaultValue={
+              _get(values, "modalOptions.gradientStyle.opacity") || ""
+            }
+            onChange={(e) => {
+              setProp(
+                (props) =>
+                  _set(
+                    props,
+                    "modalOptions.gradientStyle.opacity",
+                    e.target.value
+                  ),
+                500
+              );
+            }}
+          />
+        </FormGroup>
+      </SettingSection>
     </>
   );
 };

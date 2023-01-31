@@ -1,5 +1,6 @@
 import { useNode } from "@craftjs/core";
 import { Box, Flex } from "components/Grid";
+import _get from "lodash/get";
 import _set from "lodash/set";
 import _pick from "lodash/pick";
 import _merge from "lodash/merge";
@@ -65,6 +66,7 @@ export const Document = ({ children, modalOptions, musicOptions }) => {
         guests={searchParams.u}
         onOpen={handleOpenModal}
         loading={isProduction ? !isReady : undefined}
+        gradientStyle={_get(modalOptions, "gradientStyle")}
       />
       {children}
     </Flex>
@@ -77,6 +79,7 @@ const ModalComponent = ({
   guests,
   onOpen = () => {},
   loading = false,
+  gradientStyle = {},
 }) => {
   const { isProduction } = useViewport();
   const handleInvitation = () => {
@@ -141,8 +144,9 @@ const ModalComponent = ({
           inset: 0,
           background: "rgb(0,142,145)",
           background:
+            _get(gradientStyle, "background") ||
             "linear-gradient(35deg, rgba(0,142,145,1) 0%, rgba(255,171,112,1) 100%)",
-          opacity: 0.95,
+          opacity: _get(gradientStyle, "opacity") || 0.95,
         }}
       />
       <Box
@@ -175,8 +179,9 @@ const ModalComponent = ({
               inset: 0,
               background: "rgb(0,142,145)",
               background:
+                _get(gradientStyle, "background") ||
                 "linear-gradient(35deg, rgba(255,171,112,1) 0%, rgba(0,142,145,1) 100%)",
-              opacity: 0.5,
+              opacity: _get(gradientStyle, "opacity") || 0.5,
             }}
           />
           <Box
@@ -244,6 +249,12 @@ export const documentDefaultProps = {
   modalOptions: {
     open: false,
     imageUrl: "https://via.placeholder.com/150",
+
+    gradientStyle: {
+      background:
+        "linear-gradient(35deg, rgba(255,171,112,1) 0%, rgba(0,142,145,1) 100%)",
+      opacity: 0.5,
+    },
   },
   musicOptions: {
     url: undefined,
