@@ -29,7 +29,6 @@ export const CountdownSettings = () => {
               moment(_get(values, "date")).format("YYYY-MM-DD") || ""
             }
             onChange={(e) => {
-              console.log(e.target.value);
               setProp(
                 (props) =>
                   (props.date = moment(
