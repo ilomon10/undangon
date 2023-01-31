@@ -81,7 +81,14 @@ export const DocumentSettings = () => {
           }}
         />
       </SettingSection>
-      <SettingSection text="Gradient Style">
+
+      <SettingSection
+        text="Gradient Style"
+        label={({ modalOptions }) =>
+          `${JSON.stringify(_get(modalOptions, "gradientStyle"))}`
+        }
+        props={["modalOptions"]}
+      >
         <FormGroup label="Background">
           <InputGroup
             defaultValue={
@@ -114,6 +121,75 @@ export const DocumentSettings = () => {
                     e.target.value
                   ),
                 500
+              );
+            }}
+          />
+        </FormGroup>
+      </SettingSection>
+      <SettingSection
+        text="Front Image Attributes"
+        label={({ modalOptions }) =>
+          `${JSON.stringify(_get(modalOptions, "frontImageAttribute"))}`
+        }
+        props={["modalOptions"]}
+      >
+        <FormGroup label="Src">
+          <CloudinaryUploadWidgetButton
+            onSave={(files) => {
+              setProp((props) =>
+                _set(
+                  props,
+                  "modalOptions.frontImageAttribute.src",
+                  files[0].url
+                )
+              );
+            }}
+            folderTarget={`/manjo/assets/${id}`}
+          />
+          <InputGroup
+            defaultValue={
+              _get(values, "modalOptions.frontImageAttribute.src") || ""
+            }
+            onChange={(e) => {
+              setProp((props) =>
+                _set(
+                  props,
+                  "modalOptions.frontImageAttribute.src",
+                  e.target.value
+                )
+              );
+            }}
+          />
+        </FormGroup>
+        <FormGroup label="Height">
+          <InputGroup
+            defaultValue={
+              _get(values, "modalOptions.frontImageAttribute.style.height") ||
+              ""
+            }
+            onChange={(e) => {
+              setProp((props) =>
+                _set(
+                  props,
+                  "modalOptions.frontImageAttribute.style.height",
+                  e.target.value
+                )
+              );
+            }}
+          />
+        </FormGroup>
+        <FormGroup label="Width">
+          <InputGroup
+            defaultValue={
+              _get(values, "modalOptions.frontImageAttribute.style.width") || ""
+            }
+            onChange={(e) => {
+              setProp((props) =>
+                _set(
+                  props,
+                  "modalOptions.frontImageAttribute.style.width",
+                  e.target.value
+                )
               );
             }}
           />

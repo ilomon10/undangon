@@ -67,6 +67,7 @@ export const Document = ({ children, modalOptions, musicOptions }) => {
         onOpen={handleOpenModal}
         loading={isProduction ? !isReady : undefined}
         gradientStyle={_get(modalOptions, "gradientStyle")}
+        frontImageAttribute={_get(modalOptions, "frontImageAttribute")}
       />
       {children}
     </Flex>
@@ -80,6 +81,7 @@ const ModalComponent = ({
   onOpen = () => {},
   loading = false,
   gradientStyle = {},
+  frontImageAttribute = {},
 }) => {
   const { isProduction } = useViewport();
   const handleInvitation = () => {
@@ -206,13 +208,17 @@ const ModalComponent = ({
           flexDirection: "column",
         }}
       >
-        <Box
+        <Flex
           sx={{
+            flexDirection: "column",
             py: 4,
-            px: 2,
+            px: 4,
             color: "white",
             textAlign: "center",
             maxWidth: 512,
+            maxHeight: "100vh",
+            width: "100%",
+            height: "100%",
           }}
         >
           <Box sx={{ textShadow: "1px 1px 4px rgba(0,0,0,0.65)" }}>
@@ -223,6 +229,13 @@ const ModalComponent = ({
             <Box sx={{ fontSize: 2, mb: 4 }}>
               You are invited to our wedding
             </Box>
+          </Box>
+          <Box flexGrow={1}></Box>
+          <Box>
+            <img
+              {...frontImageAttribute}
+              src={_get(frontImageAttribute, "src")}
+            />
           </Box>
           <Box
             as="button"
@@ -239,7 +252,7 @@ const ModalComponent = ({
           >
             {loading ? "Please wait" : "Open Invitation"}
           </Box>
-        </Box>
+        </Flex>
       </Flex>
     </Box>
   );
@@ -249,6 +262,11 @@ export const documentDefaultProps = {
   modalOptions: {
     open: false,
     imageUrl: "https://via.placeholder.com/150",
+
+    frontImageAttribute: {
+      src: "https://via.placeholder.com/150x100",
+      style: {},
+    },
 
     gradientStyle: {
       background:
