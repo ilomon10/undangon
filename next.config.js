@@ -1,4 +1,5 @@
 module.exports = {
+  staticPageGenerationTimeout: 1000,
   images: {
     domains: ["ba-undang.000webhostapp.com"],
     minimumCacheTTL: 60,
@@ -19,8 +20,8 @@ module.exports = {
     styledComponents: true,
   },
   trailingSlash: true,
-  i18n: {
-    locales: ["id-ID"],
-    defaultLocale: "id-ID",
-  },
+  // i18n: {
+  //   locales: ["id-ID"],
+  //   defaultLocale: "id-ID",
+  // },
 };
