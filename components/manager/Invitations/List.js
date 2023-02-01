@@ -37,6 +37,7 @@ export const InvitationList = () => {
     <Box>
       {data.map(({ _id, name, category, slug }) => (
         <Flex
+          key={_id}
           py={2}
           sx={{
             borderBottom: "1px solid black",
@@ -45,13 +46,13 @@ export const InvitationList = () => {
           }}
         >
           <Box flexGrow={1}>
-            <Link key={_id} href={`/manager/invitation/editor/${_id}`} passHref>
+            <Link href={`/manager/invitation/editor/${_id}`} passHref>
               <Box as="a">{name}</Box>
             </Link>
           </Box>
           <Box color={"gray.5"}>{category.name}</Box>
           <Box pl={2}>
-            <Link key={_id} href={`/manager/invitation/editor/${_id}`} passHref>
+            <Link href={`/manager/invitation/editor/${_id}`} passHref>
               <AnchorButton
                 small
                 title="Edit"
@@ -62,7 +63,7 @@ export const InvitationList = () => {
             </Link>
           </Box>
           <Box pl={2}>
-            <Link key={_id} href={`/i/p/${slug}`} passHref>
+            <Link href={`/i/p/${slug}`} passHref>
               <AnchorButton
                 small
                 title="Preview"
@@ -73,7 +74,7 @@ export const InvitationList = () => {
             </Link>
           </Box>
           <Box pl={2}>
-            <Link key={_id} href={`/i/share/${slug}`} passHref>
+            <Link href={`/i/share/${slug}`} passHref>
               <AnchorButton
                 small
                 title="Share"

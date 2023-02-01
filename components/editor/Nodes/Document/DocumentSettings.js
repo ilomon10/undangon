@@ -83,6 +83,38 @@ export const DocumentSettings = () => {
       </SettingSection>
 
       <SettingSection
+        text="Modal Description"
+        label={({ modalOptions }) =>
+          `${JSON.stringify(_get(modalOptions, "descriptions"))}`
+        }
+        props={["modalOptions"]}
+      >
+        <FormGroup label="One">
+          <InputGroup
+            defaultValue={_get(values, "modalOptions.descriptions.one") || ""}
+            onChange={(e) => {
+              setProp(
+                (props) =>
+                  _set(props, "modalOptions.descriptions.one", e.target.value),
+                500
+              );
+            }}
+          />
+        </FormGroup>
+        <FormGroup label="Two">
+          <InputGroup
+            defaultValue={_get(values, "modalOptions.descriptions.two") || ""}
+            onChange={(e) => {
+              setProp(
+                (props) =>
+                  _set(props, "modalOptions.descriptions.two", e.target.value),
+                500
+              );
+            }}
+          />
+        </FormGroup>
+      </SettingSection>
+      <SettingSection
         text="Gradient Style"
         label={({ modalOptions }) =>
           `${JSON.stringify(_get(modalOptions, "gradientStyle"))}`

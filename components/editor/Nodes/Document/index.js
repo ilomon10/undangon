@@ -68,6 +68,7 @@ export const Document = ({ children, modalOptions, musicOptions }) => {
         loading={isProduction ? !isReady : undefined}
         gradientStyle={_get(modalOptions, "gradientStyle")}
         frontImageAttribute={_get(modalOptions, "frontImageAttribute")}
+        descriptions={_get(modalOptions, "descriptions")}
       />
       {children}
     </Flex>
@@ -82,6 +83,7 @@ const ModalComponent = ({
   loading = false,
   gradientStyle = {},
   frontImageAttribute = {},
+  descriptions = {},
 }) => {
   const { isProduction } = useViewport();
   const handleInvitation = () => {
@@ -223,11 +225,11 @@ const ModalComponent = ({
         >
           <Box sx={{ textShadow: "1px 1px 4px rgba(0,0,0,0.65)" }}>
             <Box sx={{ fontSize: 2, fontWeight: "bold", mb: 2, mt: 4 }}>
-              Dear Mr/Mrs/Ms
+              {_get(descriptions, "one") || "Dear Mr/Mrs/Ms"}
             </Box>
             <Box sx={{ fontSize: 5, mb: 4 }}>{guests}</Box>
             <Box sx={{ fontSize: 2, mb: 4 }}>
-              You are invited to our wedding
+              {_get(descriptions, "two") || "You are invited to our wedding"}
             </Box>
           </Box>
           <Box flexGrow={1}></Box>
@@ -262,6 +264,11 @@ export const documentDefaultProps = {
   modalOptions: {
     open: false,
     imageUrl: "https://via.placeholder.com/150",
+
+    descriptions: {
+      one: "Dear Mr/Mrs/Ms",
+      two: "You are invited to our wedding",
+    },
 
     frontImageAttribute: {
       src: "https://via.placeholder.com/150x100",
