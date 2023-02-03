@@ -14,6 +14,10 @@ const navList = [{
   text: "Templates",
   icon: "projects",
   path: "/manager/templates"
+}, {
+  text: "Canva Links",
+  icon: "projects",
+  path: "/manager/canva_links"
 }]
 
 const Layout = ({ children }) => {

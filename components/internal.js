@@ -11,6 +11,11 @@ const internal = axios.create({
 export default {
   content: {
     item: {
+      async canva_links(options, id) {
+        const path = ["content", "item", "canva_links"];
+        if (id) return await requestHandler(options, ...path, id);
+        return await requestHandler(options, ...path);
+      },
       async templates(options, id) {
         if (id)
           return await requestHandler(
@@ -58,6 +63,14 @@ export default {
       },
     },
     items: {
+      async canva_links(options = {}) {
+        const path = ["content", "items", "canva_links"];
+        return await requestHandler(options, ...path);
+      },
+      async templates(options = {}) {
+        const path = ["content", "items", "templates"];
+        return await requestHandler(options, ...path);
+      },
       async templates(options = {}) {
         return await requestHandler(options, "content", "items", "templates");
       },

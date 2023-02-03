@@ -6,6 +6,30 @@ export const client = axios.create({
 });
 
 export default {
+  async getCanvaLink(id) {
+    let res = await client.request({
+      url: `/getCanvaLink/${id}/`,
+      method: "GET",
+    });
+    return res.data;
+  },
+  async getCanvaLinks(params) {
+    const res = await client.request({
+      url: "/getCanvaLinks",
+      method: "GET",
+      params,
+    });
+    return res.data;
+  },
+  async postCanvaLink(data) {
+    const res = await client.request({
+      url: "/postCanvaLink",
+      method: "POST",
+      data,
+    });
+    return res.data;
+  },
+
   async getTemplate(id) {
     let res = await client.request({
       url: `/getTemplate/${id}/`,
