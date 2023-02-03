@@ -1,25 +1,47 @@
-import { AspectRatio, Button, State } from 'components';
-import Head from 'next/head';
+import { AspectRatio, Button, State } from "components";
+import Head from "next/head";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Box, Flex } from "../components/Grid";
 import { IoLocationOutline } from "react-icons/io5";
-import { BackgroundScrolling } from 'components/BackgroundScrolling';
+import { BackgroundScrolling } from "components/BackgroundScrolling";
+import { CONSTANTS } from "../components/Constants";
 
 export default function Home() {
   return (
     <>
       <Head>
-        <title>Ba Undang - Undangan Digital</title>
+        <title>{CONSTANTS.APP_NAME} - Undangan Digital</title>
         <link rel="icon" href="/favicon.ico" />
-        <meta name="description" content="Buat undangan digital kamu sekarang dengan harga yang terjangkau, dan juga bisa mengurangi pemakaian kertas berlebihan." />
+        <meta
+          name="description"
+          content="Buat undangan digital kamu sekarang dengan harga yang terjangkau, dan juga bisa mengurangi pemakaian kertas berlebihan."
+        />
 
-        <meta property="og:title" content={`Ba Undang - Undangan Digital`} key="ogtitle" />
-        <meta property="og:description" content={"Buat undangan digital kamu sekarang dengan harga yang terjangkau, dan juga bisa mengurangi pemakaian kertas berlebihan."} key="ogdesc" />
-        <meta property="og:image" content={"https://baundang.me/baundang.svg"} key="ogimage"/>
-        <meta property="og:site_name" content="Ba Undang" key="ogsitename"/>
-        <meta property="og:url" content="https://baundang.me/" key="ogurl"/>
+        <meta
+          property="og:title"
+          content={`${CONSTANTS.APP_NAME} - Undangan Digital`}
+          key="ogtitle"
+        />
+        <meta
+          property="og:description"
+          content={
+            "Buat undangan digital kamu sekarang dengan harga yang terjangkau, dan juga bisa mengurangi pemakaian kertas berlebihan."
+          }
+          key="ogdesc"
+        />
+        <meta
+          property="og:image"
+          content={`https://${CONSTANTS.APP_DOMAIN}/logo.svg`}
+          key="ogimage"
+        />
+        <meta property="og:site_name" content={`${CONSTANTS.APP_NAME}`} key="ogsitename" />
+        <meta
+          property="og:url"
+          content={`https://${CONSTANTS.APP_DOMAIN}/`}
+          key="ogurl"
+        />
       </Head>
 
       <header>
@@ -30,11 +52,11 @@ export default function Home() {
             mx: "auto",
             height: 168,
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <div>
-            <Box as="img" alt="Logo Ba Undang" height={36} src="/baundang.svg" />
+            <Box as="img" alt="Logo Manjo" height={36} src="/logo.svg" />
           </div>
         </Flex>
       </header>
@@ -42,7 +64,9 @@ export default function Home() {
       <Box as="main" textAlign="center" overflow="hidden">
         <section>
           <Box as="h1">Pakai Undangan Online</Box>
-          <Box as="p" fontSize={3} mt={2}>Tanpa Kertas. Tanpa Ribet.</Box>
+          <Box as="p" fontSize={3} mt={2}>
+            Tanpa Kertas. Tanpa Ribet.
+          </Box>
           <Button
             as="a"
             rel="noreferrer"
@@ -75,8 +99,9 @@ export default function Home() {
               ".slick-slide.slick-current > div": {
                 opacity: 1,
                 transform: "scale(1)",
-                transition: "opacity 2000ms ease 0s, transform 1000ms ease 500ms",
-              }
+                transition:
+                  "opacity 2000ms ease 0s, transform 1000ms ease 500ms",
+              },
             }}
           >
             <Box
@@ -90,7 +115,7 @@ export default function Home() {
                 zIndex: 1,
                 pointerEvents: "none",
                 ":after": {
-                  content: "\"\"",
+                  content: '""',
                   mt: "-3px",
                   display: "block",
                   height: "100%",
@@ -98,12 +123,12 @@ export default function Home() {
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundImage: `url(/phone-frame.png)`,
-                }
+                },
               }}
             />
             <State
               defaultValue={{
-                currentIndex: 0
+                currentIndex: 0,
               }}
             >
               {({ state, setState, ref }) => (
@@ -120,10 +145,10 @@ export default function Home() {
                   focusOnSelect={true}
                   cssEase={"ease"}
                   beforeChange={(_, next) => {
-                    setState(state => ({
+                    setState((state) => ({
                       ...state,
-                      currentIndex: next
-                    }))
+                      currentIndex: next,
+                    }));
                   }}
                 >
                   {[
@@ -135,7 +160,7 @@ export default function Home() {
                     "/TemplateOne-Capture.png",
                   ].map((v, i) => (
                     <Box key={i} px={3}>
-                      <Box sx={{ width: 168, position: "relative" }} >
+                      <Box sx={{ width: 168, position: "relative" }}>
                         <AspectRatio ratio="6:13">
                           <BackgroundScrolling
                             imageUrl={v}
@@ -144,7 +169,11 @@ export default function Home() {
                             pause={state.currentIndex !== i}
                             onChange={(pos) => {
                               if (pos === 0) {
-                                ref.current.slickGoTo(state.currentIndex < 5 ? state.currentIndex + 1 : 0);
+                                ref.current.slickGoTo(
+                                  state.currentIndex < 5
+                                    ? state.currentIndex + 1
+                                    : 0
+                                );
                                 // setState(state => ({ ...state, autoplaySlide: true }))
                               }
                             }}
@@ -162,16 +191,20 @@ export default function Home() {
 
       <footer>
         <Box py={4} px={3} sx={{ maxWidth: 750, mx: "auto" }}>
-          <Flex flexDirection={["column", "row"]} alignItems="center" opacity={0.75}>
+          <Flex
+            flexDirection={["column", "row"]}
+            alignItems="center"
+            opacity={0.75}
+          >
             <Flex alignItems="center" pb={[2, 0]}>
               <IoLocationOutline />
               <Box ml={2}>Dengan cinta, dari Manado</Box>
             </Flex>
             <Box flexGrow={1} />
-            <div>&#169; Ba Undang</div>
+            <div>&#169; Manjo</div>
           </Flex>
         </Box>
       </footer>
     </>
-  )
+  );
 }

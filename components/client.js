@@ -1,76 +1,110 @@
 import axios from "axios";
-
-export const serverUrl = new URL(process.env.serverUrl);
-
-export const vanilla = (function () {
-  const baseURL = `${serverUrl.toString()}/wp-json/wp/v2`;
-  function f({
-    url,
-    method,
-    params = {},
-    data
-  }) {
-    const compiledURL = new URL(`${baseURL}${url}`);
-    console.log(window.location);
-    if (params) {
-      Object.keys(params).forEach(key => {
-        compiledURL.searchParams.append(key, params[key]);
-      });
-    }
-    return fetch(compiledURL.toString(), {
-      method,
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    }).then(async res => {
-      const json = await res.json();
-      if (!res.ok) {
-        const Err = new Error(res.statusText);
-        Err.response = json;
-        throw Err;
-      }
-      return json;
-    })
-  }
-  const self = {
-    posts: ({ method = "GET", params, data }) => {
-      return f({ url: "/posts", method, params, data });
-    },
-    comments: ({ method = "GET", params, data }) => {
-      return f({ url: "/comments", method, params, data });
-    }
-  }
-  return self;
-})()
+import { CONSTANTS } from "./Constants";
 
 export const client = axios.create({
-  baseURL: `${serverUrl.toString()}/wp-json/wp/v2`
+  baseURL: `${CONSTANTS.CURRENT_HOSTNAME}/api`,
 });
 
 export default {
-  posts({
-    method = "GET",
-    params,
-    data,
-  }) {
-    return client.request({
-      url: "/posts",
-      method,
-      params,
-      data,
-    })
+  async getTemplate(id) {
+    let res = await client.request({
+      url: `/getTemplate/${id}/`,
+      method: "GET",
+    });
+    return res.data;
   },
-  comments({
-    method = "GET",
-    params,
-    data,
-  }) {
-    return client.request({
-      url: "/comments",
-      method,
+  async getTemplates(params) {
+    const res = await client.request({
+      url: "/getTemplates",
+      method: "GET",
       params,
+    });
+    return res.data;
+  },
+  async postTemplate(data) {
+    if (data.category) {
+      data = {
+        ...data,
+        category: {
+          _id: data.category,
+          _model: "categories",
+        },
+      };
+    }
+    const res = await client.request({
+      url: "/postTemplate",
+      method: "POST",
       data,
-    })
-  }
+    });
+    return res.data;
+  },
+
+  async getComments(params) {
+    const res = await client.request({
+      url: "/getComments",
+      method: "GET",
+      params,
+    });
+    return res.data;
+  },
+
+  async postComments(data) {
+    const res = await client.request({
+      url: "/postComments",
+      method: "POST",
+      data,
+    });
+    return res.data;
+  },
+
+  async getCategories() {
+    const res = await client.request({
+      url: "/getCategories",
+      method: "GET",
+    });
+    return res.data;
+  },
+
+  async getInvitation(id, params) {
+    const res = await client.request({
+      url: `/getInvitation/${id}`,
+      method: "GET",
+      params,
+    });
+    return res.data;
+  },
+  async getInvitationBySlug(slug, params) {
+    const res = await client.request({
+      url: `/getInvitation/by/${slug}`,
+      method: "GET",
+      params,
+    });
+    return res.data;
+  },
+  async getInvitations(params) {
+    const res = await client.request({
+      url: "/getInvitations",
+      method: "GET",
+      params,
+    });
+    return res.data;
+  },
+
+  async postInvitation(data) {
+    if (data.category) {
+      data = {
+        ...data,
+        category: {
+          _id: data.category,
+          _model: "categories",
+        },
+      };
+    }
+    const res = await client.request({
+      url: "/postInvitation",
+      method: "POST",
+      data,
+    });
+    return res.data;
+  },
 };

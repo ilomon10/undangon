@@ -1,9 +1,6 @@
 import { Box } from "./";
 
-export const Button = ({
-  text,
-  ...props
-}) => {
+export const Button = ({ text, loading, ...props }) => {
   return (
     <Box
       as="button"
@@ -21,6 +18,8 @@ export const Button = ({
         bg: "gray.1",
       }}
       {...props}
-    >{text}</Box>
-  )
-}
+    >
+      {(loading ? "Loading" : null) || text}
+    </Box>
+  );
+};

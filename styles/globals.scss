@@ -14,3 +14,37 @@ a {
 * {
   box-sizing: border-box;
 }
+
+*[draggable] {
+  cursor: move !important;
+}
+
+.craft-layer-node h2 {
+  margin: 0;
+  font-weight: inherit;
+}
+.craft-layer-node a {
+  line-height: 0;
+}
+
+.chrome-picker {
+  box-shadow: none !important;
+}
+
+.component-selected {
+  position: relative;
+}
+.component-selected:after {
+  content: " ";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border: 1px dashed white;
+  border-color: #2188ff;
+}
+
+.prevent-select {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}

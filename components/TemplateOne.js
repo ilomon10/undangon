@@ -11,10 +11,9 @@ import AudioPlayer from "react-audio-player";
 import Zoom from "react-medium-image-zoom";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Fade, Flip } from "react-reveal";
+import { CONSTANTS } from "./Constants";
 
-import {
-  AspectRatio, Box, Input, Flex, Text, Counter,
-} from "./";
+import { AspectRatio, Box, Input, Flex, Text, Counter } from "./";
 import { AnchorButton, Button } from "@blueprintjs/core";
 import theme, { getTheme } from "./theme";
 import { getPercentage, getRatioFromDimension } from "./AspectRatio";
@@ -27,26 +26,26 @@ const extTheme = {
   ...theme,
   colors: {
     ...theme.colors,
-    "accent": "#ffab70",
-    "text": theme.colors["black"],
-    "background": theme.colors["white"],
-    "lightText": theme.colors["gray"][4],
-    "lighterText": theme.colors["gray"][6],
+    accent: "#ffab70",
+    text: theme.colors["black"],
+    background: theme.colors["white"],
+    lightText: theme.colors["gray"][4],
+    lighterText: theme.colors["gray"][6],
     modes: {
-      "dark": {
-        "lighterText": theme.colors["gray"][4],
-        "lightText": theme.colors["gray"][6],
-        "text": theme.colors["white"],
-        "background": theme.colors["black"],
-        "borderLine": theme.colors["gray"][8]
-      }
-    }
+      dark: {
+        lighterText: theme.colors["gray"][4],
+        lightText: theme.colors["gray"][6],
+        text: theme.colors["white"],
+        background: theme.colors["black"],
+        borderLine: theme.colors["gray"][8],
+      },
+    },
   },
   fonts: {
     serif: "Roboto Slab",
-    script: "Dancing Script"
+    script: "Dancing Script",
   },
-}
+};
 
 const TemplateOne = (props) => {
   const {
@@ -58,7 +57,7 @@ const TemplateOne = (props) => {
     music,
     featured_image,
     optional,
-    mode
+    mode,
   } = props;
 
   const baseTheme = useMemo(() => {
@@ -80,42 +79,41 @@ const TemplateOne = (props) => {
   const [loading, setLoading] = useState(false);
 
   const onComment = async (data) => {
-
     const body = {
-      "post": id,
-      "author_name": data.name,
-      "author_email": data.email,
-      "content": data.content
-    }
+      post: id,
+      author_name: data.name,
+      author_email: data.email,
+      content: data.content,
+    };
     try {
       const { data } = await axios.request({
         method: "POST",
         url: `${window.location.origin}/api/guestBook`,
         data: body,
         params: {
-          "_fields": "id,post,author_name,content,date"
-        }
+          _fields: "id,post,author_name,content,date",
+        },
       });
-      setComments(comments => [
+      setComments((comments) => [
         ...comments,
         {
-          "id": data["id"],
-          "author_name": data["author_name"],
-          "content": data["content"],
-          "date": data["date"]
-        }
+          id: data["id"],
+          author_name: data["author_name"],
+          content: data["content"],
+          date: data["date"],
+        },
       ]);
     } catch (err) {
       console.log(err);
     }
     reset();
-  }
+  };
 
   const executeRecaptcha = (event) => {
     setLoading(true);
     event.preventDefault();
     recaptchaRef.current.execute();
-  }
+  };
 
   const onReCAPTCHAChange = async (captchaCode) => {
     if (captchaCode) {
@@ -123,7 +121,7 @@ const TemplateOne = (props) => {
     }
     setLoading(false);
     recaptchaRef.current.reset();
-  }
+  };
 
   const openInvitation = async (force = true) => {
     document.body.style.overflow = "";
@@ -132,12 +130,12 @@ const TemplateOne = (props) => {
       audioEl.play();
     }
     setOpened(true);
-  }
+  };
 
   const closeInvitation = async () => {
     document.body.style.overflow = "hidden";
     setOpened(false);
-  }
+  };
 
   useEffect(() => {
     if (searchParams.untuk) {
@@ -150,32 +148,41 @@ const TemplateOne = (props) => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        let resComments = await axios.get(`${window.location.origin}/api/guestBook`, {
-          params: {
-            "_fields": "id,author_name,date,content",
-            "post": id
+        let resComments = await axios.get(
+          `${window.location.origin}/api/guestBook`,
+          {
+            params: {
+              _fields: "id,author_name,date,content",
+              post: id,
+            },
           }
-        });
+        );
         setComments(resComments.data);
       } catch (err) {
         // do nothing
       }
-    }
+    };
     fetch();
   }, []);
 
   return (
     <ThemeProvider theme={baseTheme}>
-      <Box sx={{
-        fontFamily: "serif",
-        backgroundColor: "background"
-      }} overflowX="hidden">
+      <Box
+        sx={{
+          fontFamily: "serif",
+          backgroundColor: "background",
+        }}
+        overflowX="hidden"
+      >
         <Head>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
-          <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;700&family=Roboto+Slab:wght@300;400;500;600&display=swap" rel="stylesheet" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;700&family=Roboto+Slab:wght@300;400;500;600&display=swap"
+            rel="stylesheet"
+          />
         </Head>
 
-        {(searchParams.untuk) &&
+        {searchParams.untuk && (
           <Box
             className={opened && "opened"}
             sx={{
@@ -222,16 +229,19 @@ const TemplateOne = (props) => {
                 opacity: "0",
                 transition: "500ms ease-out",
                 transitionDelay: "0ms",
-              }
+              },
             }}
           >
-            <Box sx={{
-              position: "absolute",
-              inset: 0,
-              background: "rgb(0,142,145)",
-              background: "linear-gradient(35deg, rgba(0,142,145,1) 0%, rgba(255,171,112,1) 100%)",
-              opacity: 0.95
-            }} />
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                background: "rgb(0,142,145)",
+                background:
+                  "linear-gradient(35deg, rgba(0,142,145,1) 0%, rgba(255,171,112,1) 100%)",
+                opacity: 0.95,
+              }}
+            />
             <Box
               className="image"
               sx={{
@@ -261,8 +271,9 @@ const TemplateOne = (props) => {
                     position: "absolute",
                     inset: 0,
                     background: "rgb(0,142,145)",
-                    background: "linear-gradient(35deg, rgba(255,171,112,1) 0%, rgba(0,142,145,1) 100%)",
-                    opacity: 0.50
+                    background:
+                      "linear-gradient(35deg, rgba(255,171,112,1) 0%, rgba(0,142,145,1) 100%)",
+                    opacity: 0.5,
                   }}
                 />
                 <Box
@@ -272,7 +283,7 @@ const TemplateOne = (props) => {
                     display: "block",
                     height: "100%",
                     width: "100%",
-                    objectFit: "cover"
+                    objectFit: "cover",
                   }}
                 />
               </Box>
@@ -284,20 +295,26 @@ const TemplateOne = (props) => {
                 inset: 0,
                 justifyContent: "center",
                 alignItems: "center",
-                flexDirection: "column"
+                flexDirection: "column",
               }}
             >
-              <Box sx={{
-                py: 4,
-                px: 2,
-                color: "white",
-                textAlign: "center",
-                maxWidth: 512,
-              }}>
+              <Box
+                sx={{
+                  py: 4,
+                  px: 2,
+                  color: "white",
+                  textAlign: "center",
+                  maxWidth: 512,
+                }}
+              >
                 <Box sx={{ textShadow: "1px 1px 4px rgba(0,0,0,0.65)" }}>
-                  <Box sx={{ fontSize: 2, fontWeight: "bold", mb: 2, mt: 4 }}>Dear Mr/Mrs/Ms</Box>
+                  <Box sx={{ fontSize: 2, fontWeight: "bold", mb: 2, mt: 4 }}>
+                    Dear Mr/Mrs/Ms
+                  </Box>
                   <Box sx={{ fontSize: 5, mb: 4 }}>{searchParams.untuk}</Box>
-                  <Box sx={{ fontSize: 2, mb: 4 }}>You are invited to our wedding</Box>
+                  <Box sx={{ fontSize: 2, mb: 4 }}>
+                    You are invited to our wedding
+                  </Box>
                 </Box>
                 <Box
                   as="button"
@@ -320,12 +337,14 @@ const TemplateOne = (props) => {
                 </Box>
               </Box>
             </Flex>
-          </Box>}
+          </Box>
+        )}
 
-        <Flex as="section"
+        <Flex
+          as="section"
           sx={{
             height: "100vh",
-            flexDirection: ["column", "row"]
+            flexDirection: ["column", "row"],
           }}
         >
           <Box
@@ -333,9 +352,9 @@ const TemplateOne = (props) => {
               width: ["100%", "50%", "60%"],
               height: ["25%", "auto"],
               position: "relative",
-              "img": {
-                objectFit: "cover"
-              }
+              img: {
+                objectFit: "cover",
+              },
             }}
           >
             <Box
@@ -345,7 +364,7 @@ const TemplateOne = (props) => {
                 display: "block",
                 height: "100%",
                 width: "100%",
-                objectFit: "cover"
+                objectFit: "cover",
               }}
             />
           </Box>
@@ -363,7 +382,10 @@ const TemplateOne = (props) => {
             <Fade bottom>
               <Box sx={{ fontSize: [5, 6], mb: 4, color: "lightText" }}>
                 <Box display={["block", "inline-block"]}>SAVE</Box>
-                <Box display={["block", "inline"]} fontFamily="script"> the </Box>
+                <Box display={["block", "inline"]} fontFamily="script">
+                  {" "}
+                  the{" "}
+                </Box>
                 <Box display={["block", "inline-block"]}>DATE</Box>
               </Box>
               <Box sx={{ fontSize: 5, mb: 4, fontWeight: 500, color: "text" }}>
@@ -380,7 +402,9 @@ const TemplateOne = (props) => {
                     px: 3,
                     mx: 3,
                   }}
-                >{date.format("DD")}</Box>
+                >
+                  {date.format("DD")}
+                </Box>
                 <span>{date.get("year")}</span>
               </Box>
               <Box mb={4}>
@@ -391,7 +415,7 @@ const TemplateOne = (props) => {
                     textTransform: "uppercase",
                     whiteSpace: "nowrap",
                     transform: `scale(0.95)`,
-                    color: "text"
+                    color: "text",
                   }}
                 >
                   <Box display={["inline", "block"]}>{groom.nickname}</Box>
@@ -399,7 +423,7 @@ const TemplateOne = (props) => {
                     sx={{
                       display: ["inline", "block"],
                       textTransform: "lowercase",
-                      fontFamily: "script"
+                      fontFamily: "script",
                     }}
                   >{` & `}</Box>
                   <Box display={["inline", "block"]}>{bride.nickname}</Box>
@@ -413,7 +437,8 @@ const TemplateOne = (props) => {
           </Flex>
         </Flex>
 
-        <Box as="section"
+        <Box
+          as="section"
           className="page second-page"
           sx={{
             mt: 6,
@@ -424,13 +449,26 @@ const TemplateOne = (props) => {
           }}
         >
           <Fade bottom>
-            <Text as="div" color="accent" mb={3} fontFamily="script" fontSize={6} >We Found Love</Text>
-            <Text as="p" color="text" mb={3} >{optional.verse_quote[0].content}</Text>
-            <Text as="p" color="lightText" fontWeight="bold">{optional.verse_quote[0].verse}</Text>
+            <Text
+              as="div"
+              color="accent"
+              mb={3}
+              fontFamily="script"
+              fontSize={6}
+            >
+              We Found Love
+            </Text>
+            <Text as="p" color="text" mb={3}>
+              {optional.verse_quote[0].content}
+            </Text>
+            <Text as="p" color="lightText" fontWeight="bold">
+              {optional.verse_quote[0].verse}
+            </Text>
           </Fade>
         </Box>
 
-        <Flex as="section"
+        <Flex
+          as="section"
           sx={{
             // height: "75vh",
             mt: 6,
@@ -439,7 +477,7 @@ const TemplateOne = (props) => {
             maxWidth: 710,
             flexDirection: ["column", "row"],
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <Flex
@@ -447,7 +485,7 @@ const TemplateOne = (props) => {
               mb: 0,
               width: ["auto", "50%"],
               flexDirection: ["row", "column"],
-              alignItems: "center"
+              alignItems: "center",
             }}
           >
             <Fade right>
@@ -461,7 +499,7 @@ const TemplateOne = (props) => {
                   width: [115, 175],
                   borderRadius: "100%",
                   position: "relative",
-                  flexShrink: 0
+                  flexShrink: 0,
                 }}
               >
                 <Box
@@ -475,8 +513,20 @@ const TemplateOne = (props) => {
                 />
               </Box>
               <Box sx={{ textAlign: ["left", "center"], mb: 3, fontSize: 1 }}>
-                <Box as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 1, color: "accent" }}>{groom.nickname}</Box>
-                <Box as="div" sx={{ color: "lighterText", mb: [2, 4] }}>{groom.full_name}</Box>
+                <Box
+                  as="div"
+                  sx={{
+                    fontFamily: "script",
+                    fontSize: 6,
+                    mb: 1,
+                    color: "accent",
+                  }}
+                >
+                  {groom.nickname}
+                </Box>
+                <Box as="div" sx={{ color: "lighterText", mb: [2, 4] }}>
+                  {groom.full_name}
+                </Box>
                 <Box sx={{ mb: 2, color: "lightText" }}>Putra dari:</Box>
                 <Box color="lighterText">
                   <div>{groom.father}</div>
@@ -504,7 +554,7 @@ const TemplateOne = (props) => {
                   width: [115, 175],
                   borderRadius: "100%",
                   position: "relative",
-                  flexShrink: 0
+                  flexShrink: 0,
                 }}
               >
                 <Box
@@ -518,8 +568,20 @@ const TemplateOne = (props) => {
                 />
               </Box>
               <Box sx={{ textAlign: ["right", "center"], mb: 3, fontSize: 1 }}>
-                <Box as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 1, color: "accent" }}>{bride.nickname}</Box>
-                <Box as="div" sx={{ color: "lighterText", mb: [2, 4] }}>{bride.full_name}</Box>
+                <Box
+                  as="div"
+                  sx={{
+                    fontFamily: "script",
+                    fontSize: 6,
+                    mb: 1,
+                    color: "accent",
+                  }}
+                >
+                  {bride.nickname}
+                </Box>
+                <Box as="div" sx={{ color: "lighterText", mb: [2, 4] }}>
+                  {bride.full_name}
+                </Box>
                 <Box sx={{ mb: 2, color: "lightText" }}>Putri dari:</Box>
                 <Box color="lighterText">
                   <div>{bride.father}</div>
@@ -528,16 +590,19 @@ const TemplateOne = (props) => {
               </Box>
             </Fade>
           </Flex>
-
         </Flex>
 
         <Counter target={date}>
           {({ diff }) => {
             const duration = moment.duration(diff);
-            if (duration.milliseconds() < 0 || duration.seconds() < 0) { return null; }
+            if (duration.milliseconds() < 0 || duration.seconds() < 0) {
+              return null;
+            }
             return (
               <Box as="section" mt={6} px={2}>
-                <Box fontSize={2} color="lightText" textAlign="center">Countdown</Box>
+                <Box fontSize={2} color="lightText" textAlign="center">
+                  Countdown
+                </Box>
                 <Flex justifyContent="center">
                   <Flex
                     sx={{
@@ -552,9 +617,9 @@ const TemplateOne = (props) => {
                         },
                         ".subtitle": {
                           fontSize: [1, 2],
-                          color: "lighterText"
-                        }
-                      }
+                          color: "lighterText",
+                        },
+                      },
                     }}
                   >
                     <div>
@@ -576,7 +641,7 @@ const TemplateOne = (props) => {
                   </Flex>
                 </Flex>
               </Box>
-            )
+            );
           }}
         </Counter>
 
@@ -596,7 +661,17 @@ const TemplateOne = (props) => {
               }}
             >
               <Fade bottom>
-                <Text as="div" sx={{ fontFamily: "script", fontSize: 6, mb: 3, color: "accent" }}>{ltd.label}</Text>
+                <Text
+                  as="div"
+                  sx={{
+                    fontFamily: "script",
+                    fontSize: 6,
+                    mb: 3,
+                    color: "accent",
+                  }}
+                >
+                  {ltd.label}
+                </Text>
                 <Flex
                   sx={{
                     justifyContent: "center",
@@ -604,8 +679,8 @@ const TemplateOne = (props) => {
                     mb: 3,
                     color: "lighterText",
                     "> *": {
-                      flexShrink: 0
-                    }
+                      flexShrink: 0,
+                    },
                   }}
                 >
                   <Box width={["37.5%", "40%"]}>
@@ -615,10 +690,20 @@ const TemplateOne = (props) => {
                         borderBottomColor: "borderLine",
                         borderBottomStyle: "solid",
                         pb: 2,
-                        mb: 2
+                        mb: 2,
                       }}
-                    >{date.format("HH:mm")} WITA - Selesai</Box>
-                    <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{ltd.label}</Box>
+                    >
+                      {date.format("HH:mm")} WITA - Selesai
+                    </Box>
+                    <Box
+                      sx={{
+                        fontFamily: "script",
+                        fontSize: [2, 4],
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {ltd.label}
+                    </Box>
                   </Box>
                   <Box
                     sx={{
@@ -633,7 +718,9 @@ const TemplateOne = (props) => {
                     }}
                   >
                     <Box sx={{ fontSize: 2 }}>{date.format("MMMM")}</Box>
-                    <Box sx={{ fontSize: [5, 6], lineHeight: 1 }}>{date.format("DD")}</Box>
+                    <Box sx={{ fontSize: [5, 6], lineHeight: 1 }}>
+                      {date.format("DD")}
+                    </Box>
                     <Box sx={{ fontSize: 3 }}>{date.format("YYYY")}</Box>
                   </Box>
                   <Box width={["37.5%", "40%"]}>
@@ -643,10 +730,20 @@ const TemplateOne = (props) => {
                         borderBottomColor: "borderLine",
                         borderBottomStyle: "solid",
                         pb: 2,
-                        mb: 2
+                        mb: 2,
                       }}
-                    >{ltd.address.name}</Box>
-                    <Box sx={{ fontFamily: "script", fontSize: [2, 4], fontWeight: "bold" }}>{ltd.address.city}</Box>
+                    >
+                      {ltd.address.name}
+                    </Box>
+                    <Box
+                      sx={{
+                        fontFamily: "script",
+                        fontSize: [2, 4],
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {ltd.address.city}
+                    </Box>
                   </Box>
                 </Flex>
                 <Text color="lightText">{ltd.address.location}</Text>
@@ -660,7 +757,7 @@ const TemplateOne = (props) => {
                 </Box>
               </Fade>
             </Box>
-          )
+          );
         })}
 
         {/* Maps */}
@@ -669,14 +766,23 @@ const TemplateOne = (props) => {
             mt: 5,
             height: "50vh",
             position: "relative",
-            "img": {
-              objectFit: "cover"
-            }
+            img: {
+              objectFit: "cover",
+            },
           }}
         >
           <Box
             as="img"
-            src={`https://api.mapbox.com/styles/v1/mapbox/light-v10/static/${location_time_date.map(({ pinpoint: pp }) => `pin-s-${pp.icon}+${pp.color.replace("#", "")}(${pp.longitude},${pp.latitude})`).join(",")}/auto/${1024}x${300}@2x?access_token=pk.eyJ1IjoiaWxvbW9uMTAiLCJhIjoiY2piZjh1cHVwMTRnbjJ3bzI1MWwwN2g3ZCJ9.txWBAfB2D7-vueg7G9FORA&attribution=false&logo=false&padding=100`}
+            src={`https://api.mapbox.com/styles/v1/mapbox/light-v10/static/${location_time_date
+              .map(
+                ({ pinpoint: pp }) =>
+                  `pin-s-${pp.icon}+${pp.color.replace("#", "")}(${
+                    pp.longitude
+                  },${pp.latitude})`
+              )
+              .join(
+                ","
+              )}/auto/${1024}x${300}@2x?access_token=pk.eyJ1IjoiaWxvbW9uMTAiLCJhIjoiY2piZjh1cHVwMTRnbjJ3bzI1MWwwN2g3ZCJ9.txWBAfB2D7-vueg7G9FORA&attribution=false&logo=false&padding=100`}
             sx={{
               height: "100%",
               width: "100%",
@@ -686,8 +792,19 @@ const TemplateOne = (props) => {
         </Box>
 
         {/* Wedding Gallery */}
-        <Box as="section" sx={{ mt: 5, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}>
-          <Text sx={{ display: "block", fontFamily: "script", fontSize: 6, mb: 4, color: "lighterText" }}>
+        <Box
+          as="section"
+          sx={{ mt: 5, mx: "auto", px: 3, maxWidth: 710, textAlign: "center" }}
+        >
+          <Text
+            sx={{
+              display: "block",
+              fontFamily: "script",
+              fontSize: 6,
+              mb: 4,
+              color: "lighterText",
+            }}
+          >
             <div>Wedding</div>
             <div>Gallery</div>
           </Text>
@@ -705,7 +822,11 @@ const TemplateOne = (props) => {
                 perc.h = perc.h + 100;
               }
               return (
-                <Box key={id} width={[`${100 / 2}%`, `${100 / 3}%`]} sx={{ px: 2, pb: 3 }}>
+                <Box
+                  key={id}
+                  width={[`${100 / 2}%`, `${100 / 3}%`]}
+                  sx={{ px: 2, pb: 3 }}
+                >
                   <Flip bottom fraction={0.5}>
                     <Box
                       as={AspectRatio}
@@ -717,15 +838,19 @@ const TemplateOne = (props) => {
                           position: "absolute",
                           top: "50%",
                           left: "50%",
-                          transform: "translate(-50%,-50%)"
-                        }
+                          transform: "translate(-50%,-50%)",
+                        },
                       }}
                     >
                       <Box
                         className="img"
                         as={AspectRatio}
                         portrait={!ratio.isPortrait}
-                        ratio={ratio.isPortrait ? `${width}:${height}` : `${height}:${width}`}
+                        ratio={
+                          ratio.isPortrait
+                            ? `${width}:${height}`
+                            : `${height}:${width}`
+                        }
                       >
                         <Zoom wrapStyle={{ height: `100%`, width: `100%` }}>
                           <div
@@ -734,7 +859,7 @@ const TemplateOne = (props) => {
                               height: "100%",
                               width: "100%",
                               justifyContent: "center",
-                              alignItems: "center"
+                              alignItems: "center",
                             }}
                           >
                             <Image
@@ -751,13 +876,14 @@ const TemplateOne = (props) => {
                     </Box>
                   </Flip>
                 </Box>
-              )
+              );
             })}
           </Flex>
         </Box>
 
         {/* Guest Book */}
-        <Box as="section"
+        <Box
+          as="section"
           sx={{
             mt: 5,
             mx: "auto",
@@ -774,36 +900,57 @@ const TemplateOne = (props) => {
                 fontSize: 6,
                 flexShrink: 0,
                 mb: 4,
-                color: "lighterText"
+                color: "lighterText",
               }}
             >
               <span>Guest Book</span>
             </Box>
             <Box flexGrow={1} flexShrink={1}>
               {comments.map((comment, i) => (
-                <Box key={i} sx={{ position: "relative", mb: i < (comments.length - 1) ? 4 : 0, }}>
+                <Box
+                  key={i}
+                  sx={{
+                    position: "relative",
+                    mb: i < comments.length - 1 ? 4 : 0,
+                  }}
+                >
                   <Fade bottom>
                     <Box
                       sx={{
                         borderWidth: 1,
                         borderStyle: "solid",
-                        borderColor: "borderLine"
+                        borderColor: "borderLine",
                       }}
                     >
-                      <Box sx={{
-                        bg: "borderLine",
-                        p: 2,
-                        fontSize: 2,
-                        color: "text",
-                        borderBottomWidth: 1,
-                        borderBottomStyle: "solid",
-                        borderBottomColor: "borderLine"
-                      }}>
-                        <Box as="span" display={["block", "inline"]}>{comment["author_name"]}</Box>
-                        <Box as="span" display={["block", "inline"]} color="lighterText"> - {moment(comment["date"]).calendar()}</Box>
+                      <Box
+                        sx={{
+                          bg: "borderLine",
+                          p: 2,
+                          fontSize: 2,
+                          color: "text",
+                          borderBottomWidth: 1,
+                          borderBottomStyle: "solid",
+                          borderBottomColor: "borderLine",
+                        }}
+                      >
+                        <Box as="span" display={["block", "inline"]}>
+                          {comment["author_name"]}
+                        </Box>
+                        <Box
+                          as="span"
+                          display={["block", "inline"]}
+                          color="lighterText"
+                        >
+                          {" "}
+                          - {moment(comment["date"]).calendar()}
+                        </Box>
                       </Box>
                       <Box fontSize={4} fontFamily="script" p={2} color="text">
-                        <div dangerouslySetInnerHTML={{ __html: comment.content.rendered }} />
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: comment.content.rendered,
+                          }}
+                        />
                       </Box>
                     </Box>
                   </Fade>
@@ -811,7 +958,15 @@ const TemplateOne = (props) => {
               ))}
             </Box>
           </Flex>
-          <Box sx={{ flexShrink: 1, maxWidth: [350], width: "100%", mx: "auto", pt: 4 }}>
+          <Box
+            sx={{
+              flexShrink: 1,
+              maxWidth: [350],
+              width: "100%",
+              mx: "auto",
+              pt: 4,
+            }}
+          >
             <form onSubmit={executeRecaptcha}>
               <Flex mb={2} mx={-2}>
                 <Box px={2} width="50%">
@@ -843,23 +998,21 @@ const TemplateOne = (props) => {
               </Box>
               <Flex mt={2}>
                 <Box>
-                  <Button
-                    text={"Send"}
-                    type="submit"
-                    loading={loading}
-                  />
+                  <Button text={"Send"} type="submit" loading={loading} />
                 </Box>
-                <Box sx={{
-                  height: 30,
-                  width: "100%",
-                  ".grecaptcha-badge": {
-                    mx: "auto"
-                  },
-                  "> div": {
-                    mt: -3,
-                    transform: "scale(0.5)",
-                  },
-                }}>
+                <Box
+                  sx={{
+                    height: 30,
+                    width: "100%",
+                    ".grecaptcha-badge": {
+                      mx: "auto",
+                    },
+                    "> div": {
+                      mt: -3,
+                      transform: "scale(0.5)",
+                    },
+                  }}
+                >
                   <ReCAPTCHA
                     ref={recaptchaRef}
                     size="invisible"
@@ -883,10 +1036,15 @@ const TemplateOne = (props) => {
             maxWidth: 710,
             textAlign: "center",
             lineHeight: 1.5,
-            color: "lightText"
+            color: "lightText",
           }}
         >
-          <Box textAlign={["justify", "center"]}>Jangan ragu untuk datang, kami sudah berkordinasi dengan semua pihak terkait pencegahan penularan COVID-19. Acara kami akan mengikuti segala prosedur protokol kesehatan untuk mencegah penularan COVID-19. So, don't be panic, we look forward to seeing you there!</Box>
+          <Box textAlign={["justify", "center"]}>
+            Jangan ragu untuk datang, kami sudah berkordinasi dengan semua pihak
+            terkait pencegahan penularan COVID-19. Acara kami akan mengikuti
+            segala prosedur protokol kesehatan untuk mencegah penularan
+            COVID-19. So, don't be panic, we look forward to seeing you there!
+          </Box>
           <Flex
             sx={{
               flexWrap: "wrap",
@@ -903,23 +1061,27 @@ const TemplateOne = (props) => {
                   borderWidth: 2,
                   borderStyle: "solid",
                   borderColor: "yellow.5",
-                }
-              }
+                },
+              },
             }}
           >
-            {[{
-              desc: "Tamu undangan wajib menggunakan masker.",
-              imgUrl: "/safety_protocol-wear_mask.jpg",
-            }, {
-              desc: "Suhu tubuh normal dibawah 37.5deg",
-              imgUrl: "/safety_protocol-check_temp.jpeg",
-            }, {
-              desc: "Jaga jarak antar orang minimal sekitar 1 meter.",
-              imgUrl: "/safety_protocol-social_distancing.jpg",
-            }, {
-              desc: "Cuci tangan menggunakan air dan sabun atau menggunkan hand sanitizer",
-              imgUrl: "/safety_protocol-wash_hand.jpg",
-            },
+            {[
+              {
+                desc: "Tamu undangan wajib menggunakan masker.",
+                imgUrl: "/safety_protocol-wear_mask.jpg",
+              },
+              {
+                desc: "Suhu tubuh normal dibawah 37.5deg",
+                imgUrl: "/safety_protocol-check_temp.jpeg",
+              },
+              {
+                desc: "Jaga jarak antar orang minimal sekitar 1 meter.",
+                imgUrl: "/safety_protocol-social_distancing.jpg",
+              },
+              {
+                desc: "Cuci tangan menggunakan air dan sabun atau menggunkan hand sanitizer",
+                imgUrl: "/safety_protocol-wash_hand.jpg",
+              },
             ].map((v, i) => (
               <div key={i}>
                 <div>
@@ -950,7 +1112,9 @@ const TemplateOne = (props) => {
                         border: "2px solid white",
                         borderColor: "yellow.6",
                       }}
-                    >{i + 1}</Box>
+                    >
+                      {i + 1}
+                    </Box>
                     <Flex
                       sx={{
                         position: "absolute",
@@ -965,7 +1129,7 @@ const TemplateOne = (props) => {
                         sx={{
                           color: "yellow.5",
                           fontWeight: "bold",
-                          textShadow: "1px 1px 2px rgb(0,0,0)"
+                          textShadow: "1px 1px 2px rgb(0,0,0)",
                         }}
                       >
                         {v["desc"]}
@@ -976,27 +1140,25 @@ const TemplateOne = (props) => {
               </div>
             ))}
           </Flex>
-          <Box>Bagi para tamu undangan diharapkan mengikuti protokol pencegahan COVID-19</Box>
+          <Box>
+            Bagi para tamu undangan diharapkan mengikuti protokol pencegahan
+            COVID-19
+          </Box>
         </Box>
 
-        {
-          music &&
+        {music && (
           <Box textAlign="center" pt={4}>
-            <AudioPlayer
-              ref={audioPlayerRef}
-              src={music}
-              controls
-            />
+            <AudioPlayer ref={audioPlayerRef} src={music} controls />
           </Box>
-        }
+        )}
 
         <Box as="footer" my={5} textAlign="center" color="lightText">
-          <div>Made with ❤ by Ba Undang.</div>
+          <div>Made with ❤ by {CONSTANTS.APP_NAME}.</div>
         </Box>
       </Box>
-    </ThemeProvider >
+    </ThemeProvider>
   );
-}
+};
 
 TemplateOne.propTypes = {
   groom: PropTypes.shape({
@@ -1020,8 +1182,8 @@ TemplateOne.propTypes = {
     image: PropTypes.string,
     pinpoint: PropTypes.shape({
       lat: PropTypes.number,
-      long: PropTypes.number
-    })
+      long: PropTypes.number,
+    }),
   }),
   contract: PropTypes.shape({
     date: PropTypes.string,
@@ -1029,10 +1191,10 @@ TemplateOne.propTypes = {
     image: PropTypes.string,
     pinpoint: PropTypes.shape({
       lat: PropTypes.number,
-      long: PropTypes.number
-    })
+      long: PropTypes.number,
+    }),
   }),
-}
+};
 
 TemplateOne.defaultProps = {
   bride: {
@@ -1040,25 +1202,25 @@ TemplateOne.defaultProps = {
     full_name: "noni",
     father: "mr. fathernya noni",
     mother: "mr. mothernya noni",
-    image: ""
+    image: "",
   },
   groom: {
     nickname: "nyong",
     full_name: "nyong",
     father: "mr. fathernya nyong",
     mother: "mr. mothernya nyong",
-    image: ""
+    image: "",
   },
   alsoInvite: [],
   reception: {
     date: moment().toISOString(),
     location: "here",
-    image: ""
+    image: "",
   },
   contract: {
     date: moment().toISOString(),
     location: "here",
-    image: ""
+    image: "",
   },
-}
+};
 export default TemplateOne;
