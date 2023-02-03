@@ -36,6 +36,7 @@
     "react-collapsed": "^3.6.0",
     "react-color": "^2.19.3",
     "react-contenteditable": "^3.3.6",
+    "react-datetime-picker": "^4.2.0",
     "react-dom": "^17.0.2",
     "react-dropzone": "^14.2.3",
     "react-google-recaptcha": "^2.1.0",

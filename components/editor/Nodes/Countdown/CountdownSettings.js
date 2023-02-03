@@ -6,6 +6,10 @@ import _get from "lodash/get";
 import _set from "lodash/set";
 import moment from "moment";
 import { Box } from "components/Grid";
+import DateTimePicker from "react-datetime-picker/dist/entry.nostyle";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
 
 export const CountdownSettings = () => {
   const {
@@ -23,7 +27,13 @@ export const CountdownSettings = () => {
         props={["date"]}
       >
         <FormGroup label="Date">
-          <InputGroup
+          <DateTimePicker
+            onChange={(e) =>
+              setProp((props) => (props.date = moment(e).toISOString()), 500)
+            }
+            value={moment(_get(values, "date")).toDate() || ""}
+          />
+          {/* <InputGroup
             type="date"
             defaultValue={
               moment(_get(values, "date")).format("YYYY-MM-DD") || ""
@@ -38,7 +48,7 @@ export const CountdownSettings = () => {
                 500
               );
             }}
-          />
+          /> */}
         </FormGroup>
         <Box>
           <RadioGroup
