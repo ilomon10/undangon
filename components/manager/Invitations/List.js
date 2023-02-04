@@ -1,18 +1,14 @@
 import { Box, Flex } from "components/Grid";
 import client from "components/client";
 import { useQuery } from "@tanstack/react-query";
-import {
-  AnchorButton,
-  Button,
-  Card,
-  Menu,
-  MenuDivider,
-  MenuItem,
-} from "@blueprintjs/core";
+import { AnchorButton, Button, Dialog } from "@blueprintjs/core";
 import Link from "next/link";
+import { InvitationEditDialog } from "./Edit.Dialog";
+import { State } from "components/State";
+import { toaster } from "components/toaster";
 
 export const InvitationList = () => {
-  const { data, isLoading, isError, isSuccess } = useQuery(
+  const { data, isLoading, isError, isSuccess, refetch } = useQuery(
     ["invitations"],
     async () => {
       let res = [];
@@ -35,7 +31,7 @@ export const InvitationList = () => {
 
   return (
     <Box>
-      {data.map(({ _id, name, category, slug }) => (
+      {data.map(({ _id, name, category, slug, ...d }) => (
         <Flex
           key={_id}
           py={2}
@@ -52,15 +48,44 @@ export const InvitationList = () => {
           </Box>
           <Box color={"gray.5"}>{category.name}</Box>
           <Box pl={2}>
-            <Link href={`/manager/invitation/editor/${_id}`} passHref>
-              <AnchorButton
-                small
-                title="Edit"
-                icon="edit"
-                minimal
-                target="_blank"
-              />
-            </Link>
+            <State defaultValue={false}>
+              {({ state, setState }) => (
+                <>
+                  <Button
+                    small
+                    title="Edit"
+                    icon="edit"
+                    minimal
+                    onClick={() => {
+                      setState(true);
+                    }}
+                  />
+                  <Dialog isOpen={state} onClose={() => setState(false)}>
+                    <InvitationEditDialog
+                      defaultValue={{ _id, name, category, slug, ...d }}
+                      onErrorSubmitted={() => {
+                        toaster.show({
+                          intent: "danger",
+                          message: "Error Submitted.",
+                        });
+                        setState(false);
+                      }}
+                      onSubmitted={() => {
+                        toaster.show({
+                          intent: "success",
+                          message: "Invitation saved.",
+                        });
+                        refetch();
+                        setState(false);
+                      }}
+                      onClose={() => {
+                        setState(false);
+                      }}
+                    />
+                  </Dialog>
+                </>
+              )}
+            </State>
           </Box>
           <Box pl={2}>
             <Link href={`/i/p/${slug}`} passHref>

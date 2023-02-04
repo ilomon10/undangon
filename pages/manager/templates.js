@@ -14,6 +14,7 @@ export default function Templates() {
         <Box
           sx={{
             py: 4,
+            overflowY: "auto",
           }}
         >
           <Box

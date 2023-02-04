@@ -13,6 +13,7 @@ export default function Invitations() {
         <Box
           sx={{
             py: 4,
+            overflowY: "auto",
           }}
         >
           <Box

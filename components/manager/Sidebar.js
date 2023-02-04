@@ -8,7 +8,7 @@ import {
   Position,
   Text,
 } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
+import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
 import { Box, Flex } from "../Grid";
 import { toaster } from "../toaster";
 import { useRouter } from "next/router";
@@ -40,12 +40,15 @@ export const Sidebar = (props) => {
       >
         {list.map(({ icon, text, path }) => (
           <li key={path}>
-            <Link
-              href={path}
-              passHref
-            >
-              <div className={`${Classes.MENU_ITEM} ${router.pathname === path ? Classes.ACTIVE : ""}`}>
-                <Icon className={`${Classes.MENU_ITEM_ICON}`} icon={icon} />
+            <Link href={path} passHref>
+              <div
+                className={`${Classes.MENU_ITEM} ${
+                  router.pathname === path ? Classes.ACTIVE : ""
+                }`}
+              >
+                <Tooltip2 content={text}>
+                  <Icon className={`${Classes.MENU_ITEM_ICON}`} icon={icon} />
+                </Tooltip2>
                 <Text className={`${Classes.FILL}`} ellipsize={true}>
                   {text}
                 </Text>
