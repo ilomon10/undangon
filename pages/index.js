@@ -36,7 +36,11 @@ export default function Home() {
           content={`https://${CONSTANTS.APP_DOMAIN}/logo.svg`}
           key="ogimage"
         />
-        <meta property="og:site_name" content={`${CONSTANTS.APP_NAME}`} key="ogsitename" />
+        <meta
+          property="og:site_name"
+          content={`${CONSTANTS.APP_NAME}`}
+          key="ogsitename"
+        />
         <meta
           property="og:url"
           content={`https://${CONSTANTS.APP_DOMAIN}/`}
@@ -63,7 +67,7 @@ export default function Home() {
 
       <Box as="main" textAlign="center" overflow="hidden">
         <section>
-          <Box as="h1">Pakai Undangan Online</Box>
+          <Box as="h1">Pakai Undangan Digital</Box>
           <Box as="p" fontSize={3} mt={2}>
             Tanpa Kertas. Tanpa Ribet.
           </Box>
@@ -201,7 +205,7 @@ export default function Home() {
               <Box ml={2}>Dengan cinta, dari Manado</Box>
             </Flex>
             <Box flexGrow={1} />
-            <div>&#169; Manjo</div>
+            <div>&#169; Manjo 2020.</div>
           </Flex>
         </Box>
       </footer>
