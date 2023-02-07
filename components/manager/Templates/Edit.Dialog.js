@@ -10,13 +10,20 @@ import { FetchAndSelect } from "components/Select/FetchAndSelect";
 import { Formik } from "formik";
 import { useCallback } from "react";
 
-export const TemplatesAddDialog = ({ onClose }) => {
+export const TemplatesEditDialog = ({
+  onClose,
+  onErrorSubmitted = () => {},
+  onSubmitted = () => {},
+  defaultValue = {},
+}) => {
   const onSubmit = useCallback(async (values, { setSubmitting }) => {
     let data = values;
     try {
       let res = await client.postTemplate(data);
+      onSubmitted();
       onClose();
     } catch (err) {
+      onErrorSubmitted();
       console.error(err);
     }
     setSubmitting(false);
@@ -24,9 +31,9 @@ export const TemplatesAddDialog = ({ onClose }) => {
   return (
     <Formik
       initialValues={{
-        category: "",
-        name: "",
-        content: "",
+        _id: defaultValue._id,
+        name: defaultValue.name,
+        category: defaultValue.category._id,
       }}
       onSubmit={onSubmit}
     >
@@ -53,6 +60,7 @@ export const TemplatesAddDialog = ({ onClose }) => {
                 initialValue={values["category"]}
                 value={values["category"]}
                 onChange={async ({ value }) => {
+                  console.log(value);
                   await setFieldValue("category", value);
                 }}
                 fetchCallback={async () => {
@@ -76,13 +84,15 @@ export const TemplatesAddDialog = ({ onClose }) => {
                 intent="danger"
                 minimal
                 text="Cancel"
-                onClick={() => onClose()}
+                onClick={() => {
+                  onClose();
+                }}
               />
               <Button
                 type="submit"
                 loading={isSubmitting}
                 intent="primary"
-                text="Create"
+                text="Save"
               />
             </div>
           </div>
