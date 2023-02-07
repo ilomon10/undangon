@@ -10,6 +10,8 @@ export const Container = ({
   padding,
   margin,
   borderRadius,
+  backgroundColor,
+  background,
   ...style
 }) => {
   const { media, isProduction } = useViewport();
@@ -67,6 +69,7 @@ export const Container = ({
         padding: `${padding[0]}px ${padding[1]}px ${padding[2]}px ${padding[3]}px`,
         margin: `${margin.join(" ")}`,
         borderRadius: `${borderRadius ? borderRadius.join(" ") : undefined}`,
+        background: background || backgroundColor || undefined,
       }}
     >
       {children}
@@ -87,7 +90,7 @@ export const containerDefaultProps = {
   margin: [0, 0, 0, 0],
 
   backgroundColor: undefined,
-  backgroundImage: undefined,
+  background: undefined,
   borderRadius: [0, 0, 0, 0],
   overflow: undefined,
   opacity: 1,

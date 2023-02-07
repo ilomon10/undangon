@@ -42,6 +42,7 @@ export const ContainerSettings = () => {
       "maxWidth",
       "padding",
       "margin",
+      "background",
       "backgroundColor",
       "borderRadius",
       "flexWrap",
@@ -350,6 +351,28 @@ export const ContainerSettings = () => {
             value={values.backgroundColor}
             onChange={(color) => {
               setProp((props) => (props.backgroundColor = color.hex));
+            }}
+          />
+        </FormGroup>
+        <FormGroup
+          label="Background"
+          labelInfo={
+            values.background && (
+              <Button
+                small={true}
+                icon="cross"
+                minimal={true}
+                onClick={() => {
+                  setProp((props) => (props.background = undefined));
+                }}
+              />
+            )
+          }
+        >
+          <InputGroup
+            defaultValue={values.background}
+            onChange={(e) => {
+              setProp((props) => (props.background = e.target.value));
             }}
           />
         </FormGroup>
