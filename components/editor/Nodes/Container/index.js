@@ -86,12 +86,12 @@ export const containerDefaultProps = {
   maxWidth: undefined,
 
   padding: [0, 0, 0, 0],
-
   margin: [0, 0, 0, 0],
 
   backgroundColor: undefined,
   background: undefined,
   borderRadius: [0, 0, 0, 0],
+  border: undefined,
   overflow: undefined,
   opacity: 1,
 

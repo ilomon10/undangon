@@ -376,6 +376,28 @@ export const ContainerSettings = () => {
             }}
           />
         </FormGroup>
+        <FormGroup
+          label="Border"
+          labelInfo={
+            values.border && (
+              <Button
+                small={true}
+                icon="cross"
+                minimal={true}
+                onClick={() => {
+                  setProp((props) => (props.border = undefined));
+                }}
+              />
+            )
+          }
+        >
+          <InputGroup
+            defaultValue={values.border}
+            onChange={(e) => {
+              setProp((props) => (props.border = e.target.value));
+            }}
+          />
+        </FormGroup>
         <Flex alignItems="center" mb={2}>
           <Box>Border Radius</Box>
           <Box flexGrow={1} />
