@@ -1,4 +1,3 @@
-import { useDebounce } from "components/useDebounce";
 import { useCallback, useMemo, useRef, useState } from "react";
 import removeEmpty from "../utils/removeEmpty";
 import {
@@ -10,6 +9,7 @@ import {
   SET_SORT,
   SHOW_FILTER,
 } from "./queryReducer";
+import { useDebounce } from "../utils/useDebounce";
 
 export const useListParamsController = (props) => {
   const {

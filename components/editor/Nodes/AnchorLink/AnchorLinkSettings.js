@@ -1,12 +1,5 @@
-import {
-  Button,
-  FormGroup,
-  Icon,
-  InputGroup,
-  RadioGroup,
-} from "@blueprintjs/core";
+import { Button, Input } from "@mantine/core";
 import { useNode } from "@craftjs/core";
-import { ColorPicker } from "components/ColorPicker";
 import { DragValue } from "components/DragValue";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import { Box, Flex } from "components/Grid";
@@ -29,22 +22,22 @@ export const AnchorLinkSettings = () => {
         label={({ href }) => `${href}`}
         props={["href"]}
       >
-        <FormGroup label="href">
-          <InputGroup
+        <Input.Wrapper label="href">
+          <Input
             defaultValue={values.href || ""}
             onChange={(e) => {
               setProp((props) => (props.href = e.target.value), 500);
             }}
           />
-        </FormGroup>
-        <FormGroup label="target">
-          <InputGroup
+        </Input.Wrapper>
+        <Input.Wrapper label="target">
+          <Input
             defaultValue={values.target || ""}
             onChange={(e) => {
               setProp((props) => (props.target = e.target.value), 500);
             }}
           />
-        </FormGroup>
+        </Input.Wrapper>
       </SettingSection>
     </>
   );

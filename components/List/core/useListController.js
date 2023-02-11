@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { SORT_ASC } from "./queryReducer";
 import { useListParamsController } from "./useListParamsController";
 import { useListSelectionController } from "./useListSelectionController";

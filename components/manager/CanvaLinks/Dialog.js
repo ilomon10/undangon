@@ -1,10 +1,4 @@
-import {
-  Button,
-  Callout,
-  Classes,
-  FormGroup,
-  InputGroup,
-} from "@blueprintjs/core";
+import { Button, Card, Group, Input } from "@mantine/core";
 import client from "components/client";
 import { Formik } from "formik";
 import { useCallback } from "react";
@@ -19,7 +13,7 @@ const Schema = Yup.object().shape({
 export const CanvaLinksDialog = ({
   onClose,
   onSubmitted = () => {},
-  onErrorSubmitted,
+  onErrorSubmitted = () => {},
   defaultValue = {},
 }) => {
   const onSubmit = useCallback(async (values, { setSubmitting }) => {
@@ -29,6 +23,7 @@ export const CanvaLinksDialog = ({
       onSubmitted();
       onClose();
     } catch (err) {
+      onErrorSubmitted();
       console.error(err);
     }
     setSubmitting(false);
@@ -53,48 +48,34 @@ export const CanvaLinksDialog = ({
         isSubmitting,
       }) => (
         <form onSubmit={handleSubmit}>
-          <div className={Classes.DIALOG_BODY}>
-            <FormGroup
-              label="Name"
-              intent={errors["name"] && "danger"}
-              helperText={errors["name"]}
-            >
-              <InputGroup
-                intent={errors["name"] && "danger"}
+          <div>
+            <Input.Wrapper label="Name" error={errors["name"]}>
+              <Input
                 name="name"
                 value={values["name"]}
                 onChange={handleChange}
+                invalid={!!errors["name"]}
               />
-            </FormGroup>
-            <FormGroup
-              label="Link"
-              intent={errors["link"] && "danger"}
-              helperText={errors["link"]}
-            >
-              <InputGroup
-                intent={errors["link"] && "danger"}
+            </Input.Wrapper>
+            <Input.Wrapper label="Link" error={errors["link"]}>
+              <Input
                 name="link"
                 value={values["link"]}
                 onChange={handleChange}
+                invalid={!!errors["link"]}
               />
-            </FormGroup>
-            <Callout>{JSON.stringify(errors)}</Callout>
+            </Input.Wrapper>
+            <Card>{JSON.stringify(errors)}</Card>
           </div>
-          <div className={Classes.DIALOG_FOOTER}>
-            <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-              <Button
-                intent="danger"
-                minimal
-                text="Cancel"
-                onClick={() => onClose()}
-              />
-              <Button
-                type="submit"
-                loading={isSubmitting}
-                intent="primary"
-                text="Save"
-              />
-            </div>
+          <div>
+            <Group>
+              <Button color="red" variant="subtle" onClick={() => onClose()}>
+                Cancel
+              </Button>
+              <Button type="submit" loading={isSubmitting}>
+                Submit
+              </Button>
+            </Group>
           </div>
         </form>
       )}

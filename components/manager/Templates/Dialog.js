@@ -1,20 +1,32 @@
-import {
-  Button,
-  Classes,
-  FormGroup,
-  HTMLSelect,
-  InputGroup,
-} from "@blueprintjs/core";
+import { Box, Button, Group, Input } from "@mantine/core";
 import client from "components/client";
 import { FetchAndSelect } from "components/Select/FetchAndSelect";
 import { Formik } from "formik";
 import { useCallback } from "react";
+import * as Yup from "yup";
 
-export const TemplatesEditDialog = ({
+const Schema = Yup.object().shape({
+  slug: Yup.string().required(),
+  name: Yup.string().required(),
+  category: Yup.string().required(),
+  meta: Yup.object().shape({
+    title: Yup.string().required(),
+    og_title: Yup.string().required(),
+    og_description: Yup.string().required(),
+  }),
+});
+
+const initialValue = {
+  _id: undefined,
+  name: "",
+  category: "",
+};
+
+export const TemplatesDialog = ({
   onClose,
   onErrorSubmitted = () => {},
   onSubmitted = () => {},
-  defaultValue = {},
+  defaultValue = initialValue,
 }) => {
   const onSubmit = useCallback(async (values, { setSubmitting }) => {
     let data = values;
@@ -33,7 +45,7 @@ export const TemplatesEditDialog = ({
       initialValues={{
         _id: defaultValue._id,
         name: defaultValue.name,
-        category: defaultValue.category._id,
+        category: defaultValue.category,
       }}
       onSubmit={onSubmit}
     >
@@ -45,21 +57,19 @@ export const TemplatesEditDialog = ({
         isSubmitting,
       }) => (
         <form onSubmit={handleSubmit}>
-          <div className={Classes.DIALOG_BODY}>
-            <FormGroup label="Name">
-              <InputGroup
+          <div>
+            <Input.Wrapper label="Name" mb={8}>
+              <Input
                 name="name"
                 value={values["name"]}
                 onChange={handleChange}
               />
-            </FormGroup>
-            <FormGroup label="Category">
+            </Input.Wrapper>
+            <Input.Wrapper label="Category" mb={8}>
               <FetchAndSelect
-                id="f-category"
-                name="category"
-                initialValue={values["category"]}
+                searchable={true}
                 value={values["category"]}
-                onChange={async ({ value }) => {
+                onChange={async (value) => {
                   console.log(value);
                   await setFieldValue("category", value);
                 }}
@@ -76,25 +86,21 @@ export const TemplatesEditDialog = ({
                   });
                 }}
               />
-            </FormGroup>
+            </Input.Wrapper>
           </div>
-          <div className={Classes.DIALOG_FOOTER}>
-            <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+          <div>
+            <Group position="right">
               <Button
                 intent="danger"
-                minimal
-                text="Cancel"
-                onClick={() => {
-                  onClose();
-                }}
-              />
-              <Button
-                type="submit"
-                loading={isSubmitting}
-                intent="primary"
-                text="Save"
-              />
-            </div>
+                variant="subtle"
+                onClick={() => onClose()}
+              >
+                Cancel
+              </Button>
+              <Button type="submit" loading={isSubmitting}>
+                Save
+              </Button>
+            </Group>
           </div>
         </form>
       )}

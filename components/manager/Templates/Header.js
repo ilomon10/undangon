@@ -1,37 +1,55 @@
-import { Button, Classes, Dialog } from "@blueprintjs/core";
-import { Box, Flex } from "components/Grid";
+import { Button, Modal, Box, Flex } from "@mantine/core";
 import { useState } from "react";
-import { TemplatesAddDialog } from "./Add.Dialog";
+import { TemplatesDialog } from "./Dialog";
+import { MdAdd } from "react-icons/md";
+import { useListContext } from "components/List/core";
+import { showNotification } from "@mantine/notifications";
 
 export const TemplatesHeader = () => {
   const [dialogOpen, setDialogOpen] = useState(null);
+  const { refetch } = useListContext();
   return (
     <Flex
-      sx={{
-        px: 2,
-        py: 2,
+      py={4}
+      px={8}
+      sx={({ colors }) => ({
+        position: "sticky",
+        top: 0,
+        right: 0,
+        zIndex: 9,
         backgroundColor: "white",
         borderBottom: "1px solid white",
-        borderBottomColor: "gray.3",
+        borderBottomColor: colors.gray[3],
         alignItems: "center",
-      }}
+      })}
     >
-      <Box className={Classes.HEADING} as="h4">
-        Templates
-      </Box>
-      <Box flexGrow={1} />
+      <Box as="h4">Templates</Box>
+      <Box w={"100%"} />
       <Box>
         <Button
-          icon="add"
-          text="Create Template"
+          size="xs"
+          leftIcon={<MdAdd />}
           onClick={() => setDialogOpen("create")}
-        />
-        <Dialog
-          isOpen={dialogOpen === "create"}
+        >
+          Create Template
+        </Button>
+        <Modal
+          title="Add Template"
+          opened={dialogOpen === "create"}
           onClose={() => setDialogOpen(null)}
         >
-          <TemplatesAddDialog onClose={() => setDialogOpen(null)} />
-        </Dialog>
+          <TemplatesDialog
+            onSubmitted={() => {
+              refetch();
+              showNotification({
+                icon: <MdAdd />,
+                color: "teal",
+                message: "Template Added",
+              });
+            }}
+            onClose={() => setDialogOpen(null)}
+          />
+        </Modal>
       </Box>
     </Flex>
   );

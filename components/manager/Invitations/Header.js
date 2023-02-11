@@ -1,37 +1,55 @@
-import { Button, Classes, Dialog } from "@blueprintjs/core";
-import { Box, Flex } from "components/Grid";
+import { Box, Button, Dialog, Flex, Modal } from "@mantine/core";
 import { useState } from "react";
-import { InvitationAddDialog } from "./Add.Dialog";
+import { InvitationDialog } from "./Dialog";
+import { MdAdd } from "react-icons/md";
+import { useListContext } from "components/List/core";
+import { showNotification } from "@mantine/notifications";
 
 export const InvitationsHeader = () => {
   const [dialogOpen, setDialogOpen] = useState(null);
+  const { refetch } = useListContext();
   return (
     <Flex
-      sx={{
-        px: 2,
-        py: 2,
+      py={4}
+      px={8}
+      sx={({ colors }) => ({
+        position: "sticky",
+        top: 0,
+        right: 0,
+        zIndex: 9,
         backgroundColor: "white",
         borderBottom: "1px solid white",
-        borderBottomColor: "gray.3",
+        borderBottomColor: colors.gray[3],
         alignItems: "center",
-      }}
+      })}
     >
-      <Box className={Classes.HEADING} as="h4">
-        Invitation
-      </Box>
-      <Box flexGrow={1} />
+      <Box as="h4">Invitation</Box>
+      <Box sx={{ flexGrow: 1 }} />
       <Box>
         <Button
-          icon="add"
-          text="Create Invitation"
+          size="xs"
+          leftIcon={<MdAdd size={18} />}
           onClick={() => setDialogOpen("create")}
-        />
-        <Dialog
-          isOpen={dialogOpen === "create"}
+        >
+          Create Invitation
+        </Button>
+        <Modal
+          title="Add Invitation"
+          opened={dialogOpen === "create"}
           onClose={() => setDialogOpen(null)}
         >
-          <InvitationAddDialog onClose={() => setDialogOpen(null)} />
-        </Dialog>
+          <InvitationDialog
+            onSubmitted={() => {
+              refetch();
+              showNotification({
+                icon: <MdAdd />,
+                color: "teal",
+                message: "Invitation Added",
+              });
+            }}
+            onClose={() => setDialogOpen(null)}
+          />
+        </Modal>
       </Box>
     </Flex>
   );

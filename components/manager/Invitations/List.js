@@ -1,115 +1,118 @@
-import { Box, Flex } from "components/Grid";
-import client from "components/client";
-import { useQuery } from "@tanstack/react-query";
-import { AnchorButton, Button, Dialog } from "@blueprintjs/core";
+import {
+  ActionIcon,
+  Anchor,
+  Button,
+  Box,
+  Flex,
+  Modal,
+  Divider,
+  Text,
+} from "@mantine/core";
 import Link from "next/link";
-import { InvitationEditDialog } from "./Edit.Dialog";
+import _get from "lodash.get";
+import { InvitationDialog } from "./Dialog";
 import { State } from "components/State";
-import { toaster } from "components/toaster";
+import { showNotification } from "@mantine/notifications";
+import { MdEdit, MdError, MdPreview, MdShare } from "react-icons/md";
+import { Fragment } from "react";
+import { useListContext } from "components/List/core";
 
 export const InvitationList = () => {
-  const { data, isLoading, isError, isSuccess, refetch } = useQuery(
-    ["invitations"],
-    async () => {
-      let res = [];
-      try {
-        res = await client.getInvitations({
-          fields: {
-            content: 0,
-          },
-          populate: 1,
-        });
-      } catch (err) {
-        console.error(err);
-      }
-      return res;
-    }
-  );
+  const { items, isLoading, isError, isSuccess, refetch } = useListContext();
   if (isError) return <Box>Went Wrong</Box>;
   if (isLoading) return <Button loading />;
-  if (!data) return null;
+  if (!items) return null;
 
   return (
     <Box>
-      {data.map(({ _id, name, category, slug, ...d }) => (
-        <Flex
-          key={_id}
-          py={2}
-          sx={{
-            borderBottom: "1px solid black",
-            borderBottomColor: "gray.3",
-            alignItems: "center",
-          }}
-        >
-          <Box flexGrow={1}>
-            <Link href={`/manager/invitation/editor/${_id}`} passHref>
-              <Box as="a">{name}</Box>
-            </Link>
-          </Box>
-          <Box color={"gray.5"}>{category.name}</Box>
-          <Box pl={2}>
-            <State defaultValue={false}>
-              {({ state, setState }) => (
-                <>
-                  <Button
-                    small
-                    title="Edit"
-                    icon="edit"
-                    minimal
-                    onClick={() => {
-                      setState(true);
-                    }}
-                  />
-                  <Dialog isOpen={state} onClose={() => setState(false)}>
-                    <InvitationEditDialog
-                      defaultValue={{ _id, name, category, slug, ...d }}
-                      onErrorSubmitted={() => {
-                        toaster.show({
-                          intent: "danger",
-                          message: "Error Submitted.",
-                        });
-                        setState(false);
+      {items.map(({ _id, name, category, slug, ...d }) => (
+        <Fragment key={_id}>
+          <Flex py={2} align={"center"}>
+            <Box w={"70%"}>
+              <Link href={`/manager/invitation/editor/${_id}`} passHref>
+                <Anchor>{name}</Anchor>
+              </Link>
+            </Box>
+            <Text w={"20%"} color={"gray"}>
+              {_get(category, "name")}
+            </Text>
+            <Box pl={2}>
+              <State defaultValue={false}>
+                {({ state, setState }) => (
+                  <>
+                    <ActionIcon
+                      title="Edit"
+                      icon="edit"
+                      variant="subtle"
+                      onClick={() => {
+                        setState(true);
                       }}
-                      onSubmitted={() => {
-                        toaster.show({
-                          intent: "success",
-                          message: "Invitation saved.",
-                        });
-                        refetch();
-                        setState(false);
-                      }}
-                      onClose={() => {
-                        setState(false);
-                      }}
-                    />
-                  </Dialog>
-                </>
-              )}
-            </State>
-          </Box>
-          <Box pl={2}>
-            <Link href={`/i/p/${slug}`} passHref>
-              <AnchorButton
-                small
-                title="Preview"
-                icon="share"
-                minimal
-                target="_blank"
-              />
-            </Link>
-          </Box>
-          <Box pl={2}>
-            <Link href={`/i/share/${slug}`} passHref>
-              <AnchorButton
-                small
-                title="Share"
-                icon="send-message"
-                minimal
-                target="_blank"
-              />
-            </Link>
-          </Box>
-        </Flex>
+                    >
+                      <MdEdit />
+                    </ActionIcon>
+                    <Modal
+                      opened={state}
+                      title="Edit"
+                      onClose={() => setState(false)}
+                    >
+                      <InvitationDialog
+                        method="edit"
+                        defaultValue={{ _id, name, category, slug, ...d }}
+                        onErrorSubmitted={() => {
+                          showNotification({
+                            icon: <MdError />,
+                            color: "red",
+                            message: "Error Submitted.",
+                          });
+                          setState(false);
+                        }}
+                        onSubmitted={() => {
+                          showNotification({
+                            icon: <MdAdd />,
+                            color: "teal",
+                            message: "Invitation saved.",
+                          });
+                          refetch();
+                          setState(false);
+                        }}
+                        onClose={() => {
+                          setState(false);
+                        }}
+                      />
+                    </Modal>
+                  </>
+                )}
+              </State>
+            </Box>
+            <Box pl={2}>
+              <Link href={`/i/p/${slug}`} passHref>
+                <ActionIcon
+                  component="a"
+                  variant="subtle"
+                  title="Preview"
+                  icon="share"
+                  target="_blank"
+                >
+                  <MdPreview size={24} />
+                </ActionIcon>
+              </Link>
+            </Box>
+            <Box pl={2}>
+              <Link href={`/i/share/${slug}`} passHref>
+                <ActionIcon
+                  component="a"
+                  variant="subtle"
+                  title="Share"
+                  icon="send-message"
+                  target="_blank"
+                >
+                  <MdShare />
+                </ActionIcon>
+              </Link>
+            </Box>
+          </Flex>
+          <Divider />
+        </Fragment>
       ))}
     </Box>
   );

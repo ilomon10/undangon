@@ -1,37 +1,55 @@
-import { Button, Classes, Dialog } from "@blueprintjs/core";
-import { Box, Flex } from "components/Grid";
+import { Box, Button, Flex, Modal } from "@mantine/core";
 import { useState } from "react";
 import { CanvaLinksDialog } from "./Dialog";
+import { useListContext } from "components/List/core";
+import { showNotification } from "@mantine/notifications";
+import { MdAdd, MdCheck } from "react-icons/md";
 
 export const CanvaLinksHeader = () => {
   const [dialogOpen, setDialogOpen] = useState(null);
+  const { refetch } = useListContext();
   return (
     <Flex
-      sx={{
-        px: 2,
-        py: 2,
+      py={4}
+      px={8}
+      sx={({ colors }) => ({
+        position: "sticky",
+        top: 0,
+        right: 0,
+        zIndex: 9,
         backgroundColor: "white",
         borderBottom: "1px solid white",
-        borderBottomColor: "gray.3",
+        borderBottomColor: colors.gray[3],
         alignItems: "center",
-      }}
+      })}
     >
-      <Box className={Classes.HEADING} as="h4">
-        Canva Links
-      </Box>
-      <Box flexGrow={1} />
+      <Box w={"100%"}>Canva Links</Box>
+      <Box />
       <Box>
         <Button
-          icon="add"
-          text="Create Canva Link"
+          size="xs"
+          leftIcon={<MdAdd />}
           onClick={() => setDialogOpen("create")}
-        />
-        <Dialog
-          isOpen={dialogOpen === "create"}
+        >
+          Create Canva Link
+        </Button>
+        <Modal
+          title="Add"
+          opened={dialogOpen === "create"}
           onClose={() => setDialogOpen(null)}
         >
-          <CanvaLinksDialog onClose={() => setDialogOpen(null)} />
-        </Dialog>
+          <CanvaLinksDialog
+            onSubmitted={() => {
+              refetch();
+              showNotification({
+                icon: <MdCheck />,
+                color: "teal",
+                message: "Template Added",
+              });
+            }}
+            onClose={() => setDialogOpen(null)}
+          />
+        </Modal>
       </Box>
     </Flex>
   );

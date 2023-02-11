@@ -1,6 +1,4 @@
-import "normalize.css/normalize.css";
-import "@blueprintjs/core/lib/css/blueprint.css";
-import { Classes, Collapse, FormGroup, InputGroup, Text, TextArea } from "@blueprintjs/core";
+import { Classes, Collapse, FormGroup, InputGroup, Text, TextArea } from "@mantine/core";
 import { Box, Button, Flex } from "components";
 import { Formik } from "formik";
 import Head from "next/head";

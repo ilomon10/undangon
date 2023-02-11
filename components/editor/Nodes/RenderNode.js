@@ -1,12 +1,10 @@
 import { useEditor, useNode } from "@craftjs/core";
-import { Button, Icon, Menu, MenuDivider, Text } from "@blueprintjs/core";
+import { Menu, Popover } from "@mantine/core";
 import { ROOT_NODE } from "@craftjs/utils";
 import { Box, Flex } from "components/Grid";
-import { generateId } from "components/utils/generateId";
 import { useCallback, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
-import { MenuItem2, Popover2 } from "@blueprintjs/popover2";
 import { getCloneTree } from "../utils/getCloneTree";
 
 export const RenderNode = ({ render }) => {
@@ -133,11 +131,11 @@ export const RenderNode = ({ render }) => {
                       }}
                       title="Duplicate node"
                     >
-                      <Popover2
+                      <Popover
                         content={
                           <Menu>
-                            <MenuDivider title="Do you want to duplicate?" />
-                            <MenuItem2
+                            <Menu.Divider title="Do you want to duplicate?" />
+                            <Menu.Item
                               intent="danger"
                               text="Yes"
                               onMouseDown={(e) => {
@@ -145,21 +143,21 @@ export const RenderNode = ({ render }) => {
                                 duplicateNode(id);
                               }}
                             />
-                            <MenuItem2 text="Cancel" />
+                            <Menu.Item text="Cancel" />
                           </Menu>
                         }
                       >
                         <Icon size={10} icon="duplicate" color="white" />
-                      </Popover2>
+                      </Popover>
                     </Box>
                   ) : null}
                   {deletable ? (
                     <Box ml={3} title="Delete node">
-                      <Popover2
+                      <Popover
                         content={
                           <Menu>
-                            <MenuDivider title="Are you sure?" />
-                            <MenuItem2
+                            <Menu.Divider title="Are you sure?" />
+                            <Menu.Item
                               intent="danger"
                               text="Yes"
                               onMouseDown={(e) => {
@@ -167,14 +165,14 @@ export const RenderNode = ({ render }) => {
                                 actions.delete(id);
                               }}
                             />
-                            <MenuItem2 text="Cancel" />
+                            <Menu.Item text="Cancel" />
                           </Menu>
                         }
                       >
                         <Box>
                           <Icon size={10} icon="trash" color="white" />
                         </Box>
-                      </Popover2>
+                      </Popover>
                     </Box>
                   ) : null}
                 </>

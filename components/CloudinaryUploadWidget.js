@@ -1,4 +1,4 @@
-import { Button, Classes, Dialog, Icon, Text } from "@blueprintjs/core";
+import { Button, Classes, Dialog, Icon, Text } from "@mantine/core";
 import { Box, Flex } from "./Grid";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";

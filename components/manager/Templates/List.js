@@ -1,92 +1,91 @@
-import { Box, Flex } from "components/Grid";
-import client from "components/client";
-import { useQuery } from "@tanstack/react-query";
-import { Button, Card, Dialog, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import {
+  ActionIcon,
+  Anchor,
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Modal,
+  Text,
+} from "@mantine/core";
 import Link from "next/link";
-import { TemplatesEditDialog } from "./Edit.Dialog";
+import { TemplatesDialog } from "./Dialog";
 import { State } from "components/State";
-import { toaster } from "components/toaster";
+import { useListContext } from "components/List/core";
+import { MdAdd, MdCheck, MdEdit, MdError } from "react-icons/md";
+import { Fragment } from "react";
+import { showNotification } from "@mantine/notifications";
 
 export const TemplateList = () => {
-  const { data, isLoading, isError, refetch } = useQuery(["templates"], async () => {
-    let res = [];
-    try {
-      res = await client.getTemplates({
-        populate: 1,
-        fields: {
-          name: 1,
-          category: 1,
-        },
-      });
-    } catch (err) {
-      console.error(err);
-    }
-    return res;
-  });
+  const { items, isLoading, isError, refetch } = useListContext();
   if (isError) return <Box>Went Wrong</Box>;
   if (isLoading) return <Button loading />;
-  if (!data) return null;
+  if (!items) return null;
 
   return (
-    <Menu>
-      {data.map(({ _id, name, category }) => (
-        <Flex
-          key={_id}
-          py={2}
-          sx={{
-            borderBottom: "1px solid black",
-            borderBottomColor: "gray.3",
-            alignItems: "center",
-          }}
-        >
-          <Box flexGrow={1}>
-            <Link href={`/manager/template/editor/${_id}`} passHref>
-              <Box as="a">{name}</Box>
-            </Link>
-          </Box>
-          <Box color={"gray.5"}>{category.name}</Box>
-          <Box pl={2}>
-            <State defaultValue={false}>
-              {({ state, setState }) => (
-                <>
-                  <Button
-                    small
-                    title="Edit"
-                    icon="edit"
-                    minimal
-                    onClick={() => {
-                      setState(true);
-                    }}
-                  />
-                  <Dialog isOpen={state} onClose={() => setState(false)}>
-                    <TemplatesEditDialog
-                      defaultValue={{ _id, name, category }}
-                      onErrorSubmitted={() => {
-                        toaster.show({
-                          intent: "danger",
-                          message: "Error Submitted.",
-                        });
-                        setState(false);
+    <Box>
+      {items.map(({ _id, name, category }) => (
+        <Fragment key={_id}>
+          <Flex py={2} align={"center"}>
+            <Box w="100%">
+              <Link href={`/manager/template/editor/${_id}`} passHref>
+                <Anchor>{name}</Anchor>
+              </Link>
+            </Box>
+            <Text w="20%" color={"gray.5"}>
+              {category.name}
+            </Text>
+            <Box>
+              <State defaultValue={false}>
+                {({ state, setState }) => (
+                  <>
+                    <ActionIcon
+                      title="Edit"
+                      icon="edit"
+                      variant="subtle"
+                      onClick={() => {
+                        setState(true);
                       }}
-                      onSubmitted={() => {
-                        toaster.show({
-                          intent: "success",
-                          message: "Invitation saved.",
-                        });
-                        refetch();
-                        setState(false);
-                      }}
-                      onClose={() => {
-                        setState(false);
-                      }}
-                    />
-                  </Dialog>
-                </>
-              )}
-            </State>
-          </Box>
-        </Flex>
+                    >
+                      <MdEdit />
+                    </ActionIcon>
+                    <Modal
+                      title="Edit"
+                      opened={state}
+                      onClose={() => setState(false)}
+                    >
+                      <TemplatesDialog
+                        defaultValue={{ _id, name, category: category._id }}
+                        onErrorSubmitted={() => {
+                          showNotification({
+                            icon: <MdError />,
+                            color: "red",
+                            message: "Error Submitted.",
+                          });
+                          setState(false);
+                        }}
+                        onSubmitted={() => {
+                          showNotification({
+                            icon: <MdCheck />,
+                            color: "teal",
+                            message: "Template saved.",
+                          });
+                          refetch();
+                          setState(false);
+                        }}
+                        onClose={() => {
+                          setState(false);
+                        }}
+                      />
+                    </Modal>
+                  </>
+                )}
+              </State>
+            </Box>
+          </Flex>
+          <Divider variant="dotted" />
+        </Fragment>
       ))}
-    </Menu>
+    </Box>
   );
 };

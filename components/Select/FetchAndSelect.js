@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Select } from "./index";
+import { Loader, Select } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
 
 export const FetchAndSelect = ({
   fetchCallback,
   onFetched,
-  onOpening = async () => { },
+  onOpening = async () => {},
   initialValue,
+  onChange,
   ...props
 }) => {
   const isPreFetch = useMemo(() => {
@@ -13,8 +15,8 @@ export const FetchAndSelect = ({
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [loading, setLoading] = useState(false);
-
   const [items, setItems] = useState([]);
+  const [lastQuery, setLastQuery] = useState(null);
 
   const fetchItems = useCallback(
     async (q) => {
@@ -42,15 +44,23 @@ export const FetchAndSelect = ({
   return (
     <Select
       {...props}
-      loading={loading}
-      onQueryChange={async (query) => {
-        await fetchItems(query);
+      onChange={(value) => {
+        onChange(
+          value,
+          items.find((item) => item.value == value)
+        );
       }}
-      onOpening={async () => {
+      rightSection={loading ? <Loader size={16} /> : null}
+      onSearchChange={async (query) => {
+        if (lastQuery == query) return;
+        await fetchItems(query);
+        await setLastQuery(query);
+      }}
+      onDropdownOpen={async () => {
         await onOpening();
         await fetchItems();
       }}
-      options={items}
+      data={items}
     />
   );
 };

@@ -1,95 +1,74 @@
-import { Box, Flex } from "components/Grid";
-import client from "components/client";
-import { useQuery } from "@tanstack/react-query";
-import {
-  AnchorButton,
-  Button,
-  Card,
-  Dialog,
-  Menu,
-  MenuDivider,
-  MenuItem,
-} from "@blueprintjs/core";
-import Link from "next/link";
+import { ActionIcon, Anchor, Box, Button, Card, Divider, Flex, Modal } from "@mantine/core";
 import { CanvaLinksDialog } from "./Dialog";
 import { State } from "components/State";
-import { toaster } from "components/toaster";
+import { useListContext } from "components/List/core";
+import { Fragment } from "react";
+import { MdCheck, MdEdit, MdError } from "react-icons/md";
+import { showNotification } from "@mantine/notifications";
 
 export const CanvaLinkList = () => {
-  const { data, isLoading, isError, isSuccess, refetch } = useQuery(
-    ["canva_links"],
-    async () => {
-      let res = [];
-      try {
-        res = await client.getCanvaLinks();
-      } catch (err) {
-        console.error(err);
-      }
-      return res;
-    }
-  );
+  const { items, isLoading, isError, isSuccess, refetch } = useListContext();
   if (isError) return <Box>Went Wrong</Box>;
   if (isLoading) return <Button loading />;
-  if (!data) return null;
+  if (!items) return null;
 
   return (
     <Box>
-      {data.map(({ _id, name, link }) => (
-        <Flex
-          key={_id}
-          py={2}
-          sx={{
-            borderBottom: "1px solid black",
-            borderBottomColor: "gray.3",
-            alignItems: "center",
-          }}
-        >
-          <Box flexGrow={1}>
-            <a href={link} target="_blank">
-              {name}
-            </a>
-          </Box>
-          <Box pl={2}>
-            <State defaultValue={false}>
-              {({ state, setState }) => (
-                <>
-                  <Button
-                    small
-                    title="Edit"
-                    icon="edit"
-                    minimal
-                    onClick={() => {
-                      setState(true);
-                    }}
-                  />
-                  <Dialog isOpen={state} onClose={() => setState(false)}>
-                    <CanvaLinksDialog
-                      defaultValue={{ _id, name, link }}
-                      onErrorSubmitted={() => {
-                        toaster.show({
-                          intent: "danger",
-                          message: "Error Submitted.",
-                        });
-                        setState(false);
+      {items.map(({ _id, name, link }) => (
+        <Fragment key={_id}>
+          <Flex py={2} align={"center"}>
+            <Box sx={{ flexGrow: 1 }}>
+              <Anchor href={link} target="_blank">
+                {name}
+              </Anchor>
+            </Box>
+            <Box pl={2}>
+              <State defaultValue={false}>
+                {({ state, setState }) => (
+                  <>
+                    <ActionIcon
+                      title="Edit"
+                      icon="edit"
+                      variant="subtle"
+                      onClick={() => {
+                        setState(true);
                       }}
-                      onSubmitted={() => {
-                        toaster.show({
-                          intent: "success",
-                          message: "Canva link saved.",
-                        });
-                        refetch();
-                        setState(false);
-                      }}
-                      onClose={() => {
-                        setState(false);
-                      }}
-                    />
-                  </Dialog>
-                </>
-              )}
-            </State>
-          </Box>
-        </Flex>
+                    >
+                      <MdEdit />
+                    </ActionIcon>
+                    <Modal title="Edit" opened={state} onClose={() => setState(false)}>
+                      <CanvaLinksDialog
+                        defaultValue={{ _id, name, link }}
+                        onErrorSubmitted={() => {
+                          showNotification({
+                            icon: <MdError />,
+                            color: "red",
+                            message: "Error Submitted.",
+                          });
+                          setState(false);
+                        }}
+                        onSubmitted={() => {
+                          showNotification({
+                            icon: <MdCheck />,
+                            color: "teal",
+                            message: "Template saved.",
+                          });
+                          refetch();
+                          setState(false);
+                        }}
+                        onClose={() => {
+                          setState(false);
+                        }}
+                      />
+                    </Modal>
+                  </>
+                )}
+              </State>
+            </Box>
+          </Flex>
+
+          <Divider variant="dotted" />
+        </Fragment>
       ))}
     </Box>
   );

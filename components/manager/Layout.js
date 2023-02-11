@@ -1,44 +1,41 @@
-import { Flex } from "../Grid";
+import { Flex } from "@mantine/core";
 import { Sidebar } from "./Sidebar";
-import { BlueprintWrapper } from "../BlueprintWrapper";
+import { MdAttachment, MdBook, MdDashboard, MdEmail } from "react-icons/md";
 
 const navList = [
   {
     text: "Dashboard",
-    icon: "home",
+    icon: <MdDashboard />,
     path: "/manager",
   },
   {
     text: "Invitations",
-    icon: "envelope",
+    icon: <MdEmail />,
     path: "/manager/invitations",
   },
   {
     text: "Templates",
-    icon: "projects",
+    icon: <MdBook />,
     path: "/manager/templates",
   },
   {
     text: "Canva Links",
-    icon: "link",
+    icon: <MdAttachment />,
     path: "/manager/canva_links",
   },
 ];
 
 const Layout = ({ children }) => {
   return (
-    <BlueprintWrapper>
-      <Flex
-        sx={{
-          position: "fixed",
-          inset: 0,
-          bg: "gray.2",
-        }}
-      >
-        <Sidebar list={navList} />
-        {children}
-      </Flex>
-    </BlueprintWrapper>
+    <Flex
+      sx={{
+        backgroundColor: "gray.2",
+      }}
+      pl={44}
+    >
+      <Sidebar list={navList} />
+      {children}
+    </Flex>
   );
 };
 

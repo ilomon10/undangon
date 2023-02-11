@@ -1,18 +1,9 @@
-import lz from "lzutf8";
-import {
-  Button,
-  Callout,
-  Classes,
-  FormGroup,
-  HTMLSelect,
-  InputGroup,
-} from "@blueprintjs/core";
+import { Box, Button, Input, Card } from "@mantine/core";
 import client from "components/client";
 import { FetchAndSelect } from "components/Select/FetchAndSelect";
 import { Formik } from "formik";
 import { useCallback } from "react";
 import * as Yup from "yup";
-import { Box } from "components/Grid";
 import _get from "lodash.get";
 
 const Schema = Yup.object().shape({
@@ -38,7 +29,8 @@ const initialValue = {
   },
 };
 
-export const InvitationEditDialog = ({
+export const InvitationDialog = ({
+  method = "add",
   onClose,
   onErrorSubmitted = () => {},
   onSubmitted = () => {},
@@ -56,6 +48,7 @@ export const InvitationEditDialog = ({
     }
     setSubmitting(false);
   }, []);
+
   return (
     <Formik
       validationSchema={Schema}
@@ -74,42 +67,28 @@ export const InvitationEditDialog = ({
         isSubmitting,
       }) => (
         <form onSubmit={handleSubmit}>
-          <div className={Classes.DIALOG_BODY}>
-            <FormGroup
-              label="Slug"
-              intent={errors["slug"] && "danger"}
-              helperText={errors["slug"]}
-            >
-              <InputGroup
+          <div>
+            <Input.Wrapper label="Slug" error={errors["slug"]}>
+              <Input
                 name="slug"
                 value={values["slug"]}
                 onChange={handleChange}
-                intent={errors["slug"] && "danger"}
+                invalid={!!errors["slug"]}
               />
-            </FormGroup>
-            <FormGroup
-              label="Name"
-              intent={errors["name"] && "danger"}
-              helperText={errors["name"]}
-            >
-              <InputGroup
-                intent={errors["name"] && "danger"}
+            </Input.Wrapper>
+            <Input.Wrapper label="Name" error={errors["name"]}>
+              <Input
                 name="name"
                 value={values["name"]}
                 onChange={handleChange}
+                invalid={!!errors["name"]}
               />
-            </FormGroup>
-            <FormGroup
-              label="Category"
-              intent={errors["category"] && "danger"}
-              helperText={errors["category"]}
-            >
+            </Input.Wrapper>
+            <Input.Wrapper label="Category" error={errors["category"]}>
               <FetchAndSelect
-                id="f-category"
-                name="category"
-                initialValue={values["category"]}
+                searchable={true}
                 value={values["category"]}
-                onChange={async ({ value }) => {
+                onChange={async (value) => {
                   await setFieldValue("category", value);
                 }}
                 fetchCallback={async () => {
@@ -125,63 +104,91 @@ export const InvitationEditDialog = ({
                   });
                 }}
               />
-            </FormGroup>
-            <Box fontWeight="bold" mb={2}>
+            </Input.Wrapper>
+            {method === "add" && (
+              <Input.Wrapper
+                label="Template"
+                intent={errors["template"] && "danger"}
+                helperText={errors["template"]}
+              >
+                <FetchAndSelect
+                  id="f-template"
+                  name="template"
+                  initialValue={values["template"]}
+                  value={values["template"]}
+                  onChange={async (value, { data }) => {
+                    if (!data) return;
+                    await setFieldValue("template", value);
+                    await setFieldValue("content", data.content);
+                  }}
+                  fetchCallback={async () => {
+                    let response = await client.getTemplates({
+                      populate: 1,
+                    });
+                    return response;
+                  }}
+                  onFetched={(items) => {
+                    return items.map((item) => {
+                      return {
+                        label: item["name"],
+                        info: item["category"]["name"],
+                        value: item["_id"],
+                        data: item,
+                      };
+                    });
+                  }}
+                />
+              </Input.Wrapper>
+            )}
+            <Box fontWeight="bold" mt={3} mb={2}>
               Meta
             </Box>
-            <FormGroup
-              label="Title"
-              intent={_get(errors, "meta.title") && "danger"}
-              helperText={_get(errors, "meta.title")}
-            >
-              <InputGroup
+            <Input.Wrapper label="Title" error={_get(errors, "meta.title")}>
+              <Input
                 name="meta.title"
                 value={_get(values, "meta.title")}
                 onChange={handleChange}
-                intent={_get(errors, "meta.title") && "danger"}
+                invalid={!!_get(errors, "meta.title")}
               />
-            </FormGroup>
-            <FormGroup
+            </Input.Wrapper>
+            <Input.Wrapper
               label="OG Title"
-              intent={_get(errors, "meta.og_title") && "danger"}
-              helperText={_get(errors, "meta.og_title")}
+              error={_get(errors, "meta.og_title")}
             >
-              <InputGroup
+              <Input
                 name="meta.og_title"
                 value={_get(values, "meta.og_title")}
                 onChange={handleChange}
-                intent={_get(errors, "meta.og_title") && "danger"}
+                invalid={!!_get(errors, "meta.og_title")}
               />
-            </FormGroup>
-            <FormGroup
+            </Input.Wrapper>
+            <Input.Wrapper
               label="OG Description"
-              intent={_get(errors, "meta.og_description") && "danger"}
-              helperText={_get(errors, "meta.og_description")}
+              error={_get(errors, "meta.og_description")}
             >
-              <InputGroup
+              <Input
                 name="meta.og_description"
                 value={_get(values, "meta.og_description")}
                 onChange={handleChange}
-                intent={_get(errors, "meta.og_description") && "danger"}
+                invalid={!!_get(errors, "meta.og_description")}
               />
-            </FormGroup>
-            <Callout>{JSON.stringify(errors)}</Callout>
+            </Input.Wrapper>
+            <Card>{JSON.stringify(errors)}</Card>
           </div>
-          <div className={Classes.DIALOG_FOOTER}>
-            <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+          <div>
+            <Box textAlign="right">
               <Button
                 intent="danger"
-                minimal
+                variant="subtle"
                 text="Cancel"
                 onClick={() => onClose()}
-              />
-              <Button
-                type="submit"
-                loading={isSubmitting}
-                intent="primary"
-                text="Edit"
-              />
-            </div>
+              >
+                Cancel
+              </Button>
+              <Button type="submit" loading={isSubmitting} color="primary">
+                Submit
+              </Button>
+            </Box>
           </div>
         </form>
       )}
