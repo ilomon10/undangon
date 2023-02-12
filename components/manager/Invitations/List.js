@@ -25,14 +25,14 @@ export const InvitationList = () => {
 
   return (
     <Box>
-      {items.map(({ _id, name, category, slug, ...d }) => (
+      {items.map(({ _id, name, category, slug, ...d }, index) => (
         <Fragment key={_id}>
           <Flex py={2} align={"center"}>
-            <Box w={"70%"}>
+            <Text w={"70%"}>
               <Link href={`/manager/invitation/editor/${_id}`} passHref>
                 <Anchor>{name}</Anchor>
               </Link>
-            </Box>
+            </Text>
             <Text w={"20%"} color={"gray"}>
               {_get(category, "name")}
             </Text>
@@ -111,7 +111,9 @@ export const InvitationList = () => {
               </Link>
             </Box>
           </Flex>
-          <Divider />
+          {index < items.length - 1 && (
+            <Divider variant="dotted" color="gray.3" />
+          )}
         </Fragment>
       ))}
     </Box>

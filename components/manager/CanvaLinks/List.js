@@ -1,4 +1,14 @@
-import { ActionIcon, Anchor, Box, Button, Card, Divider, Flex, Modal } from "@mantine/core";
+import {
+  ActionIcon,
+  Anchor,
+  Box,
+  Button,
+  Card,
+  Divider,
+  Flex,
+  Modal,
+  Text,
+} from "@mantine/core";
 import { CanvaLinksDialog } from "./Dialog";
 import { State } from "components/State";
 import { useListContext } from "components/List/core";
@@ -14,14 +24,14 @@ export const CanvaLinkList = () => {
 
   return (
     <Box>
-      {items.map(({ _id, name, link }) => (
+      {items.map(({ _id, name, link }, index) => (
         <Fragment key={_id}>
           <Flex py={2} align={"center"}>
-            <Box sx={{ flexGrow: 1 }}>
+            <Text sx={{ flexGrow: 1 }}>
               <Anchor href={link} target="_blank">
                 {name}
               </Anchor>
-            </Box>
+            </Text>
             <Box pl={2}>
               <State defaultValue={false}>
                 {({ state, setState }) => (
@@ -36,7 +46,11 @@ export const CanvaLinkList = () => {
                     >
                       <MdEdit />
                     </ActionIcon>
-                    <Modal title="Edit" opened={state} onClose={() => setState(false)}>
+                    <Modal
+                      title="Edit"
+                      opened={state}
+                      onClose={() => setState(false)}
+                    >
                       <CanvaLinksDialog
                         defaultValue={{ _id, name, link }}
                         onErrorSubmitted={() => {
@@ -66,8 +80,9 @@ export const CanvaLinkList = () => {
               </State>
             </Box>
           </Flex>
-
-          <Divider variant="dotted" />
+          {index < items.length - 1 && (
+            <Divider variant="dotted" color="gray.3" />
+          )}
         </Fragment>
       ))}
     </Box>

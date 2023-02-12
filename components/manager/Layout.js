@@ -27,12 +27,7 @@ const navList = [
 
 const Layout = ({ children }) => {
   return (
-    <Flex
-      sx={{
-        backgroundColor: "gray.2",
-      }}
-      pl={44}
-    >
+    <Flex mih={"100vh"} bg={"gray.2"} pl={44}>
       <Sidebar list={navList} />
       {children}
     </Flex>

@@ -24,7 +24,7 @@ export const TemplateList = () => {
 
   return (
     <Box>
-      {items.map(({ _id, name, category }) => (
+      {items.map(({ _id, name, category }, index) => (
         <Fragment key={_id}>
           <Flex py={2} align={"center"}>
             <Box w="100%">
@@ -83,7 +83,9 @@ export const TemplateList = () => {
               </State>
             </Box>
           </Flex>
-          <Divider variant="dotted" />
+          {index < items.length - 1 && (
+            <Divider variant="dotted" color="gray.3" />
+          )}
         </Fragment>
       ))}
     </Box>

@@ -27,7 +27,7 @@ export const InvitationPage = () => {
   return (
     <ListContextProvider resource="invitations" queryFn={fetch} limit={25}>
       <Layout>
-        <Flex w={"100%"} direction={"column"} bg={"gray.1"}>
+        <Flex w={"100%"} direction={"column"}>
           <InvitationsHeader />
           <Box>
             <Box
