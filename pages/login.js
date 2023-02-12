@@ -1,4 +1,4 @@
-import { Button, Classes, FormGroup, InputGroup, Text } from "@mantine/core";
+import { Button, Input, Text } from "@mantine/core";
 import { Box, Flex } from "components";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
@@ -25,7 +25,7 @@ export default function Login() {
           maxWidth: 250,
         }}
       >
-        <Text className={Classes.HEADING}>Login</Text>
+        <Text>Login</Text>
         <Formik
           initialValues={{
             username: "",
@@ -36,21 +36,21 @@ export default function Login() {
           {({ values, errors, handleSubmit, handleChange }) => (
             <form onSubmit={handleSubmit}>
               <Box>
-                <FormGroup label="Username" labelFor="f-username">
-                  <InputGroup
+                <Input.Wrapper mb={8} label="Username" labelFor="f-username">
+                  <Input
                     id="f-username"
                     name="username"
                     onChange={handleChange}
                   />
-                </FormGroup>
-                <FormGroup label="Password" labelFor="f-password">
-                  <InputGroup
+                </Input.Wrapper>
+                <Input.Wrapper mb={8} label="Password" labelFor="f-password">
+                  <Input
                     id="f-password"
                     name="password"
                     onChange={handleChange}
                   />
-                </FormGroup>
-                <Button text="Login" type="submit" />
+                </Input.Wrapper>
+                <Button type="submit">Login</Button>
               </Box>
             </form>
           )}
