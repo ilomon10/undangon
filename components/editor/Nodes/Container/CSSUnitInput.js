@@ -1,8 +1,7 @@
-import { ControlGroup, InputGroup, Button, Menu } from "@blueprintjs/core";
+import { Input, Button, Menu } from "@mantine/core";
 import { DragValue } from "components/DragValue";
 import { useCallback, useEffect, useState } from "react";
 import _get from "lodash/get";
-import { MenuItem2, Popover2 } from "@blueprintjs/popover2";
 import { Box } from "components/Grid";
 
 const unitOptions = ["px", "vh", "vw", "%"];

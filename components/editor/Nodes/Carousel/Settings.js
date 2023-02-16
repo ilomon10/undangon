@@ -1,16 +1,13 @@
 import {
   Button,
-  ButtonGroup,
   Card,
-  FormGroup,
-  InputGroup,
-  RadioGroup,
+  Input,
+  Radio,
   Switch,
   Text,
-} from "@blueprintjs/core";
+} from "@mantine/core";
 import { useNode } from "@craftjs/core";
 import { CloudinaryUploadWidgetButton } from "components/CloudinaryUploadWidget";
-import { ColorPicker } from "components/ColorPicker";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import { Box, Flex } from "components/Grid";
 import { useViewport } from "components/editor/Viewport/useViewport";
@@ -56,7 +53,7 @@ export const CarouselSettings = () => {
                 <img style={{ width: "100%" }} src={imageProps.url} />
               </AspectRatio>
             </Box>
-            <FormGroup
+            <Input.Wrapper
               label="Url"
               labelInfo={<Text ellipsize>{_get(imageProps, "url")}</Text>}
             >
@@ -68,8 +65,8 @@ export const CarouselSettings = () => {
                 }}
                 folderTarget={`/manjo/assets/${id}`}
               />
-            </FormGroup>
-            <RadioGroup
+            </Input.Wrapper>
+            <Radio
               label="Object Fit"
               selectedValue={_get(values, `images[${i}].objectFit`) || ""}
               onChange={(e) => {
@@ -148,7 +145,7 @@ export const CarouselSettings = () => {
             );
           }}
         />
-        <FormGroup label="Speed">
+        <Input.Wrapper label="Speed">
           <InputGroup
             defaultValue={_get(values, "settings.speed") || ""}
             onChange={(e) => {
@@ -158,8 +155,8 @@ export const CarouselSettings = () => {
               );
             }}
           />
-        </FormGroup>
-        <FormGroup label="Autoplay Speed">
+        </Input.Wrapper>
+        <Input.Wrapper label="Autoplay Speed">
           <InputGroup
             defaultValue={_get(values, "settings.autoplaySpeed") || ""}
             onChange={(e) => {
@@ -170,7 +167,7 @@ export const CarouselSettings = () => {
               );
             }}
           />
-        </FormGroup>
+        </Input.Wrapper>
       </SettingSection>
       <SettingSection
         text="Dimensions"
@@ -178,22 +175,22 @@ export const CarouselSettings = () => {
         props={["height", "width"]}
       >
         <Flex>
-          <FormGroup label="Height">
+          <Input.Wrapper label="Height">
             <InputGroup
               value={values.height || ""}
               onChange={(e) => {
                 setProp((props) => (props.height = e.target.value), 500);
               }}
             />
-          </FormGroup>
-          <FormGroup label="Width">
+          </Input.Wrapper>
+          <Input.Wrapper label="Width">
             <InputGroup
               value={values.width || ""}
               onChange={(e) => {
                 setProp((props) => (props.width = e.target.value), 500);
               }}
             />
-          </FormGroup>
+          </Input.Wrapper>
         </Flex>
       </SettingSection>
     </>

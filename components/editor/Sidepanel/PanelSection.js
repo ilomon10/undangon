@@ -1,8 +1,9 @@
-import { Button, Collapse, Icon } from "@blueprintjs/core";
+import { ActionIcon } from "@mantine/core";
 import { useNode } from "@craftjs/core";
 import { Box, Flex } from "components/Grid";
 import { useMemo, useState } from "react";
 import useCollapse from "react-collapsed";
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 
 export const PanelSection = ({ icon, text, children, defaultOpen = true }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -28,17 +29,11 @@ export const PanelSection = ({ icon, text, children, defaultOpen = true }) => {
         }}
         onClick={() => setIsOpen((open) => !open)}
       >
-        {icon && (
-          <span>
-            <Icon icon={icon} />
-          </span>
-        )}
+        {icon && <span>{icon}</span>}
         <Box as="h4" sx={{ flexGrow: 1 }}>
           {text}
         </Box>
-        <span>
-          <Icon icon={isOpen ? "chevron-up" : "chevron-down"} />
-        </span>
+        <span>{isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}</span>
       </Flex>
       <Box {...getCollapseProps()}>{children}</Box>
     </Box>

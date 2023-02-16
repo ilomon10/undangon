@@ -4,9 +4,8 @@ import {
   Icon,
   InputGroup,
   RadioGroup,
-} from "@blueprintjs/core";
+} from "@mantine/core";
 import { useNode } from "@craftjs/core";
-import { ColorPicker } from "components/ColorPicker";
 import { DragValue } from "components/DragValue";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import { Box, Flex } from "components/Grid";

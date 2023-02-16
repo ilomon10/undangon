@@ -7,10 +7,9 @@ import {
   InputGroup,
   RadioGroup,
   Tag,
-} from "@blueprintjs/core";
+} from "@mantine/core";
 import { useNode } from "@craftjs/core";
 import { CloudinaryUploadWidgetButton } from "components/CloudinaryUploadWidget";
-import { ColorPicker } from "components/ColorPicker";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import { Box, Flex } from "components/Grid";
 import { useViewport } from "components/editor/Viewport/useViewport";
@@ -19,6 +18,7 @@ import { DragValue } from "components/DragValue";
 import _get from "lodash.get";
 import _set from "lodash/set";
 import { staticMapUrl } from ".";
+import { ColorPicker } from "@mantine/core";
 
 export const StaticMapboxSettings = () => {
   const {

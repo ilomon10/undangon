@@ -3,12 +3,12 @@ import { Frame, Element } from "@craftjs/core";
 import { Button, Container, Text } from "components/editor/Nodes";
 
 import { Viewport } from "components/editor";
-import { BlueprintWrapper } from "components/BlueprintWrapper";
 import { useCallback } from "react";
 import client from "components/client";
 import { useRouter } from "next/router";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
-import { toaster } from "components/toaster";
+import { showNotification } from "@mantine/notifications";
+import { MdCheck, MdClose } from "react-icons/md";
 
 export default function InvitationEditor({ content, ...props }) {
   const router = useRouter();
@@ -23,13 +23,15 @@ export default function InvitationEditor({ content, ...props }) {
           _id: props._id,
           content,
         });
-        toaster.show({
-          intent: "success",
+        showNotification({
+          color: "teal",
+          icon: <MdCheck />,
           message: "Project is saved.",
         });
       } catch (err) {
-        toaster.show({
-          intent: "danger",
+        showNotification({
+          color: "red",
+          icon: <MdClose />,
           message: "Error while saving the project.",
         });
         console.error(err);
@@ -48,39 +50,37 @@ export default function InvitationEditor({ content, ...props }) {
   }, [props.slug]);
 
   return (
-    <BlueprintWrapper>
-      <Viewport
-        id={`invitations/${props._id}---${props.slug}`}
-        onClose={onClose}
-        onPublish={onPublish}
-        constructPreviewUrl={constructPreviewUrl}
-      >
-        <Frame data={content}>
+    <Viewport
+      id={`invitations/${props._id}---${props.slug}`}
+      onClose={onClose}
+      onPublish={onPublish}
+      constructPreviewUrl={constructPreviewUrl}
+    >
+      <Frame data={content}>
+        <Element
+          is={Container}
+          height="auto"
+          width="auto"
+          custom={{ displayName: "App" }}
+          canvas
+        >
           <Element
             is={Container}
-            height="auto"
-            width="auto"
-            custom={{ displayName: "App" }}
+            height={1500}
+            width={0}
+            marginRight="auto"
+            marginLeft="auto"
             canvas
           >
-            <Element
-              is={Container}
-              height={1500}
-              width={0}
-              marginRight="auto"
-              marginLeft="auto"
-              canvas
-            >
-              <Element is={Container} canvas height="auto" width="auto">
-                <Text text="Ini Text 1" />
-                <Text text="Text 2" />
-                <Button />
-              </Element>
+            <Element is={Container} canvas height="auto" width="auto">
+              <Text text="Ini Text 1" />
+              <Text text="Text 2" />
+              <Button />
             </Element>
           </Element>
-        </Frame>
-      </Viewport>
-    </BlueprintWrapper>
+        </Element>
+      </Frame>
+    </Viewport>
   );
 }
 

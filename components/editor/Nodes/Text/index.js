@@ -1,4 +1,4 @@
-import { EditableText } from "@blueprintjs/core";
+import { EditableText } from "@mantine/core";
 import { useEditor, useNode } from "@craftjs/core";
 import { Box } from "components/Grid";
 import { useEffect, useState } from "react";

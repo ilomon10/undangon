@@ -1,4 +1,4 @@
-import { FormGroup, InputGroup, RadioGroup, Switch } from "@blueprintjs/core";
+import { FormGroup, InputGroup, RadioGroup, Switch } from "@mantine/core";
 import { useNode } from "@craftjs/core";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import _pick from "lodash/pick";

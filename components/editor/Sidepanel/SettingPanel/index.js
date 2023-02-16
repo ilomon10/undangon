@@ -1,6 +1,5 @@
-import { NonIdealState } from "@blueprintjs/core";
-import { useEditor } from "@craftjs/core"
-import { Box } from "components/Grid"
+import { Box, Text } from "@mantine/core";
+import { useEditor } from "@craftjs/core";
 import { createElement } from "react";
 import { PanelSection } from "../PanelSection";
 
@@ -13,31 +12,28 @@ export const SettingPanel = () => {
       selected = {
         id: currentNodeId,
         name: state.nodes[currentNodeId].data.name,
-        settings: state.nodes[currentNodeId].related && state.nodes[currentNodeId].related.settings
+        settings:
+          state.nodes[currentNodeId].related &&
+          state.nodes[currentNodeId].related.settings,
       };
     }
     return {
-      selected
-    }
+      selected,
+    };
   });
 
   return (
     <PanelSection text="Design">
       <Box
         sx={{
-          minHeight: 280
+          minHeight: 280,
         }}
       >
-        {!selected &&
-          <Box>
-            <NonIdealState description="Select any nodes to start editing" />
-          </Box>}
+        {!selected && <Text>Select any nodes to start editing</Text>}
         {selected ? (
-          <Box>
-            {selected.settings && createElement(selected.settings)}
-          </Box>
+          <Box>{selected.settings && createElement(selected.settings)}</Box>
         ) : null}
       </Box>
     </PanelSection>
   );
-}
+};

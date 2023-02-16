@@ -1,11 +1,17 @@
 import React, { useMemo } from "react";
-import { Button, ButtonGroup, Icon, Menu, MenuItem } from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
+import { ActionIcon, Button, Menu } from "@mantine/core";
 import { useEditor } from "@craftjs/core";
 import { Box, Flex } from "components/Grid";
 import { useViewport } from "../Viewport/useViewport";
 import { State } from "components/State";
 import Link from "next/link";
+import {
+  MdKeyboardArrowDown,
+  MdOpenInNew,
+  MdRedo,
+  MdShare,
+  MdUndo,
+} from "react-icons/md";
 
 export const Toolbar = () => {
   const {
@@ -29,27 +35,33 @@ export const Toolbar = () => {
   return (
     <Flex px={2} py={2} alignItems="center">
       <Box mr={2}>
-        <Button text="Close" onClick={handler.onClose} />
+        <Button onClick={handler.onClose} size="xs">
+          Close
+        </Button>
       </Box>
       <Box>
-        <ButtonGroup>
-          <Button
+        <Button.Group>
+          <ActionIcon
+            size="md"
             disabled={!canUndo}
-            icon="undo"
             onClick={() => actions.history.undo()}
-          />
-          <Button
+          >
+            <MdUndo size={18} />
+          </ActionIcon>
+          <ActionIcon
+            size="md"
             disabled={!canRedo}
-            icon="redo"
             onClick={() => actions.history.redo()}
-          />
-        </ButtonGroup>
+          >
+            <MdRedo size={18} />
+          </ActionIcon>
+        </Button.Group>
       </Box>
       {/* <Box ml={2}>
         <KeyCombo combo="shift+/" />
       </Box> */}
       <Flex sx={{ flexGrow: 1, justifyContent: "center" }}>
-        <ButtonGroup>
+        <Button.Group>
           <Button
             active={currentMedia.name === "mobile"}
             icon="mobile-phone"
@@ -64,41 +76,44 @@ export const Toolbar = () => {
               setMedia("desktop");
             }}
           />
-        </ButtonGroup>
+        </Button.Group>
       </Flex>
       <Box>
-        <ButtonGroup>
+        <Button.Group>
           <State defaultValue={false}>
             {({ state: isLoading, setState: setLoading }) => (
               <Button
-                text="Publish"
-                intent="success"
+                color="teal"
                 loading={isLoading}
                 onClick={() =>
                   handler.onPublish(query, { isLoading, setLoading })
                 }
-              />
+              >
+                Publish
+              </Button>
             )}
           </State>
-          <Popover2
-            content={
-              <Menu>
-                {previewUrl && (
-                  <Link href={previewUrl} passHref>
-                    <MenuItem
-                      target="_blank"
-                      labelElement={<Icon icon="share" />}
-                      text="Preview"
-                    />
-                  </Link>
-                )}
-                <MenuItem text="Export" />
-              </Menu>
-            }
-          >
-            <Button icon="chevron-down" intent="success" />
-          </Popover2>
-        </ButtonGroup>
+          <Menu>
+            <Menu.Target>
+              <ActionIcon>
+                <MdKeyboardArrowDown />
+              </ActionIcon>
+            </Menu.Target>
+            <Menu.Dropdown>
+              {previewUrl && (
+                <Link href={previewUrl} passHref>
+                  <Menu.Item
+                    component="a"
+                    target="_blank"
+                    icon={<MdOpenInNew />}
+                    text="Preview"
+                  />
+                </Link>
+              )}
+              <Menu.Item text="Export" />
+            </Menu.Dropdown>
+          </Menu>
+        </Button.Group>
       </Box>
     </Flex>
   );

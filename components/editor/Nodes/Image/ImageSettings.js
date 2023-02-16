@@ -4,10 +4,9 @@ import {
   InputGroup,
   RadioGroup,
   Switch,
-} from "@blueprintjs/core";
+} from "@mantine/core";
 import { useNode } from "@craftjs/core";
 import { CloudinaryUploadWidgetButton } from "components/CloudinaryUploadWidget";
-import { ColorPicker } from "components/ColorPicker";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import { Box, Flex } from "components/Grid";
 import { useViewport } from "components/editor/Viewport/useViewport";

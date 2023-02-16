@@ -4,9 +4,9 @@ import {
   InputGroup,
   Radio,
   RadioGroup,
-} from "@blueprintjs/core";
+  ColorPicker,
+} from "@mantine/core";
 import { useNode } from "@craftjs/core";
-import { ColorPicker } from "components/ColorPicker";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import { Box, Flex } from "components/Grid";
 import _pick from "lodash/pick";

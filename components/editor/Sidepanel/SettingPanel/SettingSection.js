@@ -1,4 +1,4 @@
-import { Collapse, Icon, Text } from "@blueprintjs/core";
+import { Collapse, Icon, Text } from "@mantine/core";
 import { useNode } from "@craftjs/core";
 import { importProps } from "components/editor/utils/importProps";
 import { Box, Flex } from "components/Grid";

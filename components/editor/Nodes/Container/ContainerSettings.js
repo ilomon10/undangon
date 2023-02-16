@@ -1,14 +1,11 @@
 import {
   Button,
-  FormGroup,
-  HTMLSelect,
-  Icon,
-  InputGroup,
-  RadioGroup,
+  ColorInput,
+  Input,
+  Radio,
   Switch,
-} from "@blueprintjs/core";
+} from "@mantine/core";
 import { ROOT_NODE, useNode } from "@craftjs/core";
-import { ColorPicker } from "components/ColorPicker";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import { Box, Flex } from "components/Grid";
 import _pick from "lodash/pick";
@@ -77,7 +74,7 @@ export const ContainerSettings = () => {
               },
             ].map(({ icon, property }, idx) => (
               <Box key={idx} width="50%" px={1}>
-                <FormGroup label={property}>
+                <Input.Wrapper label={property}>
                   <CSSUnitInput
                     disabled={modes[property] !== "fixed"}
                     iconProps={{
@@ -89,8 +86,8 @@ export const ContainerSettings = () => {
                       setProp((props) => _set(props, property, value));
                     }}
                   />
-                </FormGroup>
-                <FormGroup>
+                </Input.Wrapper>
+                <Input.Wrapper>
                   <HTMLSelect
                     options={[
                       {
@@ -113,7 +110,7 @@ export const ContainerSettings = () => {
                       );
                     }}
                   />
-                </FormGroup>
+                </Input.Wrapper>
               </Box>
             ))}
           </Flex>
@@ -130,7 +127,7 @@ export const ContainerSettings = () => {
                 },
               ].map(({ icon, property }, idx) => (
                 <Box key={idx} width="50%" px={1}>
-                  <FormGroup label={property}>
+                  <Input.Wrapper label={property}>
                     <CSSUnitInput
                       iconProps={{
                         text: icon,
@@ -143,7 +140,7 @@ export const ContainerSettings = () => {
                         setProp((props) => _set(props, property, value));
                       }}
                     />
-                  </FormGroup>
+                  </Input.Wrapper>
                 </Box>
               ))}
             </Flex>
@@ -159,7 +156,7 @@ export const ContainerSettings = () => {
                 },
               ].map(({ icon, property }, idx) => (
                 <Box key={idx} width="50%" px={1}>
-                  <FormGroup label={property}>
+                  <Input.Wrapper label={property}>
                     <CSSUnitInput
                       iconProps={{
                         text: icon,
@@ -172,7 +169,7 @@ export const ContainerSettings = () => {
                         setProp((props) => _set(props, property, value));
                       }}
                     />
-                  </FormGroup>
+                  </Input.Wrapper>
                 </Box>
               ))}
             </Flex>
@@ -215,7 +212,7 @@ export const ContainerSettings = () => {
             },
           ].map(({ icon }, idx) => (
             <Box key={idx} width="50%" px={1}>
-              <FormGroup>
+              <Input.Wrapper>
                 <InputGroup
                   type="number"
                   leftElement={
@@ -246,7 +243,7 @@ export const ContainerSettings = () => {
                     );
                   }}
                 />
-              </FormGroup>
+              </Input.Wrapper>
             </Box>
           ))}
         </Flex>
@@ -290,7 +287,7 @@ export const ContainerSettings = () => {
               },
             ].map(({ icon, label }, idx) => (
               <Box key={idx} width="50%" px={1}>
-                <FormGroup>
+                <Input.Wrapper>
                   <CSSUnitInput
                     iconProps={{
                       icon: <Box {...icon} />,
@@ -303,14 +300,14 @@ export const ContainerSettings = () => {
                       setProp((props) => _set(props, `margin[${idx}]`, value));
                     }}
                   />
-                </FormGroup>
+                </Input.Wrapper>
               </Box>
             ))}
           </Flex>
         </SettingSection>
       )}
       <SettingSection text="Appearance">
-        <FormGroup
+        <Input.Wrapper
           label="Z Index"
           labelInfo={
             values.zIndex && (
@@ -331,8 +328,8 @@ export const ContainerSettings = () => {
               setProp((props) => (props.zIndex = e.target.value), 500);
             }}
           />
-        </FormGroup>
-        <FormGroup
+        </Input.Wrapper>
+        <Input.Wrapper
           label="Background Color"
           labelInfo={
             values.backgroundColor && (
@@ -347,14 +344,14 @@ export const ContainerSettings = () => {
             )
           }
         >
-          <ColorPicker
+          <ColorInput
             value={values.backgroundColor}
             onChange={(color) => {
               setProp((props) => (props.backgroundColor = color.hex));
             }}
           />
-        </FormGroup>
-        <FormGroup
+        </Input.Wrapper>
+        <Input.Wrapper
           label="Background"
           labelInfo={
             values.background && (
@@ -375,7 +372,7 @@ export const ContainerSettings = () => {
               setProp((props) => (props.background = e.target.value));
             }}
           />
-        </FormGroup>
+        </Input.Wrapper>
         <Flex alignItems="center" mb={2}>
           <Box>Border Radius</Box>
           <Box flexGrow={1} />
@@ -430,7 +427,7 @@ export const ContainerSettings = () => {
             ].map(({ icon, label }, idx) => {
               return (
                 <Box key={idx} width="50%" px={1} title={label}>
-                  <FormGroup>
+                  <Input.Wrapper>
                     <CSSUnitInput
                       iconProps={{
                         icon: <Box {...icon} />,
@@ -445,13 +442,13 @@ export const ContainerSettings = () => {
                         );
                       }}
                     />
-                  </FormGroup>
+                  </Input.Wrapper>
                 </Box>
               );
             })}
           </Flex>
         ) : (
-          <FormGroup>
+          <Input.Wrapper>
             <CSSUnitInput
               iconProps={{
                 icon: (
@@ -474,10 +471,10 @@ export const ContainerSettings = () => {
                 }, 500);
               }}
             />
-          </FormGroup>
+          </Input.Wrapper>
         )}
 
-        <FormGroup>
+        <Input.Wrapper>
           <Switch
             label="Clip content"
             checked={_get(values, "overflow") === "hidden"}
@@ -491,20 +488,20 @@ export const ContainerSettings = () => {
               }, 500);
             }}
           />
-        </FormGroup>
+        </Input.Wrapper>
 
-        <FormGroup label="Opacity">
+        <Input.Wrapper label="Opacity">
           <InputGroup
             defaultValue={_get(values, `opacity`) || ""}
             onChange={(e) => {
               setProp((props) => _set(props, `opacity`, e.target.value), 500);
             }}
           />
-        </FormGroup>
+        </Input.Wrapper>
       </SettingSection>
 
       <SettingSection text="Layout" defaultOpen={true}>
-        <FormGroup label="Direction">
+        <Input.Wrapper label="Direction">
           {[
             {
               icon: "arrow-down",
@@ -533,8 +530,8 @@ export const ContainerSettings = () => {
               }}
             />
           ))}
-        </FormGroup>
-        <FormGroup>
+        </Input.Wrapper>
+        <Input.Wrapper>
           <Switch
             label="Wrap Item"
             checked={_get(values, "flexWrap") === "wrap"}
@@ -544,7 +541,7 @@ export const ContainerSettings = () => {
               });
             }}
           />
-        </FormGroup>
+        </Input.Wrapper>
         <Flex>
           <Box width={"50%"}>
             <RadioGroup
@@ -579,14 +576,14 @@ export const ContainerSettings = () => {
         </Flex>
       </SettingSection>
       <SettingSection text="Transform" defaultOpen={true}>
-        <FormGroup label="transform">
+        <Input.Wrapper label="transform">
           <InputGroup
             defaultValue={_get(values, `transform`) || ""}
             onChange={(e) => {
               setProp((props) => _set(props, `transform`, e.target.value), 500);
             }}
           />
-        </FormGroup>
+        </Input.Wrapper>
       </SettingSection>
     </>
   );

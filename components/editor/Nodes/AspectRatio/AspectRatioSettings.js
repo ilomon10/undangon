@@ -1,4 +1,4 @@
-import { FormGroup, InputGroup, Switch } from "@blueprintjs/core";
+import { Input, Switch } from "@mantine/core";
 import { useNode } from "@craftjs/core";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import _pick from "lodash/pick";
@@ -20,15 +20,15 @@ export const AspectRatioSettings = () => {
         label={({ ratio, portrait }) => `${ratio}, ${portrait}`}
         props={["ratio", "portrait"]}
       >
-        <FormGroup label="Ratio">
-          <InputGroup
+        <Input.Wrapper label="Ratio">
+          <Input
             defaultValue={_get(values, "ratio") || ""}
             onChange={(e) => {
               setProp((props) => (props.ratio = e.target.value), 500);
             }}
           />
-        </FormGroup>
-        <FormGroup>
+        </Input.Wrapper>
+        <Input.Wrapper>
           <Switch
             label="Portrait"
             checked={_get(values, "portrait")}
@@ -40,7 +40,7 @@ export const AspectRatioSettings = () => {
               });
             }}
           />
-        </FormGroup>
+        </Input.Wrapper>
       </SettingSection>
     </>
   );

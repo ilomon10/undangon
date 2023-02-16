@@ -57,24 +57,7 @@ export default function TemplateEditor({ content, ...props }) {
       constructPreviewUrl={constructPreviewUrl}
     >
       <Frame data={content}>
-        <Element is={Document} canvas>
-          <Element
-            is={Container}
-            custom={{
-              displayName: "Body",
-              settingMode: { height: "hug", width: "fill" },
-            }}
-            canvas
-          >
-            <Element is={Container} marginRight="auto" marginLeft="auto" canvas>
-              <Element is={Container} canvas>
-                <Text text="Ini Text 1" />
-                <Text text="Text 2" />
-                <Button />
-              </Element>
-            </Element>
-          </Element>
-        </Element>
+        <Element is={Document} canvas></Element>
       </Frame>
     </Viewport>
   );
@@ -82,14 +65,10 @@ export default function TemplateEditor({ content, ...props }) {
 
 export const getServerSideProps = withPageAuthRequired({
   async getServerSideProps(context) {
-    const { template_id } = context.params;
-    let data = await client.getTemplate(template_id);
-    const content = lz.decompress(lz.decodeBase64(data.content));
+    // let data = await client.getTemplate(template_id);
+    // const content = lz.decompress(lz.decodeBase64(data.content));
     return {
-      props: {
-        ...data,
-        content,
-      },
+      props: {},
     };
   },
 });

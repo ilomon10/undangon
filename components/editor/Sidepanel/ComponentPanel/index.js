@@ -1,11 +1,10 @@
-import { Menu, Icon, Classes } from "@blueprintjs/core";
+import { Menu } from "@mantine/core";
 import { Element, useEditor } from "@craftjs/core";
 import { Reveal } from "components/editor/Components";
 import { UrlParameter } from "components/editor/Components/UrlParameter";
-import { Box } from "components/Grid";
-import { useEffect, useRef } from "react";
-import { Button, Container, Countdown, Text } from "../../Nodes";
+import { Container, Countdown, Text } from "../../Nodes";
 import { PanelSection } from "../PanelSection";
+import { MdTitle } from "react-icons/md";
 
 export const ComponentPanel = () => {
   const { connectors, query } = useEditor();
@@ -14,7 +13,7 @@ export const ComponentPanel = () => {
       <Menu>
         {[
           {
-            icon: "paragraph",
+            icon: <MdTitle />,
             label: "UrlParameter",
             ref: (ref) =>
               connectors.create(
@@ -25,7 +24,7 @@ export const ComponentPanel = () => {
               ),
           },
           {
-            icon: "paragraph",
+            icon: <MdTitle />,
             label: "Reveal",
             ref: (ref) =>
               connectors.create(
@@ -36,22 +35,13 @@ export const ComponentPanel = () => {
               ),
           },
           {
-            icon: "paragraph",
+            icon: <MdTitle />,
             label: "Countdown",
             ref: (ref) =>
               connectors.create(ref, <Countdown name="Countdown" />),
           },
-        ].map(({ ref, label, icon }) => (
-          <li key={label}>
-            <button type="button" className={`${Classes.MENU_ITEM}`} ref={ref}>
-              <Icon className={Classes.MENU_ITEM_ICON} icon={icon} />
-              <span
-                className={`${Classes.FILL} ${Classes.TEXT_OVERFLOW_ELLIPSIS}`}
-              >
-                {label}
-              </span>
-            </button>
-          </li>
+        ].map(({ label, icon }) => (
+          <Menu.Item key={label} icon={icon}>{label}</Menu.Item>
         ))}
       </Menu>
     </PanelSection>

@@ -1,5 +1,4 @@
 import lz from "lzutf8";
-import { Box, Flex } from "components/Grid";
 import { LayerPanel } from "../Sidepanel/LayerPanel";
 import { SettingPanel } from "../Sidepanel/SettingPanel";
 import { Toolbar } from "../Toolbar";
@@ -13,10 +12,11 @@ import "slick-carousel/slick/slick-theme.css";
 
 import * as ResolverNodes from "../Nodes";
 import * as ResolverComponents from "../Components";
-import { Tag, useHotkeys } from "@blueprintjs/core";
+import { Tag, Box, Flex, Accordion } from "@mantine/core";
+import { getHotkeyHandler } from "@mantine/hooks";
 import { useCallback, useMemo } from "react";
 import { getCloneTree } from "../utils/getCloneTree";
-import { toaster } from "components/toaster";
+import { showNotification } from "@mantine/notifications";
 
 export const ViewportWrapper = ({ children }) => {
   const {
@@ -75,8 +75,8 @@ export const ViewportWrapper = ({ children }) => {
     ];
     try {
       await navigator.clipboard.write(data);
-      toaster.show({
-        intent: "success",
+      showNotification({
+        color: "teal",
         message: (
           <>
             Node <Tag>{selectedNodeId}</Tag> was copied
@@ -85,8 +85,8 @@ export const ViewportWrapper = ({ children }) => {
       });
     } catch (err) {
       console.error(err);
-      toaster.show({
-        intent: "warning",
+      showNotification({
+        color: "red",
         message: `Node cannot copied`,
       });
     }
@@ -120,25 +120,11 @@ export const ViewportWrapper = ({ children }) => {
 
   const editorHotkeys = useMemo(
     () => [
-      {
-        combo: "ctrl+c",
-        label: "Copy",
-        group: "Editor",
-        // preventDefault: true,
-        onKeyDown: copyNode,
-      },
-      {
-        combo: "ctrl+v",
-        label: "Paste",
-        group: "Editor",
-        // preventDefault: true,
-        onKeyDown: pasteNode,
-      },
-      {
-        combo: "del",
-        label: "Delete",
-        group: "Editor",
-        onKeyDown: (e) => {
+      ["ctrl+c", copyNode],
+      ["ctrl+v", pasteNode],
+      [
+        "del",
+        () => {
           const [selectedNodeId] = selected;
           if (!selectedNodeId) return;
           const node = getNodeById(selectedNodeId);
@@ -146,28 +132,10 @@ export const ViewportWrapper = ({ children }) => {
             actions.delete(selectedNodeId);
           }
         },
-      },
-      {
-        combo: "ctrl+d",
-        label: "Duplicate",
-        group: "Editor",
-        preventDefault: true,
-        onKeyDown: (e) => {
-          duplicateNode();
-        },
-      },
-      {
-        combo: "ctrl+shift+z",
-        label: "Redo",
-        group: "Editor",
-        onKeyDown: () => actions.history.redo(),
-      },
-      {
-        combo: "ctrl+z",
-        label: "Undo",
-        group: "Editor",
-        onKeyDown: () => actions.history.undo(),
-      },
+      ],
+      ["ctrl+d", duplicateNode],
+      ["ctrl+shift+z", () => actions.history.redo()],
+      ["ctrl+z", () => actions.history.undo()],
     ],
     [
       copyNode,
@@ -178,19 +146,14 @@ export const ViewportWrapper = ({ children }) => {
     ]
   );
 
-  const { handleKeyDown, handleKeyUp } = useHotkeys(editorHotkeys);
-
   return (
     <Flex
       tabIndex={0}
-      onKeyDown={handleKeyDown}
-      onKeyUp={handleKeyUp}
+      onKeyDown={getHotkeyHandler(editorHotkeys)}
       className="prevent-select"
-      sx={{
-        position: "fixed",
-        inset: 0,
-        flexDirection: "column",
-      }}
+      pos="fixed"
+      direction="column"
+      inset={0}
     >
       <Box
         sx={{
@@ -220,9 +183,33 @@ export const ViewportWrapper = ({ children }) => {
               overflow: "auto",
             }}
           >
-            <Toolbox />
-            <ComponentPanel />
-            <LayerPanel />
+            <Accordion
+              multiple={true}
+              styles={{
+                content: {
+                  padding: 0,
+                },
+              }}
+            >
+              <Accordion.Item value="toolbox">
+                <Accordion.Control>Toolbox</Accordion.Control>
+                <Accordion.Panel>
+                  <Toolbox />
+                </Accordion.Panel>
+              </Accordion.Item>
+              <Accordion.Item value="component">
+                <Accordion.Control>Component</Accordion.Control>
+                <Accordion.Panel>
+                  <ComponentPanel />
+                </Accordion.Panel>
+              </Accordion.Item>
+              <Accordion.Item value="laye">
+                <Accordion.Control>Layer</Accordion.Control>
+                <Accordion.Panel>
+                  <LayerPanel />
+                </Accordion.Panel>
+              </Accordion.Item>
+            </Accordion>
           </Box>
         </Box>
         <Box

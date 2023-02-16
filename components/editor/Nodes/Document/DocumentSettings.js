@@ -1,4 +1,4 @@
-import { FormGroup, InputGroup, Switch } from "@blueprintjs/core";
+import { Input, Switch } from "@mantine/core";
 import { useNode } from "@craftjs/core";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
 import { useViewport } from "components/editor/Viewport/useViewport";
@@ -26,8 +26,8 @@ export const DocumentSettings = () => {
         props={["musicOptions"]}
       >
         <Flex>
-          <FormGroup label="Music Url">
-            <InputGroup
+          <Input.Wrapper label="Music Url">
+            <Input
               defaultValue={_get(values, "musicOptions.url") || ""}
               onChange={(e) => {
                 setProp((props) =>
@@ -35,7 +35,7 @@ export const DocumentSettings = () => {
                 );
               }}
             />
-          </FormGroup>
+          </Input.Wrapper>
         </Flex>
         <Switch
           label="Show Play Button"
@@ -52,7 +52,7 @@ export const DocumentSettings = () => {
         label={({ modalOptions }) => `${modalOptions.imageUrl}`}
         props={["modalOptions"]}
       >
-        <FormGroup label="Url">
+        <Input.Wrapper label="Url">
           <CloudinaryUploadWidgetButton
             onSave={(files) => {
               setProp((props) =>
@@ -61,7 +61,7 @@ export const DocumentSettings = () => {
             }}
             folderTarget={`/manjo/assets/${id}`}
           />
-          <InputGroup
+          <Input
             defaultValue={_get(values, "modalOptions.imageUrl") || ""}
             onChange={(e) => {
               setProp((props) =>
@@ -69,7 +69,7 @@ export const DocumentSettings = () => {
               );
             }}
           />
-        </FormGroup>
+        </Input.Wrapper>
         <Switch
           label="Close Modal"
           checked={_get(values, "modalOptions.open") || ""}
@@ -89,8 +89,8 @@ export const DocumentSettings = () => {
         }
         props={["modalOptions"]}
       >
-        <FormGroup label="One">
-          <InputGroup
+        <Input.Wrapper label="One">
+          <Input
             defaultValue={_get(values, "modalOptions.descriptions.one") || ""}
             onChange={(e) => {
               setProp(
@@ -100,9 +100,9 @@ export const DocumentSettings = () => {
               );
             }}
           />
-        </FormGroup>
-        <FormGroup label="Two">
-          <InputGroup
+        </Input.Wrapper>
+        <Input.Wrapper label="Two">
+          <Input
             defaultValue={_get(values, "modalOptions.descriptions.two") || ""}
             onChange={(e) => {
               setProp(
@@ -112,7 +112,7 @@ export const DocumentSettings = () => {
               );
             }}
           />
-        </FormGroup>
+        </Input.Wrapper>
       </SettingSection>
       <SettingSection
         text="Gradient Style"
@@ -121,8 +121,8 @@ export const DocumentSettings = () => {
         }
         props={["modalOptions"]}
       >
-        <FormGroup label="Background">
-          <InputGroup
+        <Input.Wrapper label="Background">
+          <Input
             defaultValue={
               _get(values, "modalOptions.gradientStyle.background") || ""
             }
@@ -138,9 +138,9 @@ export const DocumentSettings = () => {
               );
             }}
           />
-        </FormGroup>
-        <FormGroup label="Opacity">
-          <InputGroup
+        </Input.Wrapper>
+        <Input.Wrapper label="Opacity">
+          <Input
             defaultValue={
               _get(values, "modalOptions.gradientStyle.opacity") || ""
             }
@@ -156,7 +156,7 @@ export const DocumentSettings = () => {
               );
             }}
           />
-        </FormGroup>
+        </Input.Wrapper>
       </SettingSection>
       <SettingSection
         text="Front Image Attributes"
@@ -165,7 +165,7 @@ export const DocumentSettings = () => {
         }
         props={["modalOptions"]}
       >
-        <FormGroup label="Src">
+        <Input.Wrapper label="Src">
           <CloudinaryUploadWidgetButton
             onSave={(files) => {
               setProp((props) =>
@@ -178,7 +178,7 @@ export const DocumentSettings = () => {
             }}
             folderTarget={`/manjo/assets/${id}`}
           />
-          <InputGroup
+          <Input
             defaultValue={
               _get(values, "modalOptions.frontImageAttribute.src") || ""
             }
@@ -192,9 +192,9 @@ export const DocumentSettings = () => {
               );
             }}
           />
-        </FormGroup>
-        <FormGroup label="Height">
-          <InputGroup
+        </Input.Wrapper>
+        <Input.Wrapper label="Height">
+          <Input
             defaultValue={
               _get(values, "modalOptions.frontImageAttribute.style.height") ||
               ""
@@ -209,9 +209,9 @@ export const DocumentSettings = () => {
               );
             }}
           />
-        </FormGroup>
-        <FormGroup label="Width">
-          <InputGroup
+        </Input.Wrapper>
+        <Input.Wrapper label="Width">
+          <Input
             defaultValue={
               _get(values, "modalOptions.frontImageAttribute.style.width") || ""
             }
@@ -225,7 +225,7 @@ export const DocumentSettings = () => {
               );
             }}
           />
-        </FormGroup>
+        </Input.Wrapper>
       </SettingSection>
     </>
   );

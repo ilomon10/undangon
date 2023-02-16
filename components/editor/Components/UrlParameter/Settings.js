@@ -1,8 +1,6 @@
-import { FormGroup, InputGroup, Radio, RadioGroup } from "@blueprintjs/core";
+import { Input, Radio } from "@mantine/core";
 import { useNode } from "@craftjs/core";
-import { ColorPicker } from "components/ColorPicker";
 import { SettingSection } from "components/editor/Sidepanel/SettingPanel/SettingSection";
-import { Box, Flex } from "components/Grid";
 import _pick from "lodash/pick";
 
 export const UrlParameterSettings = () => {
@@ -22,22 +20,22 @@ export const UrlParameterSettings = () => {
         }
         props={["fieldName", "defaultValue"]}
       >
-        <FormGroup label="Field Name">
-          <InputGroup
+        <Input.Wrapper label="Field Name">
+          <Input
             value={values.fieldName || ""}
             onChange={(e) => {
               setProp((props) => (props.fieldName = e.target.value));
             }}
           />
-        </FormGroup>
-        <FormGroup label="Default Value">
-          <InputGroup
+        </Input.Wrapper>
+        <Input.Wrapper label="Default Value">
+          <Input
             value={values.defaultValue || ""}
             onChange={(e) => {
               setProp((props) => (props.defaultValue = e.target.value));
             }}
           />
-        </FormGroup>
+        </Input.Wrapper>
       </SettingSection>
     </>
   );
