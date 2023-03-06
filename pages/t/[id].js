@@ -17,19 +17,11 @@ export const Template = ({ content, name }) => {
         <title>Template: {name}</title>
       </Head>
       <Viewport isProduction={true}>
-        <Box
-          sx={{
-            position: "fixed",
-            inset: 0,
-            overflowY: "auto",
-          }}
-        >
-          <Frame data={content}>
-            <ResolverNodes.Container>
-              <ResolverNodes.Text>Nothing to see</ResolverNodes.Text>
-            </ResolverNodes.Container>
-          </Frame>
-        </Box>
+        <Frame data={content}>
+          <ResolverNodes.Container>
+            <ResolverNodes.Text>Nothing to see</ResolverNodes.Text>
+          </ResolverNodes.Container>
+        </Frame>
       </Viewport>
     </>
   );
