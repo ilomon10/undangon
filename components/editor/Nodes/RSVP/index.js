@@ -43,7 +43,9 @@ export const RSVP = ({ children, message, phone_number }) => {
 
   const transformedMessage = transformMessage(message || "", {
     name: fields["name"],
-    attendance: fields["attendance"],
+    attendance: fields["attendance"]
+      ? "Saya akan hadir"
+      : "Saya tidak akan hadir",
     persons: fields["number_of_persons"],
   });
 
