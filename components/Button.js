@@ -1,9 +1,9 @@
 import { Box } from "./";
 
-export const Button = ({ text, loading, ...props }) => {
+export const Button = ({ as = "button", text, loading, ...props }) => {
   return (
     <Box
-      as="button"
+      as={as}
       sx={{
         appearance: "none",
         display: "inline-block",

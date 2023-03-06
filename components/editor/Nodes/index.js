@@ -11,3 +11,4 @@ export * from "./Image";
 export * from "./Positioned";
 export * from "./StaticMapbox";
 export * from "./Text";
+export * from "./RSVP";
