@@ -42,7 +42,7 @@ export const InvitationList = () => {
           }}
         >
           <Box flexGrow={1}>
-            <Link href={`/manager/invitation/editor/${_id}`} passHref>
+            <Link href={`/manager/invitation/editor/${slug}/${_id}`} passHref>
               <Box as="a">{name}</Box>
             </Link>
           </Box>
