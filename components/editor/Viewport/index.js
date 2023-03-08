@@ -232,10 +232,11 @@ export const ViewportWrapper = ({ children }) => {
           }}
         >
           <Box
-            className="craftjs-renderer"
+            className="editor-renderer"
             sx={{
               backgroundColor: "gray.2",
               overflowY: "auto",
+              overflowX: "hidden",
               height: "1px",
               minHeight: "100%",
             }}

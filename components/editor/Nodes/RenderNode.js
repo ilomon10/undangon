@@ -71,7 +71,7 @@ export const RenderNode = ({ render }) => {
   );
 
   useEffect(() => {
-    const dom = document.querySelector(".craftjs-renderer");
+    const dom = document.querySelector(".editor-renderer");
 
     dom.addEventListener("scroll", scroll);
 
