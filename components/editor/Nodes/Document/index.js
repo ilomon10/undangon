@@ -227,7 +227,14 @@ const ModalComponent = ({
             <Box sx={{ fontSize: 2, fontWeight: "bold", mb: 2, mt: 4 }}>
               {_get(descriptions, "one") || "Dear Mr/Mrs/Ms"}
             </Box>
-            <Box sx={{ fontSize: 5, mb: 4 }}>{guests}</Box>
+            <Box
+              sx={{ fontSize: 5, mb: 4 }}
+              style={{
+                ..._get(descriptions, "guestStyle"),
+              }}
+            >
+              {guests}
+            </Box>
             <Box sx={{ fontSize: 2, mb: 4 }}>
               {_get(descriptions, "two") || "You are invited to our wedding"}
             </Box>
@@ -268,6 +275,7 @@ export const documentDefaultProps = {
     descriptions: {
       one: "Dear Mr/Mrs/Ms",
       two: "You are invited to our wedding",
+      guestStyle: {},
     },
 
     frontImageAttribute: {

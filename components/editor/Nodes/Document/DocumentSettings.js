@@ -113,6 +113,18 @@ export const DocumentSettings = () => {
             }}
           />
         </FormGroup>
+        <FormGroup label="Guest Font Size">
+          <InputGroup
+            defaultValue={_get(values, "modalOptions.descriptions.guestStyle.fontSize") || ""}
+            onChange={(e) => {
+              setProp(
+                (props) =>
+                  _set(props, "modalOptions.descriptions.guestStyle.fontSize", e.target.value),
+                500
+              );
+            }}
+          />
+        </FormGroup>
       </SettingSection>
       <SettingSection
         text="Gradient Style"
