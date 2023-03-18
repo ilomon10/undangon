@@ -61,7 +61,7 @@ export const RevealSettings = () => {
           label="Direction"
           selectedValue={values.direction || ""}
           onChange={(e) => {
-            setProp((props) => (props.direction = Number(e.target.value)));
+            setProp((props) => (props.direction = e.target.value));
           }}
           options={[
             { label: "Top", value: "top" },

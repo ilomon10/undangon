@@ -2,9 +2,15 @@
   "configurations": [
     {
       "type": "chrome",
-      "name": "http://localhost:3001",
+      "name": "Home",
       "request": "launch",
       "url": "http://localhost:3001"
+    },
+    {
+      "type": "chrome",
+      "name": "Manager",
+      "request": "launch",
+      "url": "http://localhost:3001/manager"
     }
   ]
 }

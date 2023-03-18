@@ -23,8 +23,8 @@ export const Reveal = ({
 
   const props = {
     innerRef: connect,
-    // when: isEditing ? when : true,
-    when: true,
+    when: isEditing ? when : undefined,
+    // when: true,
     top: direction === "top",
     right: direction === "right",
     bottom: direction === "bottom",
@@ -33,6 +33,7 @@ export const Reveal = ({
     fraction,
     duration,
   };
+  console.log(props, isEditing);
 
   switch (effect) {
     case "flip":
