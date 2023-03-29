@@ -2,12 +2,12 @@ import { Button, Collapse, Icon } from "@blueprintjs/core";
 import { useNode } from "@craftjs/core";
 import { Box, Flex } from "components/Grid";
 import { useMemo, useState } from "react";
-import useCollapse from "react-collapsed";
+import { useCollapse } from "react-collapsed";
 
 export const PanelSection = ({ icon, text, children, defaultOpen = true }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
-  const { getCollapseProps, getToggleProps } = useCollapse({
+  const { getCollapseProps } = useCollapse({
     isExpanded: isOpen,
   });
 

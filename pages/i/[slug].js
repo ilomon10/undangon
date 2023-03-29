@@ -13,6 +13,11 @@ import { Viewport } from "components/editor";
 
 export const Invitation = ({ content, meta }) => {
   const router = useRouter();
+
+  if (router.isFallback) {
+    return "Loading...";
+  }
+
   return (
     <>
       <Head>
