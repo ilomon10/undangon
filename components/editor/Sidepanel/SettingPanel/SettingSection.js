@@ -14,7 +14,6 @@ export const SettingSection = ({
   defaultOpen = false,
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen || false);
-  const [isExpanded, setIsExpanded] = useState(defaultOpen || false);
   const { nodeProps } = useNode((node) => ({
     nodeProps: props && importProps(node, props),
   }));
@@ -35,12 +34,6 @@ export const SettingSection = ({
 
   const { getCollapseProps } = useCollapse({
     isExpanded: isOpen,
-    onCollapseEnd: () => {
-      setIsExpanded(false);
-    },
-    onExpandStart: () => {
-      setIsExpanded(true);
-    },
   });
 
   return (
@@ -82,7 +75,7 @@ export const SettingSection = ({
             my: 2,
           }}
         >
-          {isExpanded && children}
+          {children}
         </Box>
       </Box>
     </Box>
