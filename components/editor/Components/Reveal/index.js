@@ -33,7 +33,6 @@ export const Reveal = ({
     fraction,
     duration,
   };
-  console.log(props, isEditing);
 
   switch (effect) {
     case "flip":

@@ -45,6 +45,7 @@ export const ContainerSettings = () => {
       "background",
       "backgroundColor",
       "borderRadius",
+      "border",
       "flexWrap",
       "flexDirection",
       "justifyContent",

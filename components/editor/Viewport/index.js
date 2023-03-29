@@ -17,6 +17,7 @@ import { Tag, useHotkeys } from "@blueprintjs/core";
 import { useCallback, useMemo } from "react";
 import { getCloneTree } from "../utils/getCloneTree";
 import { toaster } from "components/toaster";
+import { FontFaceProvider } from "../Nodes/Text/FontFaceProvider";
 
 export const ViewportWrapper = ({ children }) => {
   const {
@@ -318,9 +319,11 @@ export const Viewport = ({ isProduction = false, children, ...props }) => {
       }}
       onRender={RenderNode}
     >
-      <ViewportProvider {...props}>
-        <ViewportWrapper>{children}</ViewportWrapper>
-      </ViewportProvider>
+      <FontFaceProvider>
+        <ViewportProvider {...props}>
+          <ViewportWrapper>{children}</ViewportWrapper>
+        </ViewportProvider>
+      </FontFaceProvider>
     </Editor>
   );
 };

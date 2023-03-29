@@ -12,12 +12,9 @@ import { Box, Flex } from "components/Grid";
 import _pick from "lodash/pick";
 import _get from "lodash/get";
 import _set from "lodash/set";
-import dynamic from "next/dynamic";
-import { CONSTANTS } from "components/Constants";
 import { CSSUnitInput } from "../Container/CSSUnitInput";
 import unitsCss from "units-css";
-
-const FontPicker = dynamic(() => import("font-picker-react"), { ssr: false });
+import { FontPicker } from "components/FontPicker";
 
 export const TextSettings = () => {
   const {
@@ -55,9 +52,8 @@ export const TextSettings = () => {
       >
         <FormGroup label="Font Family">
           <FontPicker
-            apiKey={CONSTANTS.GOOGLE_API_KEY}
             activeFontFamily={values.fontFamily}
-            limit="150"
+            limit={150}
             onChange={(nextFamily) =>
               setProp((props) => (props.fontFamily = nextFamily.family))
             }

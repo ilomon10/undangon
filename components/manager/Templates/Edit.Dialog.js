@@ -60,7 +60,6 @@ export const TemplatesEditDialog = ({
                 initialValue={values["category"]}
                 value={values["category"]}
                 onChange={async ({ value }) => {
-                  console.log(value);
                   await setFieldValue("category", value);
                 }}
                 fetchCallback={async () => {

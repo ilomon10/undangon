@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import ContentEditable from "react-contenteditable";
 import { TextSettings } from "./TextSettings";
 import FontFaceObserver from "fontfaceobserver";
+import useFontFaceObserver from "use-font-face-observer";
+import { useQueue } from "react-use";
+import { useFontFace } from "./FontFaceProvider";
 
 export const Text = ({
   lineHeight,
@@ -29,6 +32,8 @@ export const Text = ({
   }));
   const [isEditable, setIsEditable] = useState();
 
+  const fontFace = useFontFace();
+
   const style = {
     lineHeight: `${lineHeight}px`,
     textAlign: textAlign,
@@ -42,17 +47,10 @@ export const Text = ({
 
   useEffect(async () => {
     if (!fontFamily) return;
-    const font = new FontFaceObserver(fontFamily);
     try {
-      const res = await font.load();
+      fontFace.load(fontFamily);
     } catch (err) {
-      const WebFont = await import("webfontloader");
-      WebFont.load({
-        google: {
-          families: [fontFamily],
-        },
-      });
-      console.error(err.message);
+      console.error(err);
     }
   }, [fontFamily]);
 
