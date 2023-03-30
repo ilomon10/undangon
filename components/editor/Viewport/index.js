@@ -307,7 +307,9 @@ export const Viewport = ({ isProduction = false, children, ...props }) => {
           ...ResolverComponents,
         }}
       >
-        <ViewportProvider isProduction={true}>{children}</ViewportProvider>
+        <FontFaceProvider>
+          <ViewportProvider isProduction={true}>{children}</ViewportProvider>
+        </FontFaceProvider>
       </Editor>
     );
   }
