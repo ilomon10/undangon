@@ -18,6 +18,7 @@ export default function Home() {
           name="description"
           content="Buat undangan digital kamu sekarang dengan harga yang terjangkau, dan juga bisa mengurangi pemakaian kertas berlebihan."
         />
+        <meta http-equiv="ScreenOrientation" content="autoRotate:disabled" />
 
         <meta
           property="og:title"
