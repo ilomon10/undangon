@@ -19,6 +19,7 @@ export const InvitationList = () => {
           },
           populate: 1,
         });
+        console.log(res);
       } catch (err) {
         console.error(err);
       }
@@ -31,7 +32,7 @@ export const InvitationList = () => {
 
   return (
     <Box>
-      {data.map(({ _id, name, category, slug, ...d }) => (
+      {data.map(({ _id, name, category,  slug, ...d }) => (
         <Flex
           key={_id}
           py={2}
