@@ -11,14 +11,15 @@ import { Formik, useFormik } from "formik";
 import axios from "axios";
 import { useCounter } from "react-use";
 import { IoAdd, IoCheckmarkCircle, IoRemove } from "react-icons/io5";
+import { useViewport } from "components/editor/Viewport/useViewport";
 
 // name: undefined,
 // attendance: true,
 // number_of_persons: 1,
 
 export const RegisQR = ({ field_name = "q" }) => {
+  const { isProduction } = useViewport();
   const { query: searchParams } = useRouter();
-
   const [data, setData] = useState(null);
 
   const [QRImage, setQRImage] = useState(null);
@@ -218,7 +219,7 @@ export const RegisQR = ({ field_name = "q" }) => {
                     mb={3}
                     p={2}
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={!isProduction || isSubmitting}
                     style={{
                       cursor: "pointer",
                       textAlign: "center",
