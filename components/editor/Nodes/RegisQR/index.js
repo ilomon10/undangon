@@ -19,6 +19,8 @@ import { IoAdd, IoCheckmarkCircle, IoRemove } from "react-icons/io5";
 export const RegisQR = ({ field_name = "q" }) => {
   const { query: searchParams } = useRouter();
 
+  const [data, setData] = useState(null);
+
   const [QRImage, setQRImage] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -33,12 +35,22 @@ export const RegisQR = ({ field_name = "q" }) => {
   } = useNode();
 
   useEffect(() => {
+    if (data) return;
     if (!qrValue) return;
     async function fetch() {
       try {
-        await axios.patch(`https://regis.manjo.space/invitees/${qrValue}`, {
-          status: "read",
-        });
+        const res = await axios.get(
+          `https://regis.manjo.space/invitees/${qrValue}`
+        );
+        const d = res.data;
+        if (["accepted", "declined"].indexOf(d.status)) {
+          setIsSubmitted(true);
+        }
+        setData(res.data);
+        if (d.status === "sent")
+          await axios.patch(`https://regis.manjo.space/invitees/${qrValue}`, {
+            status: "read",
+          });
       } catch (err) {}
       try {
         setQRImage(await QRCode.toDataURL(qrValue));
@@ -60,16 +72,15 @@ export const RegisQR = ({ field_name = "q" }) => {
           borderRadius: 8,
           backgroundColor: "white",
           border: "1px solid #aaa",
-          pt: 3,
-          px: 3,
-          mx: 3
+          p: 3,
+          mx: 3,
         }}
       >
         {isSubmitted ? (
           <Box
             sx={{
               textAlign: "center",
-              mb:3
+              mb: 3,
             }}
           >
             <Box>
@@ -80,7 +91,7 @@ export const RegisQR = ({ field_name = "q" }) => {
         ) : (
           <Formik
             initialValues={{
-              attendance: false,
+              attendance: null,
             }}
             onSubmit={async (values, { setSubmitting }) => {
               try {
@@ -129,15 +140,17 @@ export const RegisQR = ({ field_name = "q" }) => {
                     p={2}
                     sx={{
                       cursor: "pointer",
-                      backgroundColor: !values["attendance"]
-                        ? "#cd4246"
-                        : "transparent",
+                      backgroundColor:
+                        values["attendance"] !== false
+                          ? "transparent"
+                          : "#cd4246",
                       width: "50%",
                       border: "1px solid #cd4246",
                       borderRadius: 4,
                       textAlign: "center",
                       fontWeight: "bold",
-                      color: values["attendance"] ? "#cd4246" : "white",
+                      color:
+                        values["attendance"] !== false ? "#cd4246" : "white",
                     }}
                     onClick={() => {
                       setFieldValue("attendance", false);
@@ -199,22 +212,24 @@ export const RegisQR = ({ field_name = "q" }) => {
                     </Box>
                   </Flex>
                 )}
-                <Box
-                  as="button"
-                  mb={3}
-                  p={2}
-                  type="submit"
-                  disabled={isSubmitting}
-                  style={{
-                    cursor: "pointer",
-                    textAlign: "center",
-                    width: "100%",
-                    border: "1px solid #aaa",
-                    borderRadius: 4,
-                  }}
-                >
-                  {isSubmitting ? "Loading" : "Confirm"}
-                </Box>
+                {values["attendance"] !== null && (
+                  <Box
+                    as="button"
+                    mb={3}
+                    p={2}
+                    type="submit"
+                    disabled={isSubmitting}
+                    style={{
+                      cursor: "pointer",
+                      textAlign: "center",
+                      width: "100%",
+                      border: "1px solid #aaa",
+                      borderRadius: 4,
+                    }}
+                  >
+                    {isSubmitting ? "Loading" : "Confirm"}
+                  </Box>
+                )}
               </form>
             )}
           </Formik>
