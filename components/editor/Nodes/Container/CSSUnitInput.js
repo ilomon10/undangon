@@ -60,6 +60,7 @@ export const CSSUnitInput = ({
       </DragValue>
       <Box flexGrow={1}>
         <InputGroup
+          variant="ghost"
           disabled={disabled}
           style={{
             paddingLeft: 0,

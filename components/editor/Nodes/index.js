@@ -12,3 +12,4 @@ export * from "./Positioned";
 export * from "./StaticMapbox";
 export * from "./Text";
 export * from "./RSVP";
+export * from "./RegisQR";

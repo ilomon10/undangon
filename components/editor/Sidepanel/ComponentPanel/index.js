@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 import { Button, Container, Countdown, Text } from "../../Nodes";
 import { PanelSection } from "../PanelSection";
 import { RSVP } from "components/editor/Nodes/RSVP";
+import { RegisQR } from "components/editor/Nodes/RegisQR";
 
 export const ComponentPanel = () => {
   const { connectors, query } = useEditor();
@@ -14,6 +15,11 @@ export const ComponentPanel = () => {
     <PanelSection text="Components">
       <Menu>
         {[
+          {
+            icon: "paragraph",
+            label: "RegisQR",
+            ref: (ref) => connectors.create(ref, <RegisQR />),
+          },
           {
             icon: "paragraph",
             label: "RSVP",
