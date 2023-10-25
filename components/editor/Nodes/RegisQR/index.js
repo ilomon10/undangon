@@ -17,6 +17,8 @@ import { useViewport } from "components/editor/Viewport/useViewport";
 // attendance: true,
 // number_of_persons: 1,
 
+const max_person = 10;
+
 export const RegisQR = ({ field_name = "q" }) => {
   const { isProduction } = useViewport();
   const { query: searchParams } = useRouter();
@@ -24,8 +26,9 @@ export const RegisQR = ({ field_name = "q" }) => {
 
   const [QRImage, setQRImage] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  
 
-  const [number_of_persons, { inc, dec }] = useCounter(1, 4, 1);
+  const [number_of_persons, { inc, dec }] = useCounter(1, max_person, 1);
 
   const qrValue = useMemo(() => {
     return _get(searchParams, field_name);
@@ -44,8 +47,9 @@ export const RegisQR = ({ field_name = "q" }) => {
           `https://regis.manjo.space/invitees/${qrValue}`
         );
         const d = res.data;
-        if (["accepted", "declined"].indexOf(d.status)) {
+        if (["accepted", "declined"].indexOf(d.status) > -1) {
           setIsSubmitted(true);
+          console.log(["accepted", "declined"].indexOf(d.status) > -1)
         }
         setData(res.data);
         if (d.status === "sent")
@@ -199,7 +203,7 @@ export const RegisQR = ({ field_name = "q" }) => {
                       as="button"
                       type="button"
                       onClick={() => inc()}
-                      disabled={number_of_persons >= 4}
+                      disabled={number_of_persons >= max_person}
                       p={2}
                       sx={{
                         width: "33.3%",
