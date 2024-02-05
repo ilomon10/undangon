@@ -41,7 +41,7 @@ export const Countdown = ({ children, date, single, ...style }) => {
                 {_includes(["", "days"], single) && (
                   <div>
                     <div className="title">
-                      {duration.days() < 0 ? 0 : duration.days()}
+                      {duration.days() < 0 ? 0 : parseInt(duration.asDays())}
                     </div>
                     <div className="subtitle">Days</div>
                   </div>
