@@ -14,7 +14,13 @@ export const CountdownSettings = () => {
     actions: { setProp },
     values,
   } = useNode((node) => ({
-    values: _pick(node.data.props, ["date", "single"]),
+    values: _pick(node.data.props, [
+      "date",
+      "single",
+      "showLabel",
+      "titleFontSize",
+      "subtitleFontSize",
+    ]),
   }));
 
   return (
@@ -62,6 +68,47 @@ export const CountdownSettings = () => {
               { label: "minutes", value: "minutes" },
               { label: "seconds", value: "seconds" },
             ]}
+          />
+        </Box>
+        <Box
+          sx={{
+            mt: 3,
+          }}
+        >
+          <Switch
+            label="Show Label"
+            value={_get(values, "showLabel") || false}
+            onChange={(e) => {
+              setProp((props) => _set(props, "showLabel", e.target.checked));
+            }}
+          />
+        </Box>
+        <Box
+          sx={{
+            mt: 3,
+          }}
+        >
+          <InputGroup
+            placeholder="Time Font Size"
+            value={_get(values, "titleFontSize") || ""}
+            onChange={(e) => {
+              setProp((props) => _set(props, "titleFontSize", e.target.value));
+            }}
+          />
+        </Box>
+        <Box
+          sx={{
+            mt: 3,
+          }}
+        >
+          <InputGroup
+            placeholder="Label Font Size"
+            value={_get(values, "subtitleFontSize") || ""}
+            onChange={(e) => {
+              setProp((props) =>
+                _set(props, "subtitleFontSize", e.target.value)
+              );
+            }}
           />
         </Box>
       </SettingSection>

@@ -5,7 +5,15 @@ import moment from "moment";
 import { Counter } from "components/Counter";
 import _includes from "lodash/includes";
 
-export const Countdown = ({ children, date, single, ...style }) => {
+export const Countdown = ({
+  children,
+  date,
+  single,
+  showLabel = true,
+  titleFontSize,
+  subtitleFontSize,
+  ...style
+}) => {
   const {
     connectors: { connect },
   } = useNode();
@@ -28,11 +36,11 @@ export const Countdown = ({ children, date, single, ...style }) => {
                     lineHeight: 1,
                     ".title": {
                       p: 2,
-                      fontSize: [5, 6],
+                      fontSize: titleFontSize || [5, 6],
                       color: "text",
                     },
                     ".subtitle": {
-                      fontSize: [1, 2],
+                      fontSize: subtitleFontSize || [1, 2],
                       color: "lighterText",
                     },
                   },
@@ -43,7 +51,7 @@ export const Countdown = ({ children, date, single, ...style }) => {
                     <div className="title">
                       {duration.days() < 0 ? 0 : parseInt(duration.asDays())}
                     </div>
-                    <div className="subtitle">Days</div>
+                    {showLabel && <div className="subtitle">Days</div>}
                   </div>
                 )}
                 {_includes(["", "hours"], single) && (
@@ -51,7 +59,7 @@ export const Countdown = ({ children, date, single, ...style }) => {
                     <div className="title">
                       {duration.hours() < 0 ? 0 : duration.hours()}
                     </div>
-                    <div className="subtitle">Hours</div>
+                    {showLabel && <div className="subtitle">Hours</div>}
                   </div>
                 )}
                 {_includes(["", "minutes"], single) && (
@@ -59,7 +67,7 @@ export const Countdown = ({ children, date, single, ...style }) => {
                     <div className="title">
                       {duration.minutes() < 0 ? 0 : duration.minutes()}
                     </div>
-                    <div className="subtitle">Minutes</div>
+                    {showLabel && <div className="subtitle">Minutes</div>}
                   </div>
                 )}
                 {_includes(["", "seconds"], single) && (
@@ -67,7 +75,7 @@ export const Countdown = ({ children, date, single, ...style }) => {
                     <div className="title">
                       {duration.seconds() < 0 ? 0 : duration.seconds()}
                     </div>
-                    <div className="subtitle">Seconds</div>
+                    {showLabel && <div className="subtitle">Seconds</div>}
                   </div>
                 )}
               </Flex>
@@ -84,6 +92,9 @@ Countdown.craft = {
   props: {
     date: moment().add(15, "day").toISOString(),
     single: "", // days, hours, minutes, seconds
+    showLabel: true,
+    titleFontSize: undefined,
+    subtitleFontSize: undefined,
   },
   related: {
     settings: CountdownSettings,
