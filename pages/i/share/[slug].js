@@ -13,9 +13,12 @@ import { Formik } from "formik";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { getInvitationBySlug } from "pages/api/getInvitation/by/[slug]";
-import moment from "moment";
 import { getInvitations } from "pages/api/getInvitations";
 import { APP_DOMAIN } from "components/Constants";
+import _get from "lodash.get";
+import { useCallback, useRef } from "react";
+import { toaster } from "components/toaster";
+import client from "components/client";
 
 const htmlFormat = [
   { symbol: "*", open: "<b>", close: "</b>" },
@@ -64,17 +67,29 @@ const transformToPreview = (raw, opt) => {
   return text;
 };
 
-const DariID = ({ slug, meta }) => {
+const default_share_message = `Kepada {{to}},\nDengan segala hormat, kami mengirimkan undangan elektronik ini :\n{{url}}\n\nKami mohon restu di hari pernikahan kami. Walaupun, keadaan pandemi Covid-19 dan dengan tetap menjaga protokol kesehatan, kami mengundang Anda untuk menghadiri upacara pernikahan. Anda masih bisa menjadi bagian dari Pernikahan kami dengan meninggalkan keinginan Anda.\n\n⏰ – January 01, 1999\n\nTerima kasih atas semua doa dan dukungannya. Ini akan menjadi hadiah yang luar biasa untuk kita.\n\nWith pray & love,\nJohn & Doe\n#Manjo`;
+
+const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
   const router = useRouter();
 
   const urlRaw = `https://${APP_DOMAIN}/i/${slug}`;
 
-  const share_message = `Kepada {{to}},\nDengan segala hormat, kami mengirimkan undangan elektronik ini :\n{{url}}\n\nKami mohon restu di hari pernikahan kami. Walaupun, keadaan pandemi Covid-19 dan dengan tetap menjaga protokol kesehatan, kami mengundang Anda untuk menghadiri upacara pernikahan. Anda masih bisa menjadi bagian dari Pernikahan kami dengan meninggalkan keinginan Anda.\n\n⏰ – January 01, 1999\n\nTerima kasih atas semua doa dan dukungannya. Ini akan menjadi hadiah yang luar biasa untuk kita.\n\nWith pray & love,\nJohn & Doe\n#Manjo`;
+  let temp_share_message = useRef(share_message);
+
+  const onUpdateMessage = useCallback(
+    async (value) => {
+      await client.postInvitation({
+        _id,
+        share_message: value,
+      });
+    },
+    [slug]
+  );
 
   return (
     <>
       <Head>
-        <title>Undangan Pernikahan:</title>
+        <title>Share Undangan:</title>
       </Head>
       <Box
         sx={{
@@ -94,22 +109,38 @@ const DariID = ({ slug, meta }) => {
             url: urlRaw,
             description: share_message,
           }}
-          onSubmit={async (values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting, ...rest }, b) => {
             const text = transformDescription(values["description"], {
               to: values["to"],
               url: values["url"],
             });
             try {
-              router.push(
-                {
-                  query: {
-                    ...router.query,
-                    text: values["description"],
-                  },
-                },
-                undefined,
-                { shallow: true }
-              );
+              if (values["description"] != temp_share_message.current) {
+                await onUpdateMessage(values["description"]);
+                toaster.show({
+                  intent: "success",
+                  message: "Message saved",
+                });
+                temp_share_message.current = values["description"];
+              }
+            } catch (err) {
+              toaster.show({
+                intent: "danger",
+                message: "Error while saving the project",
+              });
+              console.error(err);
+            }
+            try {
+              // router.push(
+              //   {
+              //     query: {
+              //       ...router.query,
+              //       text: values["description"],
+              //     },
+              //   },
+              //   undefined,
+              //   { shallow: true }
+              // );
 
               await navigator.share({
                 url: values["url"],
@@ -262,7 +293,7 @@ export const getStaticPaths = async () => {
 
   return {
     paths,
-    fallback: 'blocking',
+    fallback: "blocking",
   };
 };
 
@@ -276,6 +307,7 @@ export const getStaticProps = async (context) => {
   return {
     props: {
       slug,
+      share_message: _get(data, "share_message") || "",
       ...data,
     },
   };
