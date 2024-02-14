@@ -8,6 +8,7 @@ import moment from "moment";
 import { Box } from "components/Grid";
 import DateTime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
+import { ColorPicker } from "components/ColorPicker";
 
 export const CountdownSettings = () => {
   const {
@@ -20,6 +21,7 @@ export const CountdownSettings = () => {
       "showLabel",
       "titleFontSize",
       "subtitleFontSize",
+      "color",
     ]),
   }));
 
@@ -110,6 +112,20 @@ export const CountdownSettings = () => {
               );
             }}
           />
+        </Box>
+        <Box
+          sx={{
+            mt: 3,
+          }}
+        >
+          <FormGroup label="Color">
+            <InputGroup
+              value={_get(values, "color") || ""}
+              onChange={(e) => {
+                setProp((props) => _set(props, "color", e.target.value));
+              }}
+            />
+          </FormGroup>
         </Box>
       </SettingSection>
     </>

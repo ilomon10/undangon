@@ -1,5 +1,5 @@
 import { useNode } from "@craftjs/core";
-import { Box, Flex } from "components/Grid";
+import { Flex } from "components/Grid";
 import { CountdownSettings } from "./CountdownSettings";
 import moment from "moment";
 import { Counter } from "components/Counter";
@@ -12,6 +12,7 @@ export const Countdown = ({
   showLabel = true,
   titleFontSize,
   subtitleFontSize,
+  color,
   ...style
 }) => {
   const {
@@ -37,11 +38,11 @@ export const Countdown = ({
                     ".title": {
                       p: 2,
                       fontSize: titleFontSize || [5, 6],
-                      color: "text",
+                      color: color || "text",
                     },
                     ".subtitle": {
                       fontSize: subtitleFontSize || [1, 2],
-                      color: "lighterText",
+                      color: color || "lighterText",
                     },
                   },
                 }}
@@ -95,6 +96,7 @@ Countdown.craft = {
     showLabel: true,
     titleFontSize: undefined,
     subtitleFontSize: undefined,
+    color: undefined,
   },
   related: {
     settings: CountdownSettings,
