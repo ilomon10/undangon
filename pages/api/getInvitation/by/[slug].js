@@ -9,6 +9,7 @@ export const getInvitationBySlug = async (slug, params = {}) => {
       },
     },
   });
+  
   return response;
 };
 
@@ -19,7 +20,6 @@ export default async function handler(req, res) {
       message: "Bad Request",
     });
   }
-
   try {
     let response = await getInvitationBySlug(req.query.slug);
     res.status(response.status).json(response.data);

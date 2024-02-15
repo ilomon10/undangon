@@ -38,7 +38,7 @@ const transformDescription = (raw, opt) => {
     text = text.replace(`{{${key}}}`, data[key]);
   }
 
-  return text;
+  return { text, keys: Object.keys(data) };
 };
 
 const transformToPreview = (raw, opt) => {
@@ -112,7 +112,7 @@ const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
             description: temp_share_message.current,
           }}
           onSubmit={async (values, { setSubmitting, ...rest }, b) => {
-            const text = transformDescription(values["description"], {
+            const { text, keys } = transformDescription(values["description"], {
               to: values["to"],
               url: values["url"],
             });
@@ -162,113 +162,119 @@ const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
             handleChange,
             setFieldValue,
             isSubmitting,
-          }) => (
-            <form onSubmit={handleSubmit}>
-              <FormGroup for="f-to" label="To">
-                <InputGroup
-                  id="f-to"
-                  name="to"
-                  value={values["to"]}
-                  onChange={(e) => {
-                    handleChange(e);
-                    const value = e.target.value;
-                    const params = new URLSearchParams(`?u=${value}`);
-                    setFieldValue(
-                      "url",
-                      value ? `${urlRaw}?${params.toString()} ` : values["url"]
-                    );
-                  }}
-                  placeholder="Who?"
-                />
-              </FormGroup>
-              {router.query["text"] && (
-                <Flex alignItems="center" mb={2}>
-                  <Box flexShrink={0} sx={{ whiteSpace: "nowrap" }}>
-                    <Button
-                      small={true}
-                      outlined={true}
-                      text="Use last text template"
-                      onClick={() => {
-                        setFieldValue("description", router.query["text"]);
-                      }}
-                    />
-                  </Box>
-                  <Box flexGrow={1} ml={2}>
-                    <Text ellipsize={true}>{router.query["text"]}</Text>
-                  </Box>
-                </Flex>
-              )}
-              <FormGroup for="f-description" label="Message">
-                <TextArea
-                  id="f-description"
-                  name="description"
-                  value={values["description"]}
-                  onChange={(e) => {
-                    handleChange(e);
-                  }}
-                  placeholder={`Dear ${
-                    values["to"] ? values["to"] : "Who?"
-                  }, bla bla bla`}
-                  growVertically={true}
-                  fill={true}
-                />
-              </FormGroup>
-
-              <Box textAlign="right">
-                <Button
-                  type="button"
-                  minimal={true}
-                  small={true}
-                  text="Variable Reference"
-                  onClick={() => {
-                    setFieldValue("isVarOpen", !values["isVarOpen"]);
-                  }}
-                />
-              </Box>
-              <Box mb={3}>
-                <Collapse isOpen={values["isVarOpen"]}>
-                  {[
-                    ["to", values["to"]],
-                    ["url", values["url"]],
-                  ].map(([a, b]) => (
-                    <Box key={a}>
-                      <Box
-                        className={Classes.CODE}
-                        sx={{
-                          display: "inline-block",
+          }) => {
+            const { text: transformedMessage } = transformDescription(
+              values["description"],
+              {
+                to: values["to"],
+                url: values["url"],
+              }
+            );
+            return (
+              <form onSubmit={handleSubmit}>
+                <FormGroup for="f-to" label="To">
+                  <InputGroup
+                    id="f-to"
+                    name="to"
+                    value={values["to"]}
+                    onChange={(e) => {
+                      handleChange(e);
+                      const value = e.target.value;
+                      const params = new URLSearchParams(`?u=${value}`);
+                      setFieldValue(
+                        "url",
+                        value
+                          ? `${urlRaw}?${params.toString()} `
+                          : values["url"]
+                      );
+                    }}
+                    placeholder="Who?"
+                  />
+                </FormGroup>
+                {router.query["text"] && (
+                  <Flex alignItems="center" mb={2}>
+                    <Box flexShrink={0} sx={{ whiteSpace: "nowrap" }}>
+                      <Button
+                        small={true}
+                        outlined={true}
+                        text="Use last text template"
+                        onClick={() => {
+                          setFieldValue("description", router.query["text"]);
                         }}
-                      >{`{{${a}}}`}</Box>{" "}
-                      {b}
+                      />
                     </Box>
-                  ))}
-                </Collapse>
-              </Box>
+                    <Box flexGrow={1} ml={2}>
+                      <Text ellipsize={true}>{router.query["text"]}</Text>
+                    </Box>
+                  </Flex>
+                )}
+                <FormGroup for="f-description" label="Message">
+                  <TextArea
+                    id="f-description"
+                    name="description"
+                    value={values["description"]}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
+                    placeholder={`Dear ${
+                      values["to"] ? values["to"] : "Who?"
+                    }, bla bla bla`}
+                    growVertically={true}
+                    fill={true}
+                  />
+                </FormGroup>
 
-              <FormGroup label="Preview">
-                <Box
-                  sx={{
-                    whiteSpace: "pre-line",
-                  }}
-                  dangerouslySetInnerHTML={{
-                    __html: transformToPreview(
-                      transformDescription(values["description"], {
-                        to: values["to"],
-                        url: values["url"],
-                      })
-                    ),
-                  }}
-                />
-              </FormGroup>
-              <Box sx={{ textAlign: "center" }}>
-                <Button
-                  large={true}
-                  text="Share"
-                  type="submit"
-                  loading={isSubmitting}
-                />
-              </Box>
-            </form>
-          )}
+                <Box textAlign="right">
+                  <Button
+                    type="button"
+                    minimal={true}
+                    small={true}
+                    text="Variable Reference"
+                    onClick={() => {
+                      setFieldValue("isVarOpen", !values["isVarOpen"]);
+                    }}
+                  />
+                </Box>
+                <Box mb={3}>
+                  <Collapse isOpen={values["isVarOpen"]}>
+                    {[
+                      ["to", values["to"]],
+                      ["url", values["url"]],
+                    ].map(([a, b]) => (
+                      <Box key={a}>
+                        <Box
+                          className={Classes.CODE}
+                          sx={{
+                            display: "inline-block",
+                          }}
+                        >{`{{${a}}}`}</Box>{" "}
+                        {b}
+                      </Box>
+                    ))}
+                  </Collapse>
+                </Box>
+
+                <FormGroup label="Preview">
+                  <Box
+                    sx={{
+                      whiteSpace: "pre-line",
+                    }}
+                    dangerouslySetInnerHTML={{
+                      __html: transformToPreview(transformedMessage),
+                    }}
+                  />
+                </FormGroup>
+                <Box sx={{ textAlign: "center" }}>
+                  <Button
+                    large={true}
+                    text="Share"
+                    type="submit"
+                    loading={isSubmitting}
+                  />
+                </Box>
+              </form>
+            );
+          }}
         </Formik>
       </Box>
       <Box as="footer" my={5} textAlign="center" color="gray.3">
