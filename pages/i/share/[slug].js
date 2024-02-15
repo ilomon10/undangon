@@ -301,7 +301,7 @@ export const getStaticPaths = async () => {
 
   return {
     paths,
-    // fallback: "blocking",
+    fallback: "blocking",
   };
 };
 
@@ -318,6 +318,7 @@ export const getStaticProps = async (context) => {
       share_message: _get(data, "share_message") || "",
       ...data,
     },
+    revalidate: 120
   };
 };
 
