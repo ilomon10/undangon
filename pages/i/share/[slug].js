@@ -74,7 +74,9 @@ const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
 
   const urlRaw = `https://${APP_DOMAIN}/i/${slug}`;
 
-  let temp_share_message = useRef(share_message);
+  let temp_share_message = useRef(
+    typeof share_message === "string" ? share_message : default_share_message
+  );
 
   const onUpdateMessage = useCallback(
     async (value) => {
@@ -89,7 +91,7 @@ const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
   return (
     <>
       <Head>
-        <title>Share Undangan:</title>
+        <title>Share Undangan: {slug}</title>
       </Head>
       <Box
         sx={{
@@ -107,7 +109,7 @@ const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
             isVarOpen: false,
             to: "",
             url: urlRaw,
-            description: share_message,
+            description: temp_share_message.current,
           }}
           onSubmit={async (values, { setSubmitting, ...rest }, b) => {
             const text = transformDescription(values["description"], {
