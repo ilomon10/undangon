@@ -145,7 +145,7 @@ const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
               // );
 
               await navigator.share({
-                url: values["url"],
+                url: encodeURIComponent(values["url"]),
                 title: `${meta.title}`,
                 text,
               });
