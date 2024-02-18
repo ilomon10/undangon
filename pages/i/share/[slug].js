@@ -114,7 +114,7 @@ const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
           onSubmit={async (values, { setSubmitting, ...rest }, b) => {
             const { text, keys } = transformDescription(values["description"], {
               to: values["to"],
-              url: encodeURIComponent(values["url"]),
+              url: values["url"],
             });
             try {
               if (values["description"] != temp_share_message.current) {
@@ -179,12 +179,10 @@ const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
                     onChange={(e) => {
                       handleChange(e);
                       const value = e.target.value;
-                      const params = new URLSearchParams(`?u=${value}`);
+                      const params = new URLSearchParams(`?u=${encodeURIComponent(value)}`);
                       setFieldValue(
                         "url",
-                        value
-                          ? `${urlRaw}?${params.toString()} `
-                          : values["url"]
+                        value ? `${urlRaw}?${params.toString()}` : values["url"]
                       );
                     }}
                     placeholder="Who?"
