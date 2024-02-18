@@ -67,7 +67,7 @@ const transformToPreview = (raw, opt) => {
   return text;
 };
 
-const default_share_message = `Kepada {{to}},\nDengan segala hormat, kami mengirimkan undangan elektronik ini :\n{{url}}\n\nKami mohon restu di hari pernikahan kami. Walaupun, keadaan pandemi Covid-19 dan dengan tetap menjaga protokol kesehatan, kami mengundang Anda untuk menghadiri upacara pernikahan. Anda masih bisa menjadi bagian dari Pernikahan kami dengan meninggalkan keinginan Anda.\n\n⏰ – January 01, 1999\n\nTerima kasih atas semua doa dan dukungannya. Ini akan menjadi hadiah yang luar biasa untuk kita.\n\nWith pray & love,\nJohn & Doe\n#Manjo`;
+const default_share_message = `Demikianlah mereka bukan lagi dua, melainkan satu. Karena itu, apa yang telah dipersatukan Allah, tidak boleh diceraikan manusia. (Matius 19:6)\nTanpa mengurangi rasa hormat, perkenankan kami menginformasikan kepada Bapak/Ibu/Saudara/i, teman sekaligus sahabat acara pernikahan kami:\n*Nama Mempelai & Nama Mempelai*\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i untuk memberikan doa restu kepada kami.\nJangan lupa isi Guestbook ya..\n\nTerima Kasih..\n\nWith pray & love,\n*Nama Panggilan & Nama Panggilan*\n#Manjo`;
 
 const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
   const router = useRouter();
@@ -114,7 +114,7 @@ const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
           onSubmit={async (values, { setSubmitting, ...rest }, b) => {
             const { text, keys } = transformDescription(values["description"], {
               to: values["to"],
-              url: values["url"],
+              url: encodeURIComponent(values["url"]),
             });
             try {
               if (values["description"] != temp_share_message.current) {
@@ -143,9 +143,8 @@ const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
               //   undefined,
               //   { shallow: true }
               // );
-
               await navigator.share({
-                url: encodeURIComponent(values["url"]),
+                url: values["url"],
                 title: `${meta.title}`,
                 text,
               });
@@ -318,7 +317,7 @@ export const getStaticProps = async (context) => {
       share_message: _get(data, "share_message") || "",
       ...data,
     },
-    revalidate: 120
+    revalidate: 120,
   };
 };
 
