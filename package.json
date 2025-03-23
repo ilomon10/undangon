@@ -9,8 +9,7 @@
     "dev": "next dev",
     "export": "next export",
     "build": "next build",
-    "start": "next start",
-    "postinstall": "npm install --legacy-peer-deps"
+    "start": "next start"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^2.0.1",
