@@ -92,6 +92,12 @@ const ModalComponent = ({
     //   document.documentElement.requestFullscreen();
     // }
   };
+
+  const t = {
+    button: "Open Invitation",
+    // button: loading ? "Please wait" : "Open Invitation"
+  };
+
   return (
     <Box
       className={isOpen && "opened"}
@@ -259,7 +265,7 @@ const ModalComponent = ({
               py: 2,
             }}
           >
-            {loading ? "Please wait" : "Open Invitation"}
+            {t.button}
           </Box>
         </Flex>
       </Flex>
