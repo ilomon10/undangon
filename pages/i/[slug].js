@@ -72,12 +72,12 @@ export const Invitation = ({ content, meta }) => {
       </Head>
       <Viewport isProduction={true}>
         <Box
-          // sx={{
-          //   position: "fixed",
-          //   inset: 0,
-          //   overflowY: "auto",
-          //   overflowX: "hidden",
-          // }}
+        // sx={{
+        //   position: "fixed",
+        //   inset: 0,
+        //   overflowY: "auto",
+        //   overflowX: "hidden",
+        // }}
         >
           <Frame data={content}>
             <Container>
@@ -108,6 +108,7 @@ export const getStaticPaths = async () => {
   return {
     paths,
     fallback: "blocking",
+    // fallback: true,
   };
 };
 

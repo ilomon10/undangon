@@ -179,7 +179,9 @@ const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
                     onChange={(e) => {
                       handleChange(e);
                       const value = e.target.value;
-                      const params = new URLSearchParams(`?u=${encodeURIComponent(value)}`);
+                      const params = new URLSearchParams(
+                        `?u=${encodeURIComponent(value)}`
+                      );
                       setFieldValue(
                         "url",
                         value ? `${urlRaw}?${params.toString()}` : values["url"]
@@ -299,6 +301,7 @@ export const getStaticPaths = async () => {
   return {
     paths,
     fallback: "blocking",
+    // fallback: true,
   };
 };
 
