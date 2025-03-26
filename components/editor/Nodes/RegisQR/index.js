@@ -17,16 +17,18 @@ import { useViewport } from "components/editor/Viewport/useViewport";
 // attendance: true,
 // number_of_persons: 1,
 
-const max_person = 10;
+const default_max_person = 10;
 
-export const RegisQR = ({ field_name = "q" }) => {
+export const RegisQR = ({
+  field_name = "q",
+  max_person = default_max_person,
+}) => {
   const { isProduction } = useViewport();
   const { query: searchParams } = useRouter();
   const [data, setData] = useState(null);
 
   const [QRImage, setQRImage] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  
 
   const [number_of_persons, { inc, dec }] = useCounter(1, max_person, 1);
 
@@ -49,7 +51,7 @@ export const RegisQR = ({ field_name = "q" }) => {
         const d = res.data;
         if (["accepted", "declined"].indexOf(d.status) > -1) {
           setIsSubmitted(true);
-          console.log(["accepted", "declined"].indexOf(d.status) > -1)
+          console.log(["accepted", "declined"].indexOf(d.status) > -1);
         }
         setData(res.data);
         if (d.status === "sent")
@@ -248,6 +250,7 @@ RegisQR.craft = {
   name: "RegisQR",
   props: {
     field_name: "q",
+    max_person: 10,
   },
   related: {
     settings: RegisQRSettings,

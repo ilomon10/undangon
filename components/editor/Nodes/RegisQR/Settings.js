@@ -20,21 +20,31 @@ export const RegisQRSettings = () => {
     actions: { setProp },
     values,
   } = useNode((node) => ({
-    values: _pick(node.data.props, ["field_name"]),
+    values: _pick(node.data.props, ["field_name", "max_person"]),
   }));
 
   return (
     <>
       <SettingSection
         text="Settings"
-        label={({ field_name }) => `${field_name}`}
-        props={["field_name"]}
+        label={({ field_name, max_person }) =>
+          `${max_person} persons, field=${field_name}`
+        }
+        props={["field_name", "max_person"]}
       >
         <FormGroup label="Field Name">
           <InputGroup
             value={values.field_name || ""}
             onChange={(e) => {
               setProp((props) => (props.field_name = e.target.value), 500);
+            }}
+          />
+        </FormGroup>
+        <FormGroup label="Max Person">
+          <InputGroup
+            value={values.max_person || ""}
+            onChange={(e) => {
+              setProp((props) => (props.max_person = e.target.value), 500);
             }}
           />
         </FormGroup>
