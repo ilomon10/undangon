@@ -284,6 +284,13 @@ const DariID = ({ _id, slug, meta, share_message = default_share_message }) => {
 };
 
 export const getStaticPaths = async () => {
+  if (process.env.NEXT_PHASE === "phase-production-build") {
+    return {
+      paths: [],
+      fallback: "blocking",
+    };
+  }
+
   let { data } = await getInvitations({
     params: {
       fields: {

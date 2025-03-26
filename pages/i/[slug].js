@@ -91,6 +91,13 @@ export const Invitation = ({ content, meta }) => {
 };
 
 export const getStaticPaths = async () => {
+  if (process.env.NEXT_PHASE === "phase-production-build") {
+    return {
+      paths: [],
+      fallback: "blocking",
+    };
+  }
+
   let { data } = await getInvitations({
     params: {
       fields: {
@@ -114,7 +121,16 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context) => {
   const { slug } = context.params;
-  let { data } = await getInvitationBySlug(slug);
+  let data = {};
+  try {
+    let invitation = await getInvitationBySlug(slug);
+    data = invitation.data;
+  } catch (err) {
+    return {
+      notFound: true,
+    };
+  }
+
   const content = lz.decompress(lz.decodeBase64(data.content));
   return {
     props: {

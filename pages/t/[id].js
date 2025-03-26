@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { getTemplates } from "pages/api/getTemplates";
 import { getTemplate } from "pages/api/getTemplate/[id]";
 import * as ResolverNodes from "components/editor/Nodes";
-import * as ResolverComponents from "components/editor/Components";
 import { Viewport } from "components/editor";
 
 export const Template = ({ content, name }) => {
@@ -28,6 +27,13 @@ export const Template = ({ content, name }) => {
 };
 
 export const getStaticPaths = async () => {
+  if (process.env.NEXT_PHASE === "phase-production-build") {
+    return {
+      paths: [],
+      fallback: "blocking",
+    };
+  }
+
   let { data } = await getTemplates({
     params: {
       fields: {
@@ -44,7 +50,7 @@ export const getStaticPaths = async () => {
 
   return {
     paths,
-    fallback: 'blocking',
+    fallback: "blocking",
   };
 };
 
