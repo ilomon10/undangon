@@ -122,14 +122,14 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context) => {
   const { slug } = context.params;
   let data = {};
-  try {
-    let invitation = await getInvitationBySlug(slug);
-    data = invitation.data;
-  } catch (err) {
-    return {
-      notFound: true,
-    };
-  }
+  // try {
+  let invitation = await getInvitationBySlug(slug);
+  data = invitation.data;
+  // } catch (err) {
+  //   return {
+  //     notFound: true,
+  //   };
+  // }
 
   const content = lz.decompress(lz.decodeBase64(data.content));
   return {
