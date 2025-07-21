@@ -15,6 +15,10 @@ module.exports = {
     imagekitUrl: process.env.IMAGEKIT_URL,
     imagekitPublicKey: process.env.IMAGEKIT_PUBLIC_KEY,
     imagekitPrivateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+    immichUrl: process.env.IMMICH_URL,
+    immichApiKey: process.env.IMMICH_API_KEY,
+    immichSharedAlbumId: process.env.IMMICH_SHARED_ALBUM_ID,
+    immichSharedAlbumKey: process.env.IMMICH_SHARED_ALBUM_KEY,
   },
   compiler: {
     styledComponents: true,
@@ -24,4 +28,12 @@ module.exports = {
   //   locales: ["id-ID"],
   //   defaultLocale: "id-ID",
   // },
+  async rewrites() {
+    return [
+      {
+        source: "/api/immich/assets/:id",
+        destination: `//wsrv.nl/?url=${process.env.IMMICH_URL}/assets/:id/thumbnail?key=${process.env.IMMICH_SHARED_ALBUM_KEY}`,
+      }
+    ]
+  }
 };

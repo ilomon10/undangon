@@ -11,6 +11,7 @@ import {
   Container,
   GuestBook,
   IFrame,
+  ImageV2,
   Positioned,
   StaticMapbox,
   Text,
@@ -52,6 +53,11 @@ export const Toolbox = () => {
             icon: "media",
             label: "Image",
             ref: (ref) => connectors.create(ref, <Image />),
+          },
+          {
+            icon: "media",
+            label: "Image V2",
+            ref: (ref) => connectors.create(ref, <ImageV2 />),
           },
           {
             icon: "rectangle",

@@ -8,6 +8,10 @@ export const MAPBOX_API_KEY = process.env.mapboxApiKey;
 export const IMAGEKIT_URL = process.env.imagekitUrl;
 export const IMAGEKIT_PUBLIC_KEY = process.env.imagekitPublicKey;
 export const IMAGEKIT_PRIVATE_KEY = process.env.imagekitPrivateKey;
+export const IMMICH_URL = process.env.immichUrl;
+export const IMMICH_API_KEY = process.env.immichApiKey;
+export const IMMICH_SHARED_ALBUM_ID = process.env.immichSharedAlbumId;
+export const IMMICH_SHARED_ALBUM_KEY = process.env.immichSharedAlbumKey;
 
 export const CONSTANTS = {
   APP_NAME,
@@ -20,4 +24,8 @@ export const CONSTANTS = {
   IMAGEKIT_URL,
   IMAGEKIT_PUBLIC_KEY,
   IMAGEKIT_PRIVATE_KEY,
+  IMMICH_URL,
+  IMMICH_API_KEY,
+  IMMICH_SHARED_ALBUM_ID,
+  IMMICH_SHARED_ALBUM_KEY
 };

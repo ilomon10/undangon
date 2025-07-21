@@ -8,6 +8,7 @@ export * from "./Document";
 export * from "./GuestBook";
 export * from "./IFrame";
 export * from "./Image";
+export * from "./ImageV2";
 export * from "./Positioned";
 export * from "./StaticMapbox";
 export * from "./Text";
